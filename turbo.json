@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "envMode": "loose",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"],
+      "env": []
+    },
+    "publish": {
+      "outputs": ["out/**"],
+      "cache": false
+    },
+    "emit": {
+      "outputs": ["out/**"],
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "test:watch": {
+      "outputs": ["coverage/**"],
+      "persistent": true,
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "check": {
+      "dependsOn": ["^build"]
+    }
+  }
+}
