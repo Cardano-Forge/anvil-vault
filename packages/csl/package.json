@@ -21,10 +21,10 @@
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
-    "trynot": "^0.0.2",
-    "@cardano-forge/csl": "^0.0.0",
-    "@cardano-forge/utils": "^0.0.0",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^14.1.1"
+    "@cardano-forge/csl": "^0.0.1-published-tree-shaking",
+    "@cardano-forge/utils": "^0.0.1-published-tree-shaking",
+    "@emurgo/cardano-serialization-lib-nodejs-gc": "^14.1.1",
+    "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",

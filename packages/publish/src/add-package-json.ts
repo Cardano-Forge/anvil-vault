@@ -71,7 +71,7 @@ function extractDependencies(pkg: any, opts: AddPackageJsonOpts): Map<string, st
   const dependencies = new Map<string, string>();
 
   for (const [name, version] of Object.entries(pkg.dependencies ?? {})) {
-    if (name.startsWith("@anvil-vault/")) {
+    if (name.startsWith("@anvil-vault/") || name.startsWith("@cardano-forge/")) {
       continue;
     }
     if (typeof version !== "string") {
