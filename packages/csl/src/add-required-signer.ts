@@ -12,6 +12,9 @@ export type AddRequiredSignerInput = {
   keyHash: Ed25519KeyHash | string;
 };
 
+/**
+ * Adds a required signer key hash to a transaction.
+ */
 export function addRequiredSigner(input: AddRequiredSignerInput): Result<Transaction> {
   try {
     const tx = unwrap(parseTransaction(input.transaction));

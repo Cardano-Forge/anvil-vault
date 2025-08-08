@@ -14,8 +14,6 @@ export type SignTransactionInput = {
 
 /**
  * Signs a transaction with the given private keys.
- * @param input.transaction - The transaction to sign. Can be a CSL Transaction or a hex string.
- * @param input.privateKeys - An array of private keys to sign the transaction with. Private keys can be provided as CSL PrivateKey or hex strings.
  */
 export function signTransaction(input: SignTransactionInput): Result<FixedTransaction> {
   try {

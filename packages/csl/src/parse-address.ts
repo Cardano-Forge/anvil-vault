@@ -12,6 +12,9 @@ export type ParseAddressInput = {
   address: Address | string;
 };
 
+/**
+ * Parses a Cardano address from CSL object, bech32 string, or hex string.
+ */
 export function parseAddress(
   input: ParseAddressInput,
 ): Result<BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress> {
