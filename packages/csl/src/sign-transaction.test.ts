@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
 import {
   FixedTransaction,
   PrivateKey,
   Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { signTransaction, type SignTransactionInput } from "./sign-transaction";
-import { isErr, isOk, assert } from "trynot";
+import { assert, isErr, isOk } from "trynot";
+import { describe, expect, it } from "vitest";
+import { type SignTransactionInput, signTransaction } from "./sign-transaction";
 
 describe("signTransaction", () => {
   const validPrivateKeyHex =

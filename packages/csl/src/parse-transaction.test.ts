@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { Transaction } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import { assert, isErr, isOk } from "trynot";
+import { describe, expect, it } from "vitest";
 import { parseTransaction } from "./parse-transaction";
-import { isErr, isOk, assert } from "trynot";
 
 describe("parseTransaction", () => {
   const validTransactionHex =

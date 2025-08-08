@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import { assert, isErr, isOk } from "trynot";
+import { describe, expect, it } from "vitest";
 import { parsePrivateKey } from "./parse-private-key";
-import { isErr, isOk, assert } from "trynot";
 
 describe("parsePrivateKey", () => {
   const validPrivateKeyHex =
