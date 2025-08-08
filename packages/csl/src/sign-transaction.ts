@@ -1,11 +1,10 @@
 import {
   FixedTransaction,
-  type PrivateKey,
-  type Transaction,
+  PrivateKey,
+  Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
-import { parsePrivateKey } from "./parse-private-key";
-import { parseTransaction } from "./parse-transaction";
+import { parseFromHex } from "./parse-from-hex";
 
 export type SignTransactionInput = {
   transaction: Transaction | string;
@@ -17,10 +16,10 @@ export type SignTransactionInput = {
  */
 export function signTransaction(input: SignTransactionInput): Result<FixedTransaction> {
   try {
-    const tx = unwrap(parseTransaction(input.transaction));
+    const tx = unwrap(parseFromHex(input.transaction, Transaction));
     const fixedTx = FixedTransaction.from_hex(tx.to_hex());
     for (const privateKeyInput of input.privateKeys) {
-      const privateKey = unwrap(parsePrivateKey(privateKeyInput));
+      const privateKey = unwrap(parseFromHex(privateKeyInput, PrivateKey));
       fixedTx.sign_and_add_vkey_signature(privateKey);
     }
     return fixedTx;

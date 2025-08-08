@@ -1,11 +1,10 @@
 import {
-  type Ed25519KeyHash,
+  Ed25519KeyHash,
   Ed25519KeyHashes,
   Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
-import { parseEd25519KeyHash } from "./parse-ed25519-key-hash";
-import { parseTransaction } from "./parse-transaction";
+import { parseFromHex } from "./parse-from-hex";
 
 export type AddRequiredSignerInput = {
   transaction: Transaction | string;
@@ -17,8 +16,8 @@ export type AddRequiredSignerInput = {
  */
 export function addRequiredSigner(input: AddRequiredSignerInput): Result<Transaction> {
   try {
-    const tx = unwrap(parseTransaction(input.transaction));
-    const keyHash = unwrap(parseEd25519KeyHash(input.keyHash));
+    const tx = unwrap(parseFromHex(input.transaction, Transaction));
+    const keyHash = unwrap(parseFromHex(input.keyHash, Ed25519KeyHash));
     const txBody = tx.body();
     const requiredSigners = txBody.required_signers() ?? Ed25519KeyHashes.new();
     requiredSigners.add(keyHash);
