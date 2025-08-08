@@ -53,8 +53,7 @@ Each package follows a consistent structure:
 
 ```
 packages/[name]/
-├── src/                 # Source TypeScript files
-├── __tests__/          # Test files
+├── src/                # Source TypeScript files (with co-located .test.ts files)
 ├── dist/               # Build output
 ├── out/                # Published package output
 ├── package.json        # Package configuration
@@ -68,7 +67,8 @@ packages/[name]/
 - **TypeScript**: Strict mode enabled
 - **Formatting**: Biome configuration in `biome.json`
 - **Architecture**: Packages are self-contained with minimal coupling
-- **Testing**: Uses Vitest for unit testing
+- **Testing**: Uses Vitest for unit testing with test files co-located alongside source files using `.test.ts` extension
+  - Always use trynot's `assert()` function instead of non-null assertions (`!`) in tests for safer null checking
 - **Build**: Uses tsup for bundling and TypeScript for declarations
 - **Exports**: Packages provide both CommonJS and ESM builds
 - **Error Handling**: Uses `trynot` library for error handling patterns
