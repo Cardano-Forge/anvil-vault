@@ -19,13 +19,9 @@
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch --passWithNoTests"
   },
-  "dependencies": {
-    "trynot": "^0.0.2"
-  },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
-    "glob": "^11.0.1",
     "tsup": "^8.2.4",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"

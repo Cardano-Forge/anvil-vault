@@ -21,14 +21,15 @@
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
-    "@cardano-forge/csl": "^0.0.1-published-tree-shaking",
-    "@cardano-forge/utils": "^0.0.1-published-tree-shaking",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^14.1.1",
     "trynot": "^0.0.2"
   },
   "devDependencies": {
+    "@anvil-vault/publish": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
+    "tsup": "^8.2.4",
+    "tsx": "^4.20.3",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"
   }

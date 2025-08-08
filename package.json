@@ -12,14 +12,17 @@
     "lint": "dotenv -c -- biome check --write .",
     "pre": "npm run lint && npm run check && npm run test",
     "test": "turbo run test",
-    "test:watch": "turbo run test:watch --concurrency 20"
+    "test:watch": "turbo run test:watch --concurrency 20",
+    "knip": "knip --fix --cache",
+    "sherif": "sherif --fix"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.0",
     "@types/node": "^22.13.1",
-    "chokidar": "^4.0.3",
     "dotenv-cli": "^7.4.2",
+    "knip": "^5.50.5",
     "rimraf": "^6.0.1",
+    "sherif": "^1.5.0",
     "turbo": "^2.4.2"
   },
   "optionalDependencies": {
