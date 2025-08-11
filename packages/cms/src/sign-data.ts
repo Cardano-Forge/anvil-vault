@@ -1,7 +1,6 @@
 import { parseFromHex } from "@anvil-vault/utils";
 import {
   AlgorithmId,
-  BigNum,
   CBORValue,
   COSEKey,
   COSESign1Builder,
@@ -12,13 +11,14 @@ import {
   Label,
   ProtectedHeaderMap,
 } from "@emurgo/cardano-message-signing-nodejs-gc";
-import type { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import type { PrivateKey, Address } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
 export type SignDataInput = {
   payload: string | Buffer;
-  externalAad?: string | Buffer;
+  address: Address;
   privateKey: PrivateKey;
+  externalAad?: string | Buffer;
 };
 
 export type SignDataOutput = {
@@ -52,12 +52,9 @@ export function signData(input: SignDataInput): Result<SignDataOutput> {
 
     const coseKey = COSEKey.new(Label.from_key_type(KeyType.OKP));
     coseKey.set_algorithm_id(Label.from_algorithm_id(AlgorithmId.EdDSA));
+    coseKey.set_header(Label.new_int(Int.new_i32(-1)), CBORValue.new_int(Int.new_i32(6)));
     coseKey.set_header(
-      Label.new_int(Int.new_negative(BigNum.from_str("1"))),
-      CBORValue.new_int(Int.new_i32(6)),
-    );
-    coseKey.set_header(
-      Label.new_int(Int.new_negative(BigNum.from_str("2"))),
+      Label.new_int(Int.new_i32(-2)),
       CBORValue.new_bytes(privateKey.to_public().as_bytes()),
     );
 
