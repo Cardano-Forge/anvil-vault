@@ -194,7 +194,7 @@ describe("parseFromHex", () => {
 
       assert(isOk(result), "Result should not be an error");
       expect(result).toBeInstanceOf(Buffer);
-      // Buffer.from doesn't validate hex, so invalid characters are interpreted as best as possible
+      expect(result.toString()).toBe("");
     });
 
     it("should return undefined when input is undefined with default constructor", () => {
