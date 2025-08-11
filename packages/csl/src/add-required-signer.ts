@@ -1,3 +1,4 @@
+import { parseFromHex } from "@anvil-vault/utils";
 import {
   Ed25519KeyHash,
   Ed25519KeyHashes,
@@ -5,7 +6,6 @@ import {
   Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
-import { parseFromHex } from "./parse-from-hex";
 
 export type TransactionInput = Transaction | FixedTransaction | string;
 

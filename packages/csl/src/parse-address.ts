@@ -1,3 +1,4 @@
+import { isBech32Address } from "@anvil-vault/utils";
 import {
   Address,
   BaseAddress,
@@ -6,7 +7,6 @@ import {
   RewardAddress,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError } from "trynot";
-import { isBech32Address } from "./is-bech-32-address";
 
 export type ParseAddressInput = {
   address: Address | string;

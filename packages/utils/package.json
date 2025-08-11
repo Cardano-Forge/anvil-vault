@@ -1,5 +1,5 @@
 {
-  "name": "@anvil-vault/csl",
+  "name": "@anvil-vault/utils",
   "version": "0.0.0",
   "keywords": [],
   "license": "ISC",
@@ -16,15 +16,15 @@
     "build": "tsup --config build.tsup.ts",
     "check": "tsc --noEmit",
     "emit": "tsup --config emit.tsup.ts",
+    "publish": "tsx publish.ts",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
-    "@anvil-vault/utils": "*",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "trynot": "^0.0.2"
   },
   "devDependencies": {
+    "@anvil-vault/publish": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "tsup": "^8.2.4",

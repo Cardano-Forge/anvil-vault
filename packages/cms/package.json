@@ -21,6 +21,7 @@
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
+    "@anvil-vault/utils": "*",
     "@emurgo/cardano-message-signing-nodejs-gc": "^1.1.0",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "trynot": "^0.0.2"
