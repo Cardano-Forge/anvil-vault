@@ -35,6 +35,7 @@ export function signData(input: SignDataInput): Result<SignDataOutput> {
     const privateKey = input.privateKey;
     const payload = unwrap(parseFromHex(input.payload));
     const externalAad = unwrap(parseFromHex(input.externalAad));
+    const addressBytes = input.address.to_address().to_bytes();
 
     const paymentCred = input.address.payment_cred();
     if (paymentCred.has_script_hash()) {
@@ -53,11 +54,8 @@ export function signData(input: SignDataInput): Result<SignDataOutput> {
     const protectedHeaders = HeaderMap.new();
 
     protectedHeaders.set_algorithm_id(Label.from_algorithm_id(AlgorithmId.EdDSA));
-    protectedHeaders.set_key_id(input.address.to_address().to_bytes());
-    protectedHeaders.set_header(
-      Label.new_text("address"),
-      CBORValue.new_bytes(input.address.to_address().to_bytes()),
-    );
+    protectedHeaders.set_key_id(addressBytes);
+    protectedHeaders.set_header(Label.new_text("address"), CBORValue.new_bytes(addressBytes));
 
     const protectedSerialized = ProtectedHeaderMap.new(protectedHeaders);
     const unprotected = HeaderMap.new();
@@ -75,7 +73,7 @@ export function signData(input: SignDataInput): Result<SignDataOutput> {
 
     const coseKey = COSEKey.new(Label.from_key_type(KeyType.OKP));
     coseKey.set_algorithm_id(Label.from_algorithm_id(AlgorithmId.EdDSA));
-    coseKey.set_key_id(input.address.to_address().to_bytes());
+    coseKey.set_key_id(addressBytes);
     coseKey.set_header(Label.new_int(Int.new_i32(-1)), CBORValue.new_int(Int.new_i32(6)));
     coseKey.set_header(
       Label.new_int(Int.new_i32(-2)),
