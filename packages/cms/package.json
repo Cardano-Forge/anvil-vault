@@ -25,11 +25,11 @@
     "trynot": "^0.0.2"
   },
   "devDependencies": {
+    "@anvil-vault/csl": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "tsup": "^8.2.4",
-    "tsx": "^4.20.3",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"
   }

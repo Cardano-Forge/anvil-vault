@@ -7,7 +7,7 @@ import {
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
-export type TransactionInput = Transaction | FixedTransaction | string;
+type TransactionInput = Transaction | FixedTransaction | string;
 
 export type AddRequiredSignerInput<TTransaction extends TransactionInput = TransactionInput> = {
   transaction: TTransaction;
