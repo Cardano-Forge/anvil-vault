@@ -2,23 +2,7 @@
 
 ## Project Overview
 
-Anvil Vault is a TypeScript monorepo containing shared packages and tools for the Anvil ecosystem. It provides core building blocks including CSL (Cardano Serialization Library) wrappers, publishing utilities, and build tooling for TypeScript projects.
-
-## Architecture
-
-- **Monorepo Structure**: Uses npm workspaces with `packages/*`
-- **Build System**: Turbo for task orchestration and caching
-- **Runtime**: Node.js 20+ with TypeScript
-- **Package Manager**: npm 10+
-- **Code Quality**: Biome for linting and formatting
-
-## Key Packages
-
-Located in `packages/` directory:
-
-### Core Packages
-- **csl**: Cardano Serialization Library wrappers and utilities for transaction parsing, signing, and private key handling
-- **publish**: Internal package publishing utilities with TypeScript declaration building and package.json generation
+Anvil Vault is a TypeScript monorepo containing shared packages and tools for the Anvil ecosystem. It provides core building blocks including CSL (Cardano Serialization Library) wrappers, signing, and private key handling
 - **tsconfig**: Shared TypeScript configuration for Node.js 20
 - **tsup**: Build configuration utilities for bundling packages
 
@@ -32,7 +16,6 @@ npm run pre
 # Building
 npm run build             # Build all packages
 npm run emit             # Emit TypeScript declarations
-npm run publish          # Build and publish packages
 
 # Code Quality
 npm run lint             # Run Biome linting and formatting
@@ -151,7 +134,7 @@ function findUser(id: string): Result<User, MyError> {
 
 ## Development Tips
 
-- Each package is independently buildable and publishable
+- Each package is independently buildable
 - Use `npm run emit` to generate TypeScript declarations
 - Run `npm run pre` before committing changes
 - Follow existing patterns when adding new packages

@@ -6,7 +6,6 @@
   "scripts": {
     "build": "turbo run build",
     "emit": "turbo run emit",
-    "publish": "turbo run emit && turbo run publish",
     "check": "turbo run check",
     "build:clean": "rimraf --glob {packages,services}/*/{dist,out,.turbo} && rimraf .turbo",
     "lint": "dotenv -c -- biome check --write .",
