@@ -60,6 +60,8 @@ for (const [type, testCase] of Object.entries(tests)) {
           assert(isOk(result), "Expected parseAddress to succeed");
           assert(result instanceof BaseAddress, "Expected BaseAddress");
 
+          expect(parseAddress({ address: result })).toBe(result);
+
           const paymentHash = result.payment_cred().has_script_hash()
             ? result.payment_cred().to_scripthash()?.to_hex()
             : result.payment_cred().to_keyhash()?.to_hex();
@@ -82,6 +84,8 @@ for (const [type, testCase] of Object.entries(tests)) {
           assert(isOk(result), "Expected parseAddress to succeed");
           assert(result instanceof EnterpriseAddress, "Expected EnterpriseAddress");
 
+          expect(parseAddress({ address: result })).toBe(result);
+
           const paymentHash = result.payment_cred().has_script_hash()
             ? result.payment_cred().to_scripthash()?.to_hex()
             : result.payment_cred().to_keyhash()?.to_hex();
@@ -99,6 +103,8 @@ for (const [type, testCase] of Object.entries(tests)) {
           const result = parseAddress({ address });
           assert(isOk(result), "Expected parseAddress to succeed");
           assert(result instanceof RewardAddress, "Expected RewardAddress");
+
+          expect(parseAddress({ address: result })).toBe(result);
 
           const stakeHash = result.payment_cred()?.has_script_hash()
             ? result.payment_cred().to_scripthash()?.to_hex()

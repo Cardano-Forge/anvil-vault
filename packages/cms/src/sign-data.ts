@@ -11,7 +11,7 @@ import {
   Label,
   ProtectedHeaderMap,
 } from "@emurgo/cardano-message-signing-nodejs-gc";
-import type { PrivateKey, Address } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import type { Address, PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
 export type SignDataInput = {

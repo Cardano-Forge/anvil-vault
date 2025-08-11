@@ -8,25 +8,27 @@ import {
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError } from "trynot";
 
+export type ParsedAddress = BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress;
+
 export type ParseAddressInput = {
-  address: Address | string;
+  address: Address | string | ParsedAddress;
 };
 
 /**
  * Parses a Cardano address from CSL object, bech32 string, or hex string.
  */
-export function parseAddress(
-  input: ParseAddressInput,
-): Result<BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress> {
+export function parseAddress(input: ParseAddressInput): Result<ParsedAddress> {
   try {
     let address: Address;
     if (input.address instanceof Address) {
       address = input.address;
-    } else if (isBech32Address(input.address)) {
+    } else if (typeof input.address === "string" && isBech32Address(input.address)) {
       address = Address.from_bech32(input.address);
-    } else {
+    } else if (typeof input.address === "string") {
       const bytes = Buffer.from(input.address, "hex");
       address = Address.from_bytes(bytes);
+    } else {
+      return input.address;
     }
 
     const baseAddress = BaseAddress.from_address(address);
@@ -45,6 +47,7 @@ export function parseAddress(
     if (rewardAddress) {
       return rewardAddress;
     }
+
     return new Error("Invalid address");
   } catch (error) {
     const parsedError = parseError(error);
