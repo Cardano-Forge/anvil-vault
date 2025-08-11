@@ -12,13 +12,13 @@ import {
   Label,
   ProtectedHeaderMap,
 } from "@emurgo/cardano-message-signing-nodejs-gc";
-import { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import type { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
 export type SignDataInput = {
   payload: string | Buffer;
   externalAad?: string | Buffer;
-  privateKey: PrivateKey | string;
+  privateKey: PrivateKey;
 };
 
 export type SignDataOutput = {
@@ -31,21 +31,9 @@ export type SignDataOutput = {
  */
 export function signData(input: SignDataInput): Result<SignDataOutput> {
   try {
-    const privateKey = unwrap(parseFromHex(input.privateKey, PrivateKey));
-
-    let payload: Buffer;
-    if (typeof input.payload === "string") {
-      payload = Buffer.from(input.payload, "hex");
-    } else {
-      payload = input.payload;
-    }
-
-    let externalAad: Buffer | undefined;
-    if (typeof input.externalAad === "string") {
-      externalAad = Buffer.from(input.externalAad, "hex");
-    } else {
-      externalAad = input.externalAad;
-    }
+    const privateKey = input.privateKey;
+    const payload = unwrap(parseFromHex(input.payload));
+    const externalAad = unwrap(parseFromHex(input.externalAad));
 
     const protectedHeaders = HeaderMap.new();
     const protectedSerialized = ProtectedHeaderMap.new(protectedHeaders);
