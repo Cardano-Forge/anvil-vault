@@ -16,7 +16,6 @@
     "build": "tsup --config build.tsup.ts",
     "check": "tsc --noEmit",
     "emit": "tsup --config emit.tsup.ts",
-    "publish": "tsx publish.ts",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch --passWithNoTests"
   },
@@ -26,7 +25,6 @@
     "trynot": "^0.0.2"
   },
   "devDependencies": {
-    "@anvil-vault/publish": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
