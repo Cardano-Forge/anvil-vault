@@ -7,7 +7,7 @@ import { type Result, parseError, unwrap } from "trynot";
 import { parseFromHex } from "./parse-from-hex";
 
 export type SignTransactionInput = {
-  transaction: Transaction | string;
+  transaction: Transaction | FixedTransaction | string;
   privateKeys: Array<PrivateKey | string>;
 };
 
@@ -16,8 +16,13 @@ export type SignTransactionInput = {
  */
 export function signTransaction(input: SignTransactionInput): Result<FixedTransaction> {
   try {
-    const tx = unwrap(parseFromHex(input.transaction, Transaction));
-    const fixedTx = FixedTransaction.from_hex(tx.to_hex());
+    let fixedTx: FixedTransaction;
+    if (input.transaction instanceof Transaction) {
+      fixedTx = FixedTransaction.from_bytes(input.transaction.to_bytes());
+    } else {
+      fixedTx = unwrap(parseFromHex(input.transaction, FixedTransaction));
+    }
+
     for (const privateKeyInput of input.privateKeys) {
       const privateKey = unwrap(parseFromHex(privateKeyInput, PrivateKey));
       fixedTx.sign_and_add_vkey_signature(privateKey);

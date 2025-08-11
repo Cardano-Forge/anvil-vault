@@ -1,4 +1,8 @@
-import { Ed25519KeyHash, Transaction } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import {
+  Ed25519KeyHash,
+  FixedTransaction,
+  Transaction,
+} from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
 import { addRequiredSigner } from "./add-required-signer";
@@ -16,7 +20,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(Transaction);
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       const requiredSigners = result.body().required_signers();
       assert(requiredSigners, "Required signers should be defined");
@@ -48,7 +52,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(Transaction);
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       const requiredSigners = result.body().required_signers();
       assert(requiredSigners, "Required signers should be defined");
@@ -73,6 +77,22 @@ describe("addRequiredSigner", () => {
       expect(requiredSigners.get(0).to_hex()).toBe(validKeyHashHex);
     });
 
+    it("should add required signer when transaction is FixedTransaction and keyHash is hex string", () => {
+      const fixedTransaction = FixedTransaction.from_hex(validTransactionHex);
+      const result = addRequiredSigner({
+        transaction: fixedTransaction,
+        keyHash: validKeyHashHex,
+      });
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result).toBeInstanceOf(FixedTransaction);
+
+      const requiredSigners = result.body().required_signers();
+      assert(requiredSigners, "Required signers should be defined");
+      expect(requiredSigners.len()).toBe(1);
+      expect(requiredSigners.get(0).to_hex()).toBe(validKeyHashHex);
+    });
+
     it("should add multiple required signers when called multiple times", () => {
       const firstKeyHash = "f724afc7718bdc0a2fe00cb23f4ec261dcd6278ed48d68ceac6877f8";
       const secondKeyHash = "52f756ebf79d3094bb6ececb7ba140c14c03e84c72399ad2eafb7dc2";
@@ -83,6 +103,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "First addition should not be an error");
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       result = addRequiredSigner({
         transaction: result,
@@ -90,7 +111,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "Second addition should not be an error");
-      expect(result).toBeInstanceOf(Transaction);
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       const requiredSigners = result.body().required_signers();
       assert(requiredSigners, "Required signers should be defined");
@@ -106,6 +127,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "First addition should not be an error");
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       result = addRequiredSigner({
         transaction: result,
@@ -113,7 +135,7 @@ describe("addRequiredSigner", () => {
       });
 
       assert(isOk(result), "Second addition should not be an error");
-      expect(result).toBeInstanceOf(Transaction);
+      expect(result).toBeInstanceOf(FixedTransaction);
 
       const requiredSigners = result.body().required_signers();
       assert(requiredSigners, "Required signers should be defined");

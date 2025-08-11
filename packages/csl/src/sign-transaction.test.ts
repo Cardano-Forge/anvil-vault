@@ -78,6 +78,22 @@ describe("signTransaction", () => {
       expect(vkeys.length).toBe(1);
     });
 
+    it("should sign transaction with transaction as CSL FixedTransaction object", () => {
+      const fixedTransaction = FixedTransaction.from_hex(validTransactionHex);
+      const input: SignTransactionInput = {
+        transaction: fixedTransaction,
+        privateKeys: [validPrivateKeyHex],
+      };
+
+      const result = signTransaction(input);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result).toBeInstanceOf(FixedTransaction);
+      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      assert(vkeys, "vkeys should be present");
+      expect(vkeys.length).toBe(1);
+    });
+
     it("should not mutate the original transaction object", () => {
       const originalTransaction = Transaction.from_hex(validTransactionHex);
       const originalHex = originalTransaction.to_hex();
