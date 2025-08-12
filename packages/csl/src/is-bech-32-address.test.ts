@@ -34,7 +34,7 @@ describe("isBech32Address", () => {
     assert(!isBech32Address(""));
   });
 
-  it("should return false for non-string inputs that start with valid prefixes", () => {
+  it("should return false for inputs that only contain valid prefixes", () => {
     assert(!isBech32Address("addr"));
     assert(!isBech32Address("stake"));
   });
