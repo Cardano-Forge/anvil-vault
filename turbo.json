@@ -9,10 +9,6 @@
       "dependsOn": ["^build"],
       "env": []
     },
-    "publish": {
-      "outputs": ["out/**"],
-      "cache": false
-    },
     "emit": {
       "outputs": ["out/**"],
       "dependsOn": ["^build"]
