@@ -1,7 +1,7 @@
 import { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { signDataRaw } from "./sign-data";
+import { signDataRaw } from "./sign-data-raw";
 import { verifySignature } from "./verify-signature";
 
 describe("verifySignature", () => {

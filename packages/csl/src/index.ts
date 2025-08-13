@@ -31,4 +31,4 @@ export {
   type VerifySignatureInput,
   type VerifySignatureOutput,
 } from "./verify-signature";
-export { signDataRaw, type SignDataRawInput, type SignDataRawOutput } from "./sign-data";
+export { signDataRaw, type SignDataRawInput, type SignDataRawOutput } from "./sign-data-raw";

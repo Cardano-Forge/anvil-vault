@@ -17,7 +17,7 @@ import {
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, type Result, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { type SignDataWalletOutput, signDataWallet } from "./sign-data";
+import { type SignDataWalletOutput, signDataWallet } from "./sign-data-wallet";
 
 describe("signDataWallet", () => {
   const paymentPrivateKeyHex =
