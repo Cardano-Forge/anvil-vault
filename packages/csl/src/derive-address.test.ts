@@ -7,6 +7,7 @@ import {
 import { assert, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
 import { deriveAddress } from "./derive-address";
+import { getNetworkId } from "./network";
 
 describe("deriveAddress", () => {
   const testAccountKeyHex =
@@ -94,10 +95,17 @@ describe("deriveAddress", () => {
         network,
       });
 
+      const networkId = getNetworkId(network);
+
       assert(isOk(result));
+
       expect(result.baseAddress).toBeInstanceOf(BaseAddress);
       expect(result.enterpriseAddress).toBeInstanceOf(EnterpriseAddress);
       expect(result.rewardAddress).toBeInstanceOf(RewardAddress);
+
+      expect(result.baseAddress.network_id()).toBe(networkId);
+      expect(result.enterpriseAddress.network_id()).toBe(networkId);
+      expect(result.rewardAddress.network_id()).toBe(networkId);
     }
   });
 
