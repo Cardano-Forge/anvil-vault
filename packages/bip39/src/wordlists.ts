@@ -1,4 +1,5 @@
 import { wordlists as wordLists } from "bip39";
+import type { Result } from "trynot";
 
 export type WordList = string[];
 
@@ -19,9 +20,19 @@ export type BuiltinWordList = (typeof builtinWordLists)[number];
 
 export const defaultWordList = "english" satisfies BuiltinWordList;
 
-export function getWordList(language: BuiltinWordList | WordList): WordList | undefined {
-  if (Array.isArray(language)) {
+export const wordListLength = wordLists.english.length; // 2048
+
+export function getWordList(language: BuiltinWordList | WordList): Result<WordList> {
+  const isArray = Array.isArray(language);
+  if (isArray && language.length < wordListLength) {
+    return new Error(`Word list is too short: ${language.length} / ${wordListLength}`);
+  }
+  if (isArray) {
     return language;
   }
-  return wordLists[language];
+  const wordList = wordLists[language];
+  if (!wordList) {
+    return new Error(`Unsupported language: ${language}`);
+  }
+  return wordList;
 }
