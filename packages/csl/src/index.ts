@@ -14,9 +14,9 @@ export {
   type DeriveAddressOutput,
 } from "./derive-address";
 export {
-  entropyToBip32PrivateKey,
-  type EntropyToPrivateKeyInput,
-} from "./entropy-to-bip32-private-key";
+  derivePrivateKey,
+  type DerivePrivateKeyInput,
+} from "./derive-private-key";
 export {
   networks,
   type Network,
@@ -31,4 +31,4 @@ export {
   type VerifySignatureInput,
   type VerifySignatureOutput,
 } from "./verify-signature";
-export { signData, type SignDataInput, type SignDataOutput } from "./sign-data";
+export { signDataRaw, type SignDataRawInput, type SignDataRawOutput } from "./sign-data";

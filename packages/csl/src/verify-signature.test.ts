@@ -1,7 +1,7 @@
 import { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { signData } from "./sign-data";
+import { signDataRaw } from "./sign-data";
 import { verifySignature } from "./verify-signature";
 
 describe("verifySignature", () => {
@@ -13,7 +13,7 @@ describe("verifySignature", () => {
 
   it("should verify valid signature with hex inputs", () => {
     const testData = Buffer.from("test message", "utf8");
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -30,7 +30,7 @@ describe("verifySignature", () => {
 
   it("should verify valid signature with object instances", () => {
     const testData = Buffer.from("test message", "utf8");
-    const signResult = signData({ data: testData, privateKey: testPrivateKey });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKey });
     assert(isOk(signResult));
 
     const result = verifySignature({
@@ -45,7 +45,7 @@ describe("verifySignature", () => {
 
   it("should verify signature with string data", () => {
     const testData = "test message";
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -62,7 +62,7 @@ describe("verifySignature", () => {
 
   it("should verify signature with hex string data", () => {
     const testData = "48656c6c6f20576f726c64"; // "Hello World" in hex
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -81,7 +81,7 @@ describe("verifySignature", () => {
     const testData = Buffer.from("test message", "utf8");
     const wrongData = Buffer.from("wrong message", "utf8");
 
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -102,7 +102,7 @@ describe("verifySignature", () => {
     const wrongPublicKey = wrongPrivateKey.to_public();
     const wrongPublicKeyHex = Buffer.from(wrongPublicKey.as_bytes()).toString("hex");
 
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -147,7 +147,7 @@ describe("verifySignature", () => {
 
   it("should return error for invalid public key hex", () => {
     const testData = Buffer.from("test message", "utf8");
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -179,7 +179,7 @@ describe("verifySignature", () => {
 
   it("should return error for wrong length public key hex", () => {
     const testData = Buffer.from("test message", "utf8");
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -197,7 +197,7 @@ describe("verifySignature", () => {
 
   it("should handle empty data", () => {
     const testData = Buffer.alloc(0);
-    const signResult = signData({ data: testData, privateKey: testPrivateKeyHex });
+    const signResult = signDataRaw({ data: testData, privateKey: testPrivateKeyHex });
     assert(isOk(signResult));
 
     const signatureHex = Buffer.from(signResult.signature.to_bytes()).toString("hex");
@@ -220,7 +220,7 @@ describe("verifySignature", () => {
     const publicKey = privateKey.to_public();
 
     // Sign data
-    const signResult = signData({ data: testData, privateKey });
+    const signResult = signDataRaw({ data: testData, privateKey });
     assert(isOk(signResult));
 
     // Verify signature

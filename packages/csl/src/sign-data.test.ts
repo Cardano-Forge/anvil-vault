@@ -1,9 +1,9 @@
 import { Ed25519Signature, PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { signData } from "./sign-data";
+import { signDataRaw } from "./sign-data";
 
-describe("signData", () => {
+describe("signDataRaw", () => {
   const testPrivateKeyHex =
     "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd";
   const testPrivateKey = PrivateKey.from_hex(testPrivateKeyHex);
@@ -11,7 +11,7 @@ describe("signData", () => {
   it("should sign data with private key hex string", () => {
     const testData = Buffer.from("test message", "utf8");
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
@@ -23,7 +23,7 @@ describe("signData", () => {
   it("should sign data with PrivateKey instance", () => {
     const testData = Buffer.from("test message", "utf8");
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: testPrivateKey,
     });
@@ -35,7 +35,7 @@ describe("signData", () => {
   it("should sign string data", () => {
     const testData = "test message";
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
@@ -47,7 +47,7 @@ describe("signData", () => {
   it("should sign hex string data", () => {
     const testData = "48656c6c6f20576f726c64"; // "Hello World" in hex
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
@@ -59,12 +59,12 @@ describe("signData", () => {
   it("should produce consistent signatures for same input", () => {
     const testData = Buffer.from("test message", "utf8");
 
-    const result1 = signData({
+    const result1 = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
 
-    const result2 = signData({
+    const result2 = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
@@ -82,12 +82,12 @@ describe("signData", () => {
     const testData1 = Buffer.from("test message 1", "utf8");
     const testData2 = Buffer.from("test message 2", "utf8");
 
-    const result1 = signData({
+    const result1 = signDataRaw({
       data: testData1,
       privateKey: testPrivateKeyHex,
     });
 
-    const result2 = signData({
+    const result2 = signDataRaw({
       data: testData2,
       privateKey: testPrivateKeyHex,
     });
@@ -105,12 +105,12 @@ describe("signData", () => {
     const testData = Buffer.from("test message", "utf8");
     const anotherPrivateKey = PrivateKey.generate_ed25519();
 
-    const result1 = signData({
+    const result1 = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });
 
-    const result2 = signData({
+    const result2 = signDataRaw({
       data: testData,
       privateKey: anotherPrivateKey,
     });
@@ -128,7 +128,7 @@ describe("signData", () => {
     const testData = Buffer.from("test message", "utf8");
     const invalidPrivateKeyHex = "invalid_hex";
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: invalidPrivateKeyHex,
     });
@@ -141,7 +141,7 @@ describe("signData", () => {
     const testData = Buffer.from("test message", "utf8");
     const shortPrivateKeyHex = "a828b7def44b32d5944b6f57d7028333";
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: shortPrivateKeyHex,
     });
@@ -153,7 +153,7 @@ describe("signData", () => {
   it("should handle empty data", () => {
     const testData = Buffer.alloc(0);
 
-    const result = signData({
+    const result = signDataRaw({
       data: testData,
       privateKey: testPrivateKeyHex,
     });

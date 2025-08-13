@@ -2,16 +2,16 @@ import { parseFromHex } from "@anvil-vault/utils";
 import { type Ed25519Signature, PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
-export type SignDataInput = {
+export type SignDataRawInput = {
   data: Buffer | string;
   privateKey: PrivateKey | string;
 };
 
-export type SignDataOutput = {
+export type SignDataRawOutput = {
   signature: Ed25519Signature;
 };
 
-export function signData(input: SignDataInput): Result<SignDataOutput> {
+export function signDataRaw(input: SignDataRawInput): Result<SignDataRawOutput> {
   try {
     const privateKey = unwrap(parseFromHex(input.privateKey, PrivateKey));
     const data = unwrap(parseFromHex(input.data));

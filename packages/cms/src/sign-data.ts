@@ -15,22 +15,22 @@ import {
 import type { PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
-export type SignDataInput = {
+export type SignDataWalletInput = {
   payload: string | Buffer;
   address: ParsedAddress;
   privateKey: PrivateKey;
   externalAad?: string | Buffer;
 };
 
-export type SignDataOutput = {
+export type SignDataWalletOutput = {
   signature: string;
   key: string;
 };
 
 /**
- * Signs a data with the given private key.
+ * Signs data with the given private key using CIP-8/CIP-30 wallet standards.
  */
-export function signData(input: SignDataInput): Result<SignDataOutput> {
+export function signDataWallet(input: SignDataWalletInput): Result<SignDataWalletOutput> {
   try {
     const privateKey = input.privateKey;
     const payload = unwrap(parseFromHex(input.payload));
