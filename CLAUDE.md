@@ -52,6 +52,7 @@ packages/[name]/
 - **Architecture**: Packages are self-contained with minimal coupling
 - **Testing**: Uses Vitest for unit testing with test files co-located alongside source files using `.test.ts` extension
   - Always use trynot's `assert()` function instead of non-null assertions (`!`) in tests for safer null checking
+  - After using `assert(isOk(value))` or `assert(isErr(value))`, you can access the value directly without `unwrap()` since TypeScript knows the type
 - **Build**: Uses tsup for bundling and TypeScript for declarations
 - **Exports**: Packages provide both CommonJS and ESM builds
 - **Error Handling**: Uses `trynot` library for error handling patterns
@@ -80,10 +81,10 @@ const userInput = req.body as { name: string; age: number; email: string };
 ### Key Concepts
 
 - **No Result Wrapping**: Functions return values directly
-- **Simple Error Creation**: Use `err()` from `@ada-anvil/utils` for generic errors
+- **Simple Error Creation**: Use `parseError()` to create Error instances from unknown errors
+- **Direct Checking**: Use `isOk()` to check if a value is a successful result
 - **Direct Checking**: Use `isErr()` to check if a value is an error
-- **Direct Checking**: Use `isOk()` to check if a value is successful
-- **Safe Unwrapping**: Use `unwrap()` to get values or throw on errors
+ **Safe Unwrapping**: Use `unwrap()` to get values or throw on errors
 - **Make uncontrolled code safe**: Use `wrap()` to wrap values from other libraries to prevent them from throwing and return errors instead
 - **Unwrap short hands**:
     - Use `unwrapOr()` to return a default value in case of an error;
@@ -93,15 +94,14 @@ const userInput = req.body as { name: string; age: number; email: string };
 - **Parsing errors**: Use `parseError()` to parse any unknown error into a `Error` instance.
 
 ```typescript
-import { err } from "@ada-anvil/utils";
-import { isErr, unwrap } from "trynot";
+import { isErr, unwrap, parseError } from "trynot";
 
 // ✅ Good - Direct return, no wrapping
 function parseAddress(address: string): Result<Address> {
   try {
     return Address.from_bech32(address);
   } catch (error) {
-    return err(error, "Invalid address format");
+    return parseError(error);
   }
 }
 
