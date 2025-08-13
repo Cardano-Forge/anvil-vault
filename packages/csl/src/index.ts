@@ -25,3 +25,10 @@ export {
 } from "./network";
 export { parseAddress, type ParsedAddress, type ParseAddressInput } from "./parse-address";
 export { signTransaction, type SignTransactionInput } from "./sign-transaction";
+export { generateEd25519KeyPair, type GenerateKeyPairOutput } from "./generate-ed25519-key-pair";
+export {
+  verifySignature,
+  type VerifySignatureInput,
+  type VerifySignatureOutput,
+} from "./verify-signature";
+export { signData, type SignDataInput, type SignDataOutput } from "./sign-data";
