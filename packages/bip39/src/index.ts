@@ -14,6 +14,7 @@ export {
   getWordList,
   builtinWordLists,
   defaultWordList,
+  wordListLength,
   type WordList,
   type BuiltinWordList,
 } from "./wordlists";
