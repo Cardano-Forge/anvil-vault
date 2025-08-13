@@ -161,5 +161,60 @@ describe("parseFromHex", () => {
 
       expect(isErr(result)).toBe(true);
     });
+
+    it("should return undefined when input is undefined", () => {
+      const result = parseFromHex(undefined, Ed25519KeyHash);
+
+      expect(result).toBe(undefined);
+    });
+  });
+
+  describe("with Buffer (default constructor)", () => {
+    const validHex = "deadbeef";
+
+    it("should return Buffer when input is valid hex string and no constructor provided", () => {
+      const result = parseFromHex(validHex);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result).toBeInstanceOf(Buffer);
+      expect(result.toString("hex")).toBe(validHex);
+    });
+
+    it("should return same Buffer when input is already Buffer and no constructor provided", () => {
+      const buffer = Buffer.from(validHex, "hex");
+      const result = parseFromHex(buffer);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result).toBe(buffer);
+      expect(result.toString("hex")).toBe(validHex);
+    });
+
+    it("should create Buffer even for invalid hex string with default constructor", () => {
+      const result = parseFromHex("invalid_hex");
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result).toBeInstanceOf(Buffer);
+      expect(result.toString()).toBe("");
+    });
+
+    it("should return undefined when input is undefined with default constructor", () => {
+      const result = parseFromHex(undefined);
+
+      expect(result).toBe(undefined);
+    });
+  });
+
+  describe("undefined support with custom constructor", () => {
+    it("should return undefined when Transaction input is undefined", () => {
+      const result = parseFromHex(undefined, Transaction);
+
+      expect(result).toBe(undefined);
+    });
+
+    it("should return undefined when PrivateKey input is undefined", () => {
+      const result = parseFromHex(undefined, PrivateKey);
+
+      expect(result).toBe(undefined);
+    });
   });
 });

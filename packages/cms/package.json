@@ -1,5 +1,5 @@
 {
-  "name": "@anvil-vault/csl",
+  "name": "@anvil-vault/cms",
   "version": "0.0.0",
   "keywords": [],
   "license": "ISC",
@@ -21,12 +21,14 @@
   },
   "dependencies": {
     "@anvil-vault/utils": "*",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
+    "@emurgo/cardano-message-signing-nodejs-gc": "^1.1.0",
     "trynot": "^0.0.2"
   },
   "devDependencies": {
+    "@anvil-vault/csl": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
+    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "tsup": "^8.2.4",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"

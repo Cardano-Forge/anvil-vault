@@ -1,10 +1,10 @@
+import { parseFromHex } from "@anvil-vault/utils";
 import {
   FixedTransaction,
   PrivateKey,
   Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
-import { parseFromHex } from "./parse-from-hex";
 
 export type SignTransactionInput = {
   transaction: Transaction | FixedTransaction | string;
