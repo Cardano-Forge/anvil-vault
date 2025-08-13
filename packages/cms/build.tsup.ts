@@ -1,4 +1,2 @@
 import { getTsupBuildConfig } from "@anvil-vault/tsup";
-export default getTsupBuildConfig({
-  dts: true,
-});
+export default getTsupBuildConfig();
