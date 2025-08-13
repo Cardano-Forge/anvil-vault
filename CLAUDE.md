@@ -81,7 +81,7 @@ const userInput = req.body as { name: string; age: number; email: string };
 ### Key Concepts
 
 - **No Result Wrapping**: Functions return values directly
-- **Simple Error Creation**: Use `err()` from `@ada-anvil/utils` for generic errors
+- **Simple Error Creation**: Use `parseError()` to create Error instances from unknown errors
 - **Direct Checking**: Use `isOk()` to check if a value is a successful result
 - **Direct Checking**: Use `isErr()` to check if a value is an error
  **Safe Unwrapping**: Use `unwrap()` to get values or throw on errors
@@ -94,15 +94,14 @@ const userInput = req.body as { name: string; age: number; email: string };
 - **Parsing errors**: Use `parseError()` to parse any unknown error into a `Error` instance.
 
 ```typescript
-import { err } from "@ada-anvil/utils";
-import { isErr, unwrap } from "trynot";
+import { isErr, unwrap, parseError } from "trynot";
 
 // ✅ Good - Direct return, no wrapping
 function parseAddress(address: string): Result<Address> {
   try {
     return Address.from_bech32(address);
   } catch (error) {
-    return err(error, "Invalid address format");
+    return parseError(error);
   }
 }
 
