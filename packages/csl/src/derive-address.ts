@@ -31,10 +31,11 @@ export function deriveAddress(input: DeriveAddressInput): Result<DeriveAddressOu
 
     const paymentKey = accountKey
       .derive(0) // External chain
-      .derive(addressIndex);
+      .derive(addressIndex); // Different payment key for each address index
+
     const stakeKey = accountKey
       .derive(2) // Staking chain
-      .derive(0);
+      .derive(0); // Same stake key for all address indices
 
     const paymentPublicKey = paymentKey.to_public();
     const stakePublicKey = stakeKey.to_public();
