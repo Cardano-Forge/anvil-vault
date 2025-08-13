@@ -1,7 +1,7 @@
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { entropyToBip32PrivateKey } from "./entropy-to-private-key";
+import { entropyToBip32PrivateKey } from "./entropy-to-bip32-private-key";
 
 describe("entropyToBip32PrivateKey", () => {
   const entropy1Hex = "6b9564ffeddff69a1a95ce37f8380fc1ecba18a27dc5b7d510c5b419da9f1d00";

@@ -16,7 +16,7 @@ export {
 export {
   entropyToBip32PrivateKey,
   type EntropyToPrivateKeyInput,
-} from "./entropy-to-private-key";
+} from "./entropy-to-bip32-private-key";
 export {
   networks,
   type Network,
