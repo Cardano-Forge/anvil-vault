@@ -9,18 +9,26 @@ export type GenerateMnemonicInput = {
   wordList?: BuiltinWordList | WordList;
 };
 
-export type GenerateMnemonicOutput = readonly [Mnemonic, WordList];
+export type GenerateMnemonicOutput = {
+  mnemonic: Mnemonic;
+  wordList: WordList;
+};
 
 export function generateMnemonic(input?: GenerateMnemonicInput): Result<GenerateMnemonicOutput> {
   try {
     const wordList = unwrap(getWordList(input?.wordList ?? defaultWordList));
     const wordCount = input?.wordCount ?? 24;
     const entropy = wordCount === 24 ? 256 : 128;
+
     const mnemonic = generateMnemonicFn(entropy, undefined, wordList);
     if (!mnemonic) {
       return new Error("Failed to generate mnemonic");
     }
-    return [mnemonic, wordList] as const;
+
+    return {
+      mnemonic,
+      wordList,
+    };
   } catch (error) {
     return parseError(error);
   }

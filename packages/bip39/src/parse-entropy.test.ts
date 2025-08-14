@@ -1,19 +1,19 @@
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { generateMnemonic } from "./generate-wallet-mnemonic";
-import { mnemonicToEntropy } from "./mnemonic-to-entropy";
+import { generateMnemonic } from "./generate-mnemonic";
+import { parseEntropy } from "./parse-entropy";
 import { type BuiltinWordList, defaultWordList, getWordList, wordListLength } from "./wordlists";
 
-describe("mnemonicToEntropy", () => {
+describe("parseEntropy", () => {
   it("should convert a valid 24-word mnemonic to entropy", () => {
     const generateResult = generateMnemonic({ wordCount: 24 });
     assert(isOk(generateResult));
 
-    const [mnemonic, wordList] = generateResult;
-    const result = mnemonicToEntropy({ mnemonic });
+    const { mnemonic, wordList } = generateResult;
+    const result = parseEntropy({ mnemonic });
     assert(isOk(result));
 
-    const [entropy, returnedWordList] = result;
+    const { entropy, wordList: returnedWordList } = result;
 
     expect(typeof entropy).toBe("string");
     expect(entropy).toHaveLength(64); // 256 bits = 64 hex characters
@@ -24,11 +24,11 @@ describe("mnemonicToEntropy", () => {
     const generateResult = generateMnemonic({ wordCount: 12 });
     assert(isOk(generateResult));
 
-    const [mnemonic, wordList] = generateResult;
-    const result = mnemonicToEntropy({ mnemonic });
+    const { mnemonic, wordList } = generateResult;
+    const result = parseEntropy({ mnemonic });
     assert(isOk(result));
 
-    const [entropy, returnedWordList] = result;
+    const { entropy, wordList: returnedWordList } = result;
 
     expect(typeof entropy).toBe("string");
     expect(entropy).toHaveLength(32); // 128 bits = 32 hex characters
@@ -42,11 +42,11 @@ describe("mnemonicToEntropy", () => {
       const generateResult = generateMnemonic({ wordList: wordListType });
       assert(isOk(generateResult));
 
-      const [mnemonic] = generateResult;
-      const result = mnemonicToEntropy({ mnemonic, wordList: wordListType });
+      const { mnemonic } = generateResult;
+      const result = parseEntropy({ mnemonic, wordList: wordListType });
       assert(isOk(result));
 
-      const [entropy, returnedWordList] = result;
+      const { entropy, wordList: returnedWordList } = result;
 
       expect(typeof entropy).toBe("string");
       expect(entropy).toHaveLength(64);
@@ -58,35 +58,35 @@ describe("mnemonicToEntropy", () => {
     const generateResult = generateMnemonic();
     assert(isOk(generateResult));
 
-    const [mnemonic] = generateResult;
-    const result = mnemonicToEntropy({ mnemonic });
+    const { mnemonic } = generateResult;
+    const result = parseEntropy({ mnemonic });
     assert(isOk(result));
 
-    const [entropy, wordList] = result;
+    const { entropy, wordList } = result;
 
     expect(typeof entropy).toBe("string");
     expect(wordList).toBe(getWordList(defaultWordList));
   });
 
   it("should return error for invalid mnemonic", () => {
-    const result = mnemonicToEntropy({ mnemonic: "invalid mnemonic phrase" });
+    const result = parseEntropy({ mnemonic: "invalid mnemonic phrase" });
     expect(isErr(result)).toBe(true);
   });
 
   it("should return error for empty mnemonic", () => {
-    const result = mnemonicToEntropy({ mnemonic: "" });
+    const result = parseEntropy({ mnemonic: "" });
     expect(isErr(result)).toBe(true);
   });
 
   it("should return error for mnemonic with wrong word count", () => {
-    const result = mnemonicToEntropy({ mnemonic: "abandon abandon abandon" });
+    const result = parseEntropy({ mnemonic: "abandon abandon abandon" });
     expect(isErr(result)).toBe(true);
   });
 
   it("should return error for mnemonic with invalid words", () => {
     const invalidMnemonic =
       "invalid word list test mnemonic phrase with wrong words here now check this entropy conversion failure case";
-    const result = mnemonicToEntropy({ mnemonic: invalidMnemonic });
+    const result = parseEntropy({ mnemonic: invalidMnemonic });
     expect(isErr(result)).toBe(true);
   });
 
@@ -95,12 +95,12 @@ describe("mnemonicToEntropy", () => {
     const generateResult = generateMnemonic({ wordList: customWordList });
     assert(isOk(generateResult));
 
-    const [mnemonic, wordList] = generateResult;
+    const { mnemonic, wordList } = generateResult;
     expect(wordList).toBe(customWordList);
-    const result = mnemonicToEntropy({ mnemonic, wordList });
+    const result = parseEntropy({ mnemonic, wordList });
     assert(isOk(result));
 
-    const [entropy, returnedWordList] = result;
+    const { entropy, wordList: returnedWordList } = result;
 
     expect(typeof entropy).toBe("string");
     expect(returnedWordList).toBe(customWordList);
@@ -110,14 +110,14 @@ describe("mnemonicToEntropy", () => {
     const mnemonic =
       "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art";
 
-    const result1 = mnemonicToEntropy({ mnemonic });
-    const result2 = mnemonicToEntropy({ mnemonic });
+    const result1 = parseEntropy({ mnemonic });
+    const result2 = parseEntropy({ mnemonic });
 
     assert(isOk(result1));
     assert(isOk(result2));
 
-    const [entropy1] = result1;
-    const [entropy2] = result2;
+    const { entropy: entropy1 } = result1;
+    const { entropy: entropy2 } = result2;
 
     expect(entropy1).toBe(entropy2);
   });

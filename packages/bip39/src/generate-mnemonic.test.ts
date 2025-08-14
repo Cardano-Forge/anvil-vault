@@ -1,6 +1,6 @@
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { type GenerateMnemonicInput, generateMnemonic } from "./generate-wallet-mnemonic";
+import { type GenerateMnemonicInput, generateMnemonic } from "./generate-mnemonic";
 import { defaultWordList, getWordList, wordListLength } from "./wordlists";
 
 describe("generateMnemonic", () => {
@@ -8,7 +8,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic();
     assert(!isErr(result));
 
-    const [mnemonic, wordList] = result;
+    const { mnemonic, wordList } = result;
     const words = mnemonic.split(" ");
 
     expect(words).toHaveLength(24);
@@ -19,7 +19,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic({ wordCount: 12 });
     assert(!isErr(result));
 
-    const [mnemonic] = result;
+    const { mnemonic } = result;
     const words = mnemonic.split(" ");
 
     expect(words).toHaveLength(12);
@@ -29,7 +29,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic({ wordCount: 24 });
     assert(!isErr(result));
 
-    const [mnemonic] = result;
+    const { mnemonic } = result;
     const words = mnemonic.split(" ");
 
     expect(words).toHaveLength(24);
@@ -51,7 +51,7 @@ describe("generateMnemonic", () => {
       const result = generateMnemonic(input);
       assert(!isErr(result));
 
-      const [mnemonic, wordList] = result;
+      const { mnemonic, wordList } = result;
       // Japanese uses ideographic spaces (U+3000), other languages use regular spaces
       const words = mnemonic.split(/[\s\u3000]+/).filter((word) => word.length > 0);
 
@@ -64,7 +64,7 @@ describe("generateMnemonic", () => {
     const customWordList = Array.from({ length: wordListLength }, (_, i) => `word${i}`);
     const result = generateMnemonic({ wordList: customWordList });
     assert(isOk(result));
-    const [mnemonic, wordList] = result;
+    const { mnemonic, wordList } = result;
     const words = mnemonic.split(" ").filter((word) => word.length > 0);
     expect(words).toHaveLength(24);
     expect(wordList).toBe(customWordList);
@@ -77,8 +77,8 @@ describe("generateMnemonic", () => {
     assert(!isErr(result1));
     assert(!isErr(result2));
 
-    const [mnemonic1] = result1;
-    const [mnemonic2] = result2;
+    const { mnemonic: mnemonic1 } = result1;
+    const { mnemonic: mnemonic2 } = result2;
 
     expect(mnemonic1).not.toBe(mnemonic2);
     expect(mnemonic1).not.toEqual(mnemonic2);
@@ -88,7 +88,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic({ wordList: "french" });
     assert(!isErr(result));
 
-    const [mnemonic, wordList] = result;
+    const { mnemonic, wordList } = result;
 
     expect(typeof mnemonic).toBe("string");
     expect(Array.isArray(wordList)).toBe(true);
@@ -99,7 +99,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic({});
     assert(!isErr(result));
 
-    const [mnemonic, wordList] = result;
+    const { mnemonic, wordList } = result;
     const words = mnemonic.split(" ");
 
     expect(words).toHaveLength(24);
@@ -110,7 +110,7 @@ describe("generateMnemonic", () => {
     const result = generateMnemonic({ wordList: "english" });
     assert(!isErr(result));
 
-    const [mnemonic, wordList] = result;
+    const { mnemonic, wordList } = result;
     const words = mnemonic.split(" ");
 
     for (const word of words) {

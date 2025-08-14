@@ -3,13 +3,13 @@ export {
   type Mnemonic,
   type GenerateMnemonicInput,
   type GenerateMnemonicOutput,
-} from "./generate-wallet-mnemonic";
+} from "./generate-mnemonic";
 export {
-  mnemonicToEntropy,
+  parseEntropy,
   type Entropy,
-  type MnemonicToEntropyInput,
-  type MnemonicToEntropyOutput,
-} from "./mnemonic-to-entropy";
+  type ParseEntropyInput,
+  type ParseEntropyOutput,
+} from "./parse-entropy";
 export {
   getWordList,
   builtinWordLists,

@@ -1,1 +1,5 @@
-export { signData, type SignDataInput, type SignDataOutput } from "./sign-data";
+export {
+  signDataWallet,
+  type SignDataWalletInput,
+  type SignDataWalletOutput,
+} from "./sign-data-wallet";

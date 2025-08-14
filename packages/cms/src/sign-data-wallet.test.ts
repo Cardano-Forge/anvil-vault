@@ -17,9 +17,9 @@ import {
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, type Result, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { type SignDataOutput, signData } from "./sign-data";
+import { type SignDataWalletOutput, signDataWallet } from "./sign-data-wallet";
 
-describe("signData", () => {
+describe("signDataWallet", () => {
   const paymentPrivateKeyHex =
     "20989a3592541cbd31337e1c749ba9a87da156ea157a8039bab88ce7611c24411ef9312e6858d51c9f3253d00a98cc416e70bbe52089e663c5a02ef41229d383";
   const paymentPrivateKey = PrivateKey.from_hex(paymentPrivateKeyHex);
@@ -33,7 +33,7 @@ describe("signData", () => {
   it("should sign data with enterprise address", () => {
     const address = EnterpriseAddress.new(1, paymentCred);
     const payload = "hello world";
-    const result = signData({
+    const result = signDataWallet({
       payload: Buffer.from(payload, "utf8"),
       privateKey: paymentPrivateKey,
       address,
@@ -44,7 +44,7 @@ describe("signData", () => {
   it("should sign data with base address", () => {
     const address = BaseAddress.new(1, paymentCred, stakeCred);
     const payload = "hello world";
-    const result = signData({
+    const result = signDataWallet({
       payload: Buffer.from(payload, "utf8"),
       privateKey: paymentPrivateKey,
       address,
@@ -55,7 +55,7 @@ describe("signData", () => {
   it("should sign data with reward address", () => {
     const address = RewardAddress.new(1, stakeCred);
     const payload = "hello world";
-    const result = signData({
+    const result = signDataWallet({
       payload: Buffer.from(payload, "utf8"),
       privateKey: stakePrivateKey,
       address,
@@ -68,7 +68,7 @@ describe("signData", () => {
     const scriptCred = Credential.from_scripthash(ScriptHash.from_hex(scriptHashHex));
     const address = BaseAddress.new(1, scriptCred, stakeCred);
     const payload = "hello world";
-    const result = signData({
+    const result = signDataWallet({
       payload: Buffer.from(payload, "utf8"),
       privateKey: stakePrivateKey,
       address,
@@ -79,7 +79,7 @@ describe("signData", () => {
   it("should not sign data with private key that doesn't match the address", () => {
     const address = BaseAddress.new(1, paymentCred, stakeCred);
     const payload = "hello world";
-    const result = signData({
+    const result = signDataWallet({
       payload: Buffer.from(payload, "utf8"),
       privateKey: stakePrivateKey,
       address,
@@ -90,7 +90,7 @@ describe("signData", () => {
 
 // @src https://cips.cardano.org/cip/CIP-0030
 function testCip30Compliance(input: {
-  result: Result<SignDataOutput>;
+  result: Result<SignDataWalletOutput>;
   address: ParsedAddress;
   payload: string;
   privateKey: PrivateKey;
