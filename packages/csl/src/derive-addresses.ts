@@ -9,14 +9,13 @@ import {
 import { type Result, parseError, unwrap } from "trynot";
 import { type Network, type NetworkId, getNetworkId } from "./network";
 
-export type DeriveAddressInput = {
-  accountKey: Bip32PrivateKey | string;
-  addressIndex: number;
+export type DeriveAddressesInput = {
+  paymentKey: Bip32PrivateKey | string;
+  stakeKey: Bip32PrivateKey | string;
   network: Network | NetworkId;
 };
 
-export type DeriveAddressOutput = {
-  accountKey: Bip32PrivateKey;
+export type DeriveAddressesOutput = {
   paymentKey: Bip32PrivateKey;
   stakeKey: Bip32PrivateKey;
   baseAddress: BaseAddress;
@@ -24,18 +23,10 @@ export type DeriveAddressOutput = {
   rewardAddress: RewardAddress;
 };
 
-export function deriveAddress(input: DeriveAddressInput): Result<DeriveAddressOutput> {
+export function deriveAddresses(input: DeriveAddressesInput): Result<DeriveAddressesOutput> {
   try {
-    const accountKey = unwrap(parseFromHex(input.accountKey, Bip32PrivateKey));
-    const addressIndex = input.addressIndex;
-
-    const paymentKey = accountKey
-      .derive(0) // External chain
-      .derive(addressIndex); // Different payment key for each address index
-
-    const stakeKey = accountKey
-      .derive(2) // Staking chain
-      .derive(0); // Same stake key for all address indices
+    const paymentKey = unwrap(parseFromHex(input.paymentKey, Bip32PrivateKey));
+    const stakeKey = unwrap(parseFromHex(input.stakeKey, Bip32PrivateKey));
 
     const paymentPublicKey = paymentKey.to_public();
     const stakePublicKey = stakeKey.to_public();
@@ -50,7 +41,6 @@ export function deriveAddress(input: DeriveAddressInput): Result<DeriveAddressOu
     const rewardAddress = RewardAddress.new(networkId, stakeCredential);
 
     return {
-      accountKey,
       paymentKey,
       stakeKey,
       baseAddress,

@@ -9,10 +9,11 @@ export {
   type DeriveAccountOutput,
 } from "./derive-account";
 export {
-  deriveAddress,
-  type DeriveAddressInput,
-  type DeriveAddressOutput,
-} from "./derive-address";
+  deriveAddresses,
+  type DeriveAddressesInput,
+  type DeriveAddressesOutput,
+} from "./derive-addresses";
+export { extractKeys, type ExtractKeysInput, type ExtractKeysOutput } from "./extract-keys";
 export {
   derivePrivateKey,
   type DerivePrivateKeyInput,
@@ -26,6 +27,7 @@ export {
 export { parseAddress, type ParsedAddress, type ParseAddressInput } from "./parse-address";
 export { signTransaction, type SignTransactionInput } from "./sign-transaction";
 export { generateEd25519KeyPair, type GenerateKeyPairOutput } from "./generate-ed25519-key-pair";
+export { harden } from "./harden";
 export {
   verifySignature,
   type VerifySignatureInput,
