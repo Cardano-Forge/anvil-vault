@@ -5,7 +5,7 @@ import { harden } from "./harden";
 
 export type DeriveAccountInput = {
   rootKey: Bip32PrivateKey | string;
-  accountDerivation?: number | number[];
+  accountDerivation: number | number[];
 };
 
 export type DeriveAccountOutput = {
@@ -21,7 +21,7 @@ export function deriveAccount(input: DeriveAccountInput): Result<DeriveAccountOu
     if (Array.isArray(input.accountDerivation)) {
       accountDerivation = input.accountDerivation;
     } else {
-      accountDerivation = [input.accountDerivation ?? harden(0)];
+      accountDerivation = [input.accountDerivation];
     }
 
     const accountKey = accountDerivation.reduce(

@@ -4,8 +4,8 @@ import { type Result, parseError, unwrap } from "trynot";
 
 export type ExtractKeysInput = {
   accountKey: Bip32PrivateKey | string;
-  paymentDerivation?: number | number[];
-  stakeDerivation?: number | number[];
+  paymentDerivation: number | number[];
+  stakeDerivation: number | number[];
 };
 
 export type ExtractKeysOutput = {
@@ -22,7 +22,7 @@ export function extractKeys(input: ExtractKeysInput): Result<ExtractKeysOutput> 
     if (Array.isArray(input.paymentDerivation)) {
       paymentDerivation = input.paymentDerivation;
     } else {
-      paymentDerivation = [input.paymentDerivation ?? 0];
+      paymentDerivation = [input.paymentDerivation];
     }
     const paymentKey = paymentDerivation.reduce(
       (key, index) => key.derive(index),
@@ -33,7 +33,7 @@ export function extractKeys(input: ExtractKeysInput): Result<ExtractKeysOutput> 
     if (Array.isArray(input.stakeDerivation)) {
       stakeDerivation = input.stakeDerivation;
     } else {
-      stakeDerivation = [input.stakeDerivation ?? 0];
+      stakeDerivation = [input.stakeDerivation];
     }
     const stakeKey = stakeDerivation.reduce(
       (key, index) => key.derive(index),
