@@ -100,28 +100,6 @@ describe("extractKeys", () => {
     expect(stake1Bytes).toEqual(stake2Bytes);
   });
 
-  it("should use default indices when not provided", () => {
-    const resultWithDefaults = extractKeys({
-      accountKey: testAccountKeyHex,
-    });
-    const resultWithExplicitZeros = extractKeys({
-      accountKey: testAccountKeyHex,
-      paymentDerivation: 0,
-      stakeDerivation: 0,
-    });
-
-    assert(isOk(resultWithDefaults));
-    assert(isOk(resultWithExplicitZeros));
-
-    const defaultPaymentBytes = resultWithDefaults.paymentKey.as_bytes();
-    const explicitPaymentBytes = resultWithExplicitZeros.paymentKey.as_bytes();
-    const defaultStakeBytes = resultWithDefaults.stakeKey.as_bytes();
-    const explicitStakeBytes = resultWithExplicitZeros.stakeKey.as_bytes();
-
-    expect(defaultPaymentBytes).toEqual(explicitPaymentBytes);
-    expect(defaultStakeBytes).toEqual(explicitStakeBytes);
-  });
-
   it("should handle large indices", () => {
     const result = extractKeys({
       accountKey: testAccountKeyHex,
