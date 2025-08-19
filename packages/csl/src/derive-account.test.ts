@@ -10,7 +10,7 @@ describe("deriveAccount", () => {
   it("should derive account key from root key hex string", () => {
     const result = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 0,
+      accountDerivation: 0,
     });
 
     assert(isOk(result));
@@ -23,7 +23,7 @@ describe("deriveAccount", () => {
     const rootKey = Bip32PrivateKey.from_bytes(Buffer.from(testRootKeyHex, "hex"));
     const result = deriveAccount({
       rootKey,
-      accountIndex: 0,
+      accountDerivation: 0,
     });
 
     assert(isOk(result));
@@ -35,11 +35,11 @@ describe("deriveAccount", () => {
   it("should derive different account keys for different account indices", () => {
     const result1 = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 0,
+      accountDerivation: 0,
     });
     const result2 = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 1,
+      accountDerivation: 1,
     });
 
     assert(isOk(result1));
@@ -54,11 +54,11 @@ describe("deriveAccount", () => {
   it("should derive same account key for same inputs", () => {
     const result1 = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 5,
+      accountDerivation: 5,
     });
     const result2 = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 5,
+      accountDerivation: 5,
     });
 
     assert(isOk(result1));
@@ -73,7 +73,7 @@ describe("deriveAccount", () => {
   it("should handle large account indices", () => {
     const result = deriveAccount({
       rootKey: testRootKeyHex,
-      accountIndex: 2147483647, // Maximum safe account index
+      accountDerivation: 2147483647, // Maximum safe account derivation
     });
 
     assert(isOk(result));
