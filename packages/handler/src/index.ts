@@ -1,6 +1,5 @@
 export { deriveWallet, type DeriveWalletInput } from "./derive-wallet";
 export { VaultError } from "./errors";
-export { expressAdapter } from "./express-adapter";
 export { getDerivation, type GetDerivationInput } from "./get-derivation";
 export { createVaultHandler, handleVaultRequest } from "./handler-builder";
 export type { AnyParams, HandlerAdapter } from "./handler-types";
