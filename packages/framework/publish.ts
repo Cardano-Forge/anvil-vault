@@ -1,4 +1,8 @@
+import { copyFile } from "node:fs/promises";
+import path from "node:path";
 import { build } from "tsup";
+
+const outDir = "out";
 
 async function main() {
   await build({
@@ -6,8 +10,8 @@ async function main() {
     format: ["cjs", "esm"],
     dts: { resolve: true },
     clean: true,
-    outDir: "out",
-    splitting: true,
+    outDir,
+    splitting: false,
     treeshake: true,
     noExternal: [/@anvil-vault\/.*/],
     external: [
@@ -17,6 +21,7 @@ async function main() {
       "zod",
     ],
   });
+  await copyFile("package.json", path.join(outDir, "package.json"));
 }
 
 main();
