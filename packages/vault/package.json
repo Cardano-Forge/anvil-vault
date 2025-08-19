@@ -1,0 +1,31 @@
+{
+  "name": "@ada-anvil/vault",
+  "version": "0.0.1",
+  "keywords": [],
+  "author": "Cardano-Forge",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsup --config build.tsup.ts",
+    "check": "tsc --noEmit",
+    "emit": "tsup --config emit.tsup.ts",
+    "publish": "tsx publish.ts",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch --passWithNoTests"
+  },
+  "dependencies": {
+    "trynot": "^0.0.2"
+  },
+  "devDependencies": {
+    "@anvil-vault/tsconfig": "*",
+    "@anvil-vault/tsup": "*",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.4"
+  }
+}
