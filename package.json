@@ -5,6 +5,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "turbo run build",
+    "publish": "turbo run publish",
     "emit": "turbo run emit",
     "check": "turbo run check",
     "build:clean": "rimraf --glob {packages,services}/*/{dist,out,.turbo} && rimraf .turbo",
