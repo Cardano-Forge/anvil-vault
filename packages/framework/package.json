@@ -5,9 +5,7 @@
   "author": "Cardano-Forge",
   "sideEffects": false,
   "type": "module",
-  "files": [
-    "**"
-  ],
+  "files": ["**"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -111,6 +109,9 @@
     "zod": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/bip39": "*",
