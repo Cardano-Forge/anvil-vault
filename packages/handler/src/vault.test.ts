@@ -11,6 +11,41 @@ const validRootKeyHex2 =
   "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd9fc433abb24af2650942557909a6edc0f07d280e70269efdc8a00ba51a290bb5";
 const mockUserId = "7a13ad8e-af95-419a-b56f-2e41a5cc37e3";
 
+const createTrackingCustomDerivation = (freedKeys: Set<string>) => {
+  return async () => {
+    const accountKeyHex =
+      "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd9fc433abb24af2650942557909a6edc0f07d280e70269efdc8a00ba51a290bb5";
+    const accountKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
+    const paymentKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
+    const stakeKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
+
+    // Override free methods to track when they're called
+    const originalAccountFree = accountKey.free.bind(accountKey);
+    accountKey.free = () => {
+      freedKeys.add("accountKey");
+      originalAccountFree();
+    };
+
+    const originalPaymentFree = paymentKey.free.bind(paymentKey);
+    paymentKey.free = () => {
+      freedKeys.add("paymentKey");
+      originalPaymentFree();
+    };
+
+    const originalStakeFree = stakeKey.free.bind(stakeKey);
+    stakeKey.free = () => {
+      freedKeys.add("stakeKey");
+      originalStakeFree();
+    };
+
+    return {
+      accountKey,
+      paymentKey,
+      stakeKey,
+    };
+  };
+};
+
 const createBaseVaultConfig = (): VaultConfig => ({
   rootKey: () => validRootKeyHex,
   network: 0,
@@ -200,40 +235,7 @@ describe("Vault", () => {
     it("should clean up sensitive private key memory after wallet operations", async () => {
       // Track if free() was called on the private keys
       const freedKeys = new Set<string>();
-
-      // Create a custom derivation that tracks when keys are freed
-      const trackingCustomDerivation = async () => {
-        const accountKeyHex =
-          "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd9fc433abb24af2650942557909a6edc0f07d280e70269efdc8a00ba51a290bb5";
-        const accountKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-
-        // Override the free method to track when it's called
-        const originalFree = accountKey.free.bind(accountKey);
-        accountKey.free = () => {
-          freedKeys.add("accountKey");
-          originalFree();
-        };
-
-        const paymentKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const originalPaymentFree = paymentKey.free.bind(paymentKey);
-        paymentKey.free = () => {
-          freedKeys.add("paymentKey");
-          originalPaymentFree();
-        };
-
-        const stakeKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const originalStakeFree = stakeKey.free.bind(stakeKey);
-        stakeKey.free = () => {
-          freedKeys.add("stakeKey");
-          originalStakeFree();
-        };
-
-        return {
-          accountKey,
-          paymentKey,
-          stakeKey,
-        };
-      };
+      const trackingCustomDerivation = createTrackingCustomDerivation(freedKeys);
 
       const vaultWithTracking = new Vault({
         ...config,
@@ -255,40 +257,7 @@ describe("Vault", () => {
 
     it("should clean up memory during multiple vault operations", async () => {
       const freedKeys = new Set<string>();
-
-      // Create a custom derivation that tracks key cleanup
-      const trackingCustomDerivation = async () => {
-        const accountKeyHex =
-          "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd9fc433abb24af2650942557909a6edc0f07d280e70269efdc8a00ba51a290bb5";
-        const accountKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-
-        // Override free to track cleanup
-        const originalFree = accountKey.free.bind(accountKey);
-        accountKey.free = () => {
-          freedKeys.add("accountKey");
-          originalFree();
-        };
-
-        const paymentKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const originalPaymentFree = paymentKey.free.bind(paymentKey);
-        paymentKey.free = () => {
-          freedKeys.add("paymentKey");
-          originalPaymentFree();
-        };
-
-        const stakeKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const originalStakeFree = stakeKey.free.bind(stakeKey);
-        stakeKey.free = () => {
-          freedKeys.add("stakeKey");
-          originalStakeFree();
-        };
-
-        return {
-          accountKey,
-          paymentKey,
-          stakeKey,
-        };
-      };
+      const trackingCustomDerivation = createTrackingCustomDerivation(freedKeys);
 
       // Create a vault with tracking custom derivation
       const vaultWithTracking = new Vault({
@@ -310,39 +279,7 @@ describe("Vault", () => {
 
     it("should clean up memory during signData operations", async () => {
       const freedKeys = new Set<string>();
-
-      const trackingCustomDerivation = async () => {
-        const accountKeyHex =
-          "a828b7def44b32d5944b6f57d7028333b72e6b57a6bdd91d5146e82ca774ae57fe6db0227728d600869aed9ee50dbfea4ded4284a50bd1a4d08eb63f8fccf9fd9fc433abb24af2650942557909a6edc0f07d280e70269efdc8a00ba51a290bb5";
-        const accountKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const paymentKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-        const stakeKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
-
-        // Track when keys are freed
-        const originalAccountFree = accountKey.free.bind(accountKey);
-        accountKey.free = () => {
-          freedKeys.add("accountKey");
-          originalAccountFree();
-        };
-
-        const originalPaymentFree = paymentKey.free.bind(paymentKey);
-        paymentKey.free = () => {
-          freedKeys.add("paymentKey");
-          originalPaymentFree();
-        };
-
-        const originalStakeFree = stakeKey.free.bind(stakeKey);
-        stakeKey.free = () => {
-          freedKeys.add("stakeKey");
-          originalStakeFree();
-        };
-
-        return {
-          accountKey,
-          paymentKey,
-          stakeKey,
-        };
-      };
+      const trackingCustomDerivation = createTrackingCustomDerivation(freedKeys);
 
       const vaultWithTracking = new Vault({
         ...config,
