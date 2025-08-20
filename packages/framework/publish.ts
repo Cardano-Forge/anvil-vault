@@ -12,8 +12,9 @@ const INTERNAL_IMPORT_REGEX = new RegExp(
 );
 const FROM_INTERNAL_REGEX = new RegExp(`(["'])(${INTERNAL_PKG_ORG}\\/)(.*)(["'])`);
 
+const RESULT_IMPORT_REGEX = /import { Result } from 'trynot';/g;
+
 const externalDeps = {
-  trynot: ">=0.0.2",
   bip39: ">=3.1.0",
   "@emurgo/cardano-serialization-lib-nodejs-gc": ">=14.0.0",
   "@emurgo/cardano-message-signing-nodejs-gc": ">=1.0.0",
@@ -27,7 +28,7 @@ const opts = {
   outDir: OUT_DIR,
   splitting: false,
   treeshake: true,
-  noExternal: [/@anvil-vault\/.*/],
+  noExternal: [/@anvil-vault\/.*/, "trynot"],
   external: Object.keys(externalDeps),
 } satisfies Options;
 
@@ -97,13 +98,31 @@ async function main() {
 
   await copyPackageJson();
 
-  const dtsFiles = await findDtsFiles(OUT_DIR);
-  for (const dtsFile of dtsFiles) {
-    await updateImports(dtsFile);
+  for (const dtsFile of await findDtsFiles(OUT_DIR)) {
+    await updateInternalImports(dtsFile);
+  }
+
+  for (const dtsFile of await findDtsFiles(OUT_DIR)) {
+    await updateTrynotImports(dtsFile);
   }
 }
 
-async function updateImports(dtsFile: string) {
+async function updateTrynotImports(dtsFile: string) {
+  const dtsContents = await readFile(dtsFile, "utf8");
+  const internalImports = dtsContents.match(RESULT_IMPORT_REGEX);
+  if (!internalImports?.length) {
+    return;
+  }
+  const updatedDtsContents = dtsContents.replace(
+    RESULT_IMPORT_REGEX,
+    "type Result<T, E extends Error = Error> = T | E;",
+  );
+  if (updatedDtsContents !== dtsContents) {
+    await writeFile(dtsFile, updatedDtsContents);
+  }
+}
+
+async function updateInternalImports(dtsFile: string) {
   const ext = dtsFile.split(".").pop()?.replace("ts", "") ?? "";
   const dtsContents = await readFile(dtsFile, "utf8");
   const internalImports = dtsContents.match(INTERNAL_IMPORT_REGEX);
@@ -120,7 +139,7 @@ async function updateImports(dtsFile: string) {
     const pkgName = matchArray[3];
     const copiedPath = `${OUT_DIR}/${pkgName}.d.${ext}ts`;
     await copyFile(`../../packages/${pkgName}/${opts.outDir}/index.d.ts`, copiedPath);
-    await updateImports(copiedPath);
+    await updateInternalImports(copiedPath);
     const result = line
       .replace(/^(import |export )/, "$1type ")
       .replace(new RegExp(FROM_INTERNAL_REGEX, "g"), `$1./$3.d.${ext}ts$4`);
