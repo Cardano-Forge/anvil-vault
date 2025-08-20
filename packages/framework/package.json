@@ -77,6 +77,16 @@
         "types": "./utils.d.ts",
         "import": "./utils.js"
       }
+    },
+    "./vault": {
+      "require": {
+        "types": "./vault.d.cts",
+        "require": "./vault.cjs"
+      },
+      "import": {
+        "types": "./vault.d.ts",
+        "import": "./vault.js"
+      }
     }
   },
   "main": "./index.cjs",
@@ -122,6 +132,7 @@
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "@anvil-vault/utils": "*",
+    "@anvil-vault/vault": "*",
     "@emurgo/cardano-message-signing-nodejs-gc": "^1.1.0",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "@types/express": "^5.0.3",
