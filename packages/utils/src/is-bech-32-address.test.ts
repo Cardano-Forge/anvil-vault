@@ -1,6 +1,6 @@
 import { assert } from "trynot";
 import { describe, it } from "vitest";
-import { isBech32Address } from "./is-bech-32-address.js";
+import { isBech32Address } from "./is-bech-32-address";
 
 describe("isBech32Address", () => {
   it("should return true for valid addr prefixed addresses", () => {
