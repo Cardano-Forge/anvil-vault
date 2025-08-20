@@ -13,6 +13,7 @@ const INTERNAL_IMPORT_REGEX = new RegExp(
 const FROM_INTERNAL_REGEX = new RegExp(`(["'])(${INTERNAL_PKG_ORG}\\/)(.*)(["'])`);
 
 const externalDeps = {
+  trynot: ">=0.0.2",
   bip39: ">=3.1.0",
   "@emurgo/cardano-serialization-lib-nodejs-gc": ">=14.0.0",
   "@emurgo/cardano-message-signing-nodejs-gc": ">=1.0.0",
@@ -26,7 +27,7 @@ const opts = {
   outDir: OUT_DIR,
   splitting: false,
   treeshake: true,
-  noExternal: [/@anvil-vault\/.*/, "trynot"],
+  noExternal: [/@anvil-vault\/.*/],
   external: Object.keys(externalDeps),
 } satisfies Options;
 
