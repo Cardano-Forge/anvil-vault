@@ -13,7 +13,7 @@ describe("ValidationError", () => {
 
   it("should create error with custom path", () => {
     const error = new ValidationError("test message", { path: ["field", "nested"] });
-    expect(error.message).toBe("test message");
+    expect(error.message).toBe("field.nested: test message");
     expect(error.path).toEqual(["field", "nested"]);
   });
 
@@ -22,7 +22,7 @@ describe("ValidationError", () => {
       const originalError = new ValidationError("test message", { path: ["nested", "field"] });
       const newError = originalError.withPath("parent");
 
-      expect(newError.message).toBe("test message");
+      expect(newError.message).toBe("parent.nested.field: test message");
       expect(newError.path).toEqual(["parent", "nested", "field"]);
       expect(originalError.path).toEqual(["nested", "field"]); // Original unchanged
     });
@@ -31,7 +31,7 @@ describe("ValidationError", () => {
       const originalError = new ValidationError("test message", { path: ["field"] });
       const newError = originalError.withPath(["root", "parent"]);
 
-      expect(newError.message).toBe("test message");
+      expect(newError.message).toBe("root.parent.field: test message");
       expect(newError.path).toEqual(["root", "parent", "field"]);
     });
 
@@ -39,7 +39,7 @@ describe("ValidationError", () => {
       const originalError = new ValidationError("test message");
       const newError = originalError.withPath("root");
 
-      expect(newError.message).toBe("test message");
+      expect(newError.message).toBe("root: test message");
       expect(newError.path).toEqual(["root"]);
       expect(originalError.path).toEqual([]); // Original unchanged
     });
@@ -57,7 +57,7 @@ describe("ValidationError", () => {
       const originalError = new ValidationError("test message", { path: ["field"] });
       const newError = originalError.withPath([]);
 
-      expect(newError.message).toBe("test message");
+      expect(newError.message).toBe("field: test message");
       expect(newError.path).toEqual(["field"]);
     });
   });
@@ -236,7 +236,7 @@ describe("objectSchema", () => {
 
     const result = schema.parse({ name: 123, age: 456 });
     assert(isErr(result));
-    expect(result.message).toBe("Expected a string, received number");
+    expect(result.message).toBe("name: Expected a string, received number");
   });
 
   it("should handle missing required fields", () => {
@@ -247,7 +247,7 @@ describe("objectSchema", () => {
 
     const result = schema.parse({ name: "John" });
     assert(isErr(result));
-    expect(result.message).toBe("Expected a string, received undefined");
+    expect(result.message).toBe("email: Expected a string, received undefined");
   });
 
   it("should handle extra fields in input object", () => {
@@ -269,7 +269,7 @@ describe("objectSchema", () => {
 
       const result = schema.parse({ name: "John", email: 123 });
       assert(isErr(result));
-      expect(result.message).toBe("Expected a string, received number");
+      expect(result.message).toBe("email: Expected a string, received number");
       expect(result.path).toEqual(["email"]);
     });
 
@@ -281,7 +281,7 @@ describe("objectSchema", () => {
 
       const result = schema.parse({ name: "John" });
       assert(isErr(result));
-      expect(result.message).toBe("Expected a string, received undefined");
+      expect(result.message).toBe("email: Expected a string, received undefined");
       expect(result.path).toEqual(["email"]);
     });
 
@@ -294,7 +294,7 @@ describe("objectSchema", () => {
 
       const result = schema.parse({ name: 123, age: 456, email: "test@example.com" });
       assert(isErr(result));
-      expect(result.message).toBe("Expected a string, received number");
+      expect(result.message).toBe("name: Expected a string, received number");
       expect(result.path).toEqual(["name"]);
     });
 
@@ -307,13 +307,13 @@ describe("objectSchema", () => {
       // Test username error
       const usernameResult = schema.parse({ username: null, password: "secret" });
       assert(isErr(usernameResult));
-      expect(usernameResult.message).toBe("Expected a string, received object");
+      expect(usernameResult.message).toBe("username: Expected a string, received object");
       expect(usernameResult.path).toEqual(["username"]);
 
       // Test password error
       const passwordResult = schema.parse({ username: "user", password: 123 });
       assert(isErr(passwordResult));
-      expect(passwordResult.message).toBe("Expected a string, received number");
+      expect(passwordResult.message).toBe("password: Expected a string, received number");
       expect(passwordResult.path).toEqual(["password"]);
     });
   });
@@ -337,7 +337,7 @@ describe("nested object validation with path tracking", () => {
     });
 
     assert(isErr(result));
-    expect(result.message).toBe("Expected a string, received number");
+    expect(result.message).toBe("user.email: Expected a string, received number");
     expect(result.path).toEqual(["user", "email"]);
   });
 
@@ -369,7 +369,7 @@ describe("nested object validation with path tracking", () => {
     });
 
     assert(isErr(result));
-    expect(result.message).toBe("Expected a string, received object");
+    expect(result.message).toBe("data.address.city: Expected a string, received object");
     expect(result.path).toEqual(["data", "address", "city"]);
   });
 
@@ -390,7 +390,7 @@ describe("nested object validation with path tracking", () => {
     });
 
     assert(isErr(result));
-    expect(result.message).toBe("Expected a string, received undefined");
+    expect(result.message).toBe("profile.avatar: Expected a string, received undefined");
     expect(result.path).toEqual(["profile", "avatar"]);
   });
 
@@ -424,7 +424,7 @@ describe("nested object validation with path tracking", () => {
     });
 
     assert(isErr(errorResult));
-    expect(errorResult.message).toBe("Expected a string, received number");
+    expect(errorResult.message).toBe("meta.version: Expected a string, received number");
     expect(errorResult.path).toEqual(["meta", "version"]);
   });
 

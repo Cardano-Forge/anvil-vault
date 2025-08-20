@@ -2,20 +2,25 @@ import { type Result, isErr } from "trynot";
 
 export class ValidationError extends Error {
   public path: string[];
+  private readonly _message: string;
 
   constructor(message: string, opts?: { path?: string[] }) {
-    if (opts?.path) {
-      super(`${opts.path.join(".")}: ${message}`);
-    } else {
-      super(message);
-    }
+    super();
     this.name = "ValidationError";
     this.path = opts?.path ?? [];
+    this._message = message;
+  }
+
+  get message(): string {
+    if (this.path.length === 0) {
+      return this._message;
+    }
+    return `${this.path.join(".")}: ${this._message}`;
   }
 
   withPath(path: string | string[]): ValidationError {
     const pathArr = Array.isArray(path) ? path : [path];
-    return new ValidationError(this.message, { path: [...pathArr, ...this.path] });
+    return new ValidationError(this._message, { path: [...pathArr, ...this.path] });
   }
 }
 
