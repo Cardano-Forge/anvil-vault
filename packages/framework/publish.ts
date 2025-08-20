@@ -24,7 +24,6 @@ const opts = {
     "bip39",
     "@emurgo/cardano-serialization-lib-nodejs-gc",
     "@emurgo/cardano-message-signing-nodejs-gc",
-    "zod",
     "trynot",
   ],
 } satisfies Options;

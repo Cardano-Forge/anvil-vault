@@ -103,8 +103,7 @@
   "peerDependencies": {
     "@emurgo/cardano-message-signing-nodejs-gc": ">=1.1.0",
     "@emurgo/cardano-serialization-lib-nodejs-gc": ">=14.0.0",
-    "bip39": ">=3.0.0",
-    "zod": ">=4.0.0"
+    "bip39": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "@emurgo/cardano-serialization-lib-nodejs-gc": {
@@ -114,9 +113,6 @@
       "optional": true
     },
     "bip39": {
-      "optional": true
-    },
-    "zod": {
       "optional": true
     }
   },
@@ -140,7 +136,6 @@
     "tsup": "^8.2.4",
     "tsx": "^4.20.4",
     "typescript": "^5.6.2",
-    "vitest": "^2.1.4",
-    "zod": "^4.0.17"
+    "vitest": "^2.1.4"
   }
 }

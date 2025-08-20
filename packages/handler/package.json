@@ -21,8 +21,7 @@
   },
   "dependencies": {
     "@anvil-vault/utils": "*",
-    "trynot": "^0.0.2",
-    "zod": "^4.0.17"
+    "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/csl": "*",
