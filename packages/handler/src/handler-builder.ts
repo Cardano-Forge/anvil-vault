@@ -102,9 +102,9 @@ export async function handleVaultRequest<TParams extends AnyParams, TContext, TR
     const validationResult = apiDef.input.parse(inputData);
     if (isErr(validationResult)) {
       return new VaultError({
-        message: "Bad request",
+        message: `Bad request: ${validationResult.toString()}`,
         statusCode: 400,
-        cause: validationResult.toString(),
+        cause: validationResult,
       });
     }
 
