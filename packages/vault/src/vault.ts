@@ -4,14 +4,8 @@ import { VaultError } from "@anvil-vault/handler";
 import type {
   Derivation,
   DeriveWalletOutput,
-  GetWalletInput,
-  GetWalletOutput,
   IVault,
   RequiredVaultConfig,
-  SignDataInput,
-  SignDataOutput,
-  SignTransactionInput,
-  SignTransactionOutput,
   VaultConfig,
 } from "@anvil-vault/handler";
 import { parseFromHex } from "@anvil-vault/utils";
@@ -49,7 +43,7 @@ export class Vault implements IVault {
     });
   }
 
-  async getWallet(input: GetWalletInput): Promise<Result<GetWalletOutput, VaultError>> {
+  getWallet: IVault["getWallet"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -86,9 +80,9 @@ export class Vault implements IVault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
-  async signData(input: SignDataInput): Promise<Result<SignDataOutput, VaultError>> {
+  signData: IVault["signData"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -115,11 +109,9 @@ export class Vault implements IVault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
-  async signTransaction(
-    input: SignTransactionInput,
-  ): Promise<Result<SignTransactionOutput, VaultError>> {
+  signTransaction: IVault["signTransaction"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -141,7 +133,7 @@ export class Vault implements IVault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
   protected async _withDerivedWallet<T>(
     input: { userId: string },

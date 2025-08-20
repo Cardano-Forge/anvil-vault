@@ -2,8 +2,7 @@
   "name": "@anvil-vault/vault",
   "version": "0.0.0",
   "keywords": [],
-  "license": "ISC",
-  "author": "",
+  "author": "Cardano-Forge",
   "type": "module",
   "exports": {
     ".": {

@@ -1,138 +1,36 @@
 {
   "name": "@anvil-vault/framework",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "keywords": [],
   "author": "Cardano-Forge",
-  "sideEffects": false,
   "type": "module",
-  "files": ["**"],
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "require": {
-        "types": "./index.d.cts",
-        "require": "./index.cjs"
-      },
-      "import": {
-        "types": "./index.d.ts",
-        "import": "./index.js"
-      }
-    },
-    "./csl": {
-      "require": {
-        "types": "./csl.d.cts",
-        "require": "./csl.cjs"
-      },
-      "import": {
-        "types": "./csl.d.ts",
-        "import": "./csl.js"
-      }
-    },
-    "./cms": {
-      "require": {
-        "types": "./cms.d.cts",
-        "require": "./cms.cjs"
-      },
-      "import": {
-        "types": "./cms.d.ts",
-        "import": "./cms.js"
-      }
-    },
-    "./bip39": {
-      "require": {
-        "types": "./bip39.d.cts",
-        "require": "./bip39.cjs"
-      },
-      "import": {
-        "types": "./bip39.d.ts",
-        "import": "./bip39.js"
-      }
-    },
-    "./handler": {
-      "require": {
-        "types": "./handler.d.cts",
-        "require": "./handler.cjs"
-      },
-      "import": {
-        "types": "./handler.d.ts",
-        "import": "./handler.js"
-      }
-    },
-    "./express": {
-      "require": {
-        "types": "./express.d.cts",
-        "require": "./express.cjs"
-      },
-      "import": {
-        "types": "./express.d.ts",
-        "import": "./express.js"
-      }
-    },
-    "./utils": {
-      "require": {
-        "types": "./utils.d.cts",
-        "require": "./utils.cjs"
-      },
-      "import": {
-        "types": "./utils.d.ts",
-        "import": "./utils.js"
-      }
-    },
-    "./vault": {
-      "require": {
-        "types": "./vault.d.cts",
-        "require": "./vault.cjs"
-      },
-      "import": {
-        "types": "./vault.d.ts",
-        "import": "./vault.js"
-      }
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
     }
   },
-  "main": "./index.cjs",
-  "module": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "tsup --config build.tsup.ts",
     "check": "tsc --noEmit",
     "emit": "tsup --config emit.tsup.ts",
-    "publish": "tsx publish.ts",
     "test": "vitest --run --passWithNoTests",
-    "test:watch": "vitest --watch --passWithNoTests"
-  },
-  "peerDependencies": {
-    "@emurgo/cardano-message-signing-nodejs-gc": ">=1.1.0",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": ">=14.0.0",
-    "bip39": ">=3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@emurgo/cardano-serialization-lib-nodejs-gc": {
-      "optional": true
-    },
-    "@emurgo/cardano-message-signing-nodejs-gc": {
-      "optional": true
-    },
-    "bip39": {
-      "optional": true
-    }
+    "test:watch": "vitest --watch --passWithNoTests",
+    "publish": "tsx publish.ts"
   },
   "dependencies": {
-    "trynot": "^0.0.2"
-  },
-  "devDependencies": {
     "@anvil-vault/bip39": "*",
     "@anvil-vault/cms": "*",
     "@anvil-vault/csl": "*",
     "@anvil-vault/express": "*",
     "@anvil-vault/handler": "*",
+    "@anvil-vault/utils": "*",
+    "@anvil-vault/vault": "*"
+  },
+  "devDependencies": {
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
-    "@anvil-vault/utils": "*",
-    "@anvil-vault/vault": "*",
-    "@emurgo/cardano-message-signing-nodejs-gc": "^1.1.0",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
-    "@types/express": "^5.0.3",
-    "bip39": "^3.1.0",
     "tsup": "^8.2.4",
     "tsx": "^4.20.4",
     "typescript": "^5.6.2",
