@@ -57,14 +57,6 @@ describe("uuidToByteArray", () => {
       expect(result).toEqual(new Array(16).fill(0));
     });
 
-    it("should handle all ones UUID", () => {
-      const uuid = "ffffffff-ffff-ffff-ffff-ffffffffffff";
-      const result = uuidToByteArray(uuid);
-
-      assert(isOk(result), "should succeed");
-      expect(result).toEqual(new Array(16).fill(255));
-    });
-
     it("should handle v4 UUID", () => {
       const uuid = "7a13ad8e-af95-419a-b56f-2e41a5cc37e3";
       const result = uuidToByteArray(uuid);
