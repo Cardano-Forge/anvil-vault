@@ -1,8 +1,13 @@
+import { VaultError } from "@anvil-vault/handler";
+import type {
+  GetWalletInput,
+  SignDataInput,
+  SignTransactionInput,
+  VaultConfig,
+} from "@anvil-vault/handler";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { beforeEach, describe, expect, it } from "vitest";
-import { VaultError } from "./errors";
-import type { GetWalletInput, SignDataInput, SignTransactionInput, VaultConfig } from "./types";
 import { Vault } from "./vault";
 
 const validRootKeyHex =

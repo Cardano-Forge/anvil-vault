@@ -84,3 +84,9 @@ export type VaultConfig = RequiredVaultConfig & {
   ) => MaybePromise<Result<DeriveWalletOutput>>;
   ignoreDefaultPaymentDerivationWarning?: boolean;
 };
+
+export type IVault = {
+  getWallet: (input: GetWalletInput) => MaybePromise<Result<GetWalletOutput>>;
+  signData: (input: SignDataInput) => MaybePromise<Result<SignDataOutput>>;
+  signTransaction: (input: SignTransactionInput) => MaybePromise<Result<SignTransactionOutput>>;
+};

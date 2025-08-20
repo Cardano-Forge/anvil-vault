@@ -3,14 +3,14 @@ import { describe, expect, it, vi } from "vitest";
 import { VaultError } from "./errors";
 import { createVaultHandler, handleVaultRequest } from "./handler-builder";
 import type { HandlerAdapter } from "./handler-types";
-import type { Vault } from "./vault";
+import type { IVault } from "./types";
 
 const createMockVault = () => {
   const mockVault = {
     getWallet: vi.fn(),
     signData: vi.fn(),
     signTransaction: vi.fn(),
-  } as unknown as Vault;
+  } as unknown as IVault;
 
   return mockVault;
 };

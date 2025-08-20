@@ -1,5 +1,5 @@
 {
-  "name": "@anvil-vault/handler",
+  "name": "@anvil-vault/vault",
   "version": "0.0.0",
   "keywords": [],
   "license": "ISC",
@@ -20,11 +20,12 @@
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
+    "@anvil-vault/cms": "*",
     "@anvil-vault/csl": "*",
+    "@anvil-vault/handler": "*",
     "@anvil-vault/utils": "*",
     "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
-    "trynot": "^0.0.2",
-    "zod": "^4.0.17"
+    "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",

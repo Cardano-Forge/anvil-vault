@@ -1,8 +1,7 @@
 import { type ExtractKeysOutput, deriveAccount, extractKeys } from "@anvil-vault/csl";
+import { type Derivation, getDerivation } from "@anvil-vault/handler";
 import type { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
-import { getDerivation } from "./get-derivation";
-import type { Derivation } from "./types";
 
 export type DeriveWalletInput<TContext = undefined> = {
   userId: string;

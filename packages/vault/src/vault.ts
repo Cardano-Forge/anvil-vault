@@ -1,22 +1,23 @@
 import { signDataWallet } from "@anvil-vault/cms";
 import { type ExtractKeysOutput, deriveAddresses, signTransaction } from "@anvil-vault/csl";
-import { parseFromHex } from "@anvil-vault/utils";
-import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError, unwrap } from "trynot";
-import { deriveWallet } from "./derive-wallet";
-import { VaultError } from "./errors";
+import { VaultError } from "@anvil-vault/handler";
 import type {
   Derivation,
   DeriveWalletOutput,
   GetWalletInput,
   GetWalletOutput,
+  IVault,
   RequiredVaultConfig,
   SignDataInput,
   SignDataOutput,
   SignTransactionInput,
   SignTransactionOutput,
   VaultConfig,
-} from "./types";
+} from "@anvil-vault/handler";
+import { parseFromHex } from "@anvil-vault/utils";
+import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
+import { type Result, parseError, unwrap } from "trynot";
+import { deriveWallet } from "./derive-wallet";
 
 export const DEFAULT_VAULT_DERIVATIONS = {
   account: {
@@ -33,7 +34,7 @@ export const DEFAULT_VAULT_DERIVATIONS = {
   },
 } satisfies Record<string, Derivation>;
 
-export class Vault {
+export class Vault implements IVault {
   constructor(public config: VaultConfig) {}
 
   set<T extends keyof VaultConfig>(key: T, value: VaultConfig[T]): this {
