@@ -4,7 +4,11 @@ export class ValidationError extends Error {
   public path: string[];
 
   constructor(message: string, opts?: { path?: string[] }) {
-    super(message);
+    if (opts?.path) {
+      super(`${opts.path.join(".")}: ${message}`);
+    } else {
+      super(message);
+    }
     this.name = "ValidationError";
     this.path = opts?.path ?? [];
   }
@@ -12,10 +16,6 @@ export class ValidationError extends Error {
   withPath(path: string | string[]): ValidationError {
     const pathArr = Array.isArray(path) ? path : [path];
     return new ValidationError(this.message, { path: [...pathArr, ...this.path] });
-  }
-
-  toString(): string {
-    return `${this.path.join(".")}: ${this.message}`;
   }
 }
 
