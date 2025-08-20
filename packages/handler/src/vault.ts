@@ -182,6 +182,12 @@ export class Vault {
       const providedRootKey = await this.config.rootKey();
       const rootKey = unwrap(parseFromHex(providedRootKey, Bip32PrivateKey));
 
+      if (!this.config.paymentDerivation && !this.config.ignoreDefaultPaymentDerivationWarning) {
+        console.warn(
+          "ANVIL VAULT WARNING: Using unsafe default payment derivation. \nPlease provide a custom payment derivation strategy in your vault config.",
+        );
+      }
+
       const keys = await unwrap(
         deriveWallet(
           {

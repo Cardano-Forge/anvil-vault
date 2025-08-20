@@ -82,4 +82,5 @@ export type VaultConfig = RequiredVaultConfig & {
     input: { userId: string },
     config: RequiredVaultConfig,
   ) => MaybePromise<Result<DeriveWalletOutput>>;
+  ignoreDefaultPaymentDerivationWarning?: boolean;
 };
