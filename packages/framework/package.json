@@ -1,7 +1,21 @@
 {
   "name": "@anvil-vault/framework",
   "version": "0.0.0",
-  "keywords": [],
+  "keywords": [
+    "cardano",
+    "anvil",
+    "vault",
+    "crypto",
+    "cryptography",
+    "blockchain",
+    "custodial",
+    "secure",
+    "wallet",
+    "javascript",
+    "typescript",
+    "ts",
+    "typesafe"
+  ],
   "author": "Cardano-Forge",
   "type": "module",
   "exports": {
