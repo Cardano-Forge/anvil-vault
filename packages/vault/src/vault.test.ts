@@ -1,8 +1,8 @@
+import { VaultError } from "@anvil-vault/handler";
+import type { IVault, VaultConfig } from "@anvil-vault/handler";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { beforeEach, describe, expect, it } from "vitest";
-import { VaultError } from "./errors";
-import type { GetWalletInput, SignDataInput, SignTransactionInput, VaultConfig } from "./types";
 import { Vault } from "./vault";
 
 const validRootKeyHex =
@@ -80,7 +80,7 @@ describe("Vault", () => {
 
   describe("getWallet", () => {
     it("should return wallet addresses on success", async () => {
-      const input: GetWalletInput = { userId: mockUserId };
+      const input: Parameters<IVault["getWallet"]>[0] = { userId: mockUserId };
       const result = await vault.getWallet(input);
 
       assert(isOk(result), "getWallet should succeed");
@@ -103,19 +103,20 @@ describe("Vault", () => {
         network: 0,
       });
 
-      const input: GetWalletInput = { userId: mockUserId };
+      const input: Parameters<IVault["getWallet"]>[0] = { userId: mockUserId };
       const result = await invalidVault.getWallet(input);
 
       assert(isErr(result), "getWallet should fail with invalid root key");
       expect(result).toBeInstanceOf(VaultError);
       expect(result.message).toBe("Failed to get wallet");
+      assert(result instanceof VaultError);
       expect(result.statusCode).toBe(500);
     });
   });
 
   describe("signData", () => {
     it("should return signature on success", async () => {
-      const input: SignDataInput = {
+      const input: Parameters<IVault["signData"]>[0] = {
         userId: mockUserId,
         payload: "hello world",
       };
@@ -136,7 +137,7 @@ describe("Vault", () => {
         network: 0,
       });
 
-      const input: SignDataInput = {
+      const input: Parameters<IVault["signData"]>[0] = {
         userId: mockUserId,
         payload: "test-payload",
       };
@@ -145,6 +146,7 @@ describe("Vault", () => {
       assert(isErr(result), "signData should fail with invalid root key");
       expect(result).toBeInstanceOf(VaultError);
       expect(result.message).toBe("Failed to sign data");
+      assert(result instanceof VaultError);
       expect(result.statusCode).toBe(500);
     });
   });
@@ -154,7 +156,7 @@ describe("Vault", () => {
       const validTransactionHex =
         "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667e1e05698c2aee7168ab327eb6de0001818258390048dc188cd7a3fa245498144a5469c34ea11c54975587529269430016a2b990e0c40026e9e9381abdb18ba9f4bf80bd65f7c19263357f6497821b0000000403b4a354a4581c698a6ea0ca99f315034072af31eaac6ec11fe8558d3f48e9775aab9da14574445249501823581cb784ba558baab378e670b8285f8c079ef002b5a0eb26fd6a533a5611a14d4d79436f6f6c4173736574233101581cc82a4452eaebccb82aced501b3c94d3662cf6cd2915ad7148b459aeca14341584f1a000d66b7581cf0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9aa14d000de140646f64696c616e6e6501021a0002f43d031a05e2d418081a05e2b7f8a0f5f6";
 
-      const input: SignTransactionInput = {
+      const input: Parameters<IVault["signTransaction"]>[0] = {
         userId: mockUserId,
         transaction: validTransactionHex,
       };
@@ -167,7 +169,7 @@ describe("Vault", () => {
     });
 
     it("should return VaultError on invalid transaction", async () => {
-      const input: SignTransactionInput = {
+      const input: Parameters<IVault["signTransaction"]>[0] = {
         userId: mockUserId,
         transaction: "invalid-tx-hex",
       };
@@ -176,6 +178,7 @@ describe("Vault", () => {
       assert(isErr(result), "signTransaction should fail with invalid transaction");
       expect(result).toBeInstanceOf(VaultError);
       expect(result.message).toBe("Failed to sign transaction");
+      assert(result instanceof VaultError);
       expect(result.statusCode).toBe(500);
     });
 
@@ -188,7 +191,7 @@ describe("Vault", () => {
       const validTransactionHex =
         "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667e1e05698c2aee7168ab327eb6de0001818258390048dc188cd7a3fa245498144a5469c34ea11c54975587529269430016a2b990e0c40026e9e9381abdb18ba9f4bf80bd65f7c19263357f6497821b0000000403b4a354a4581c698a6ea0ca99f315034072af31eaac6ec11fe8558d3f48e9775aab9da14574445249501823581cb784ba558baab378e670b8285f8c079ef002b5a0eb26fd6a533a5611a14d4d79436f6f6c4173736574233101581cc82a4452eaebccb82aced501b3c94d3662cf6cd2915ad7148b459aeca14341584f1a000d66b7581cf0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9aa14d000de140646f64696c616e6e6501021a0002f43d031a05e2d418081a05e2b7f8a0f5f6";
 
-      const input: SignTransactionInput = {
+      const input: Parameters<IVault["signTransaction"]>[0] = {
         userId: mockUserId,
         transaction: validTransactionHex,
       };
@@ -197,6 +200,7 @@ describe("Vault", () => {
       assert(isErr(result), "signTransaction should fail with invalid root key");
       expect(result).toBeInstanceOf(VaultError);
       expect(result.message).toBe("Failed to sign transaction");
+      assert(result instanceof VaultError);
       expect(result.statusCode).toBe(500);
     });
   });
@@ -223,7 +227,7 @@ describe("Vault", () => {
       };
 
       const vaultWithCustom = new Vault(configWithCustom);
-      const input: GetWalletInput = { userId: mockUserId };
+      const input: Parameters<IVault["getWallet"]>[0] = { userId: mockUserId };
       const result = await vaultWithCustom.getWallet(input);
 
       expect(customDerivationCalled).toBe(true);
@@ -242,7 +246,7 @@ describe("Vault", () => {
         customWalletDerivation: trackingCustomDerivation,
       });
 
-      const input: GetWalletInput = { userId: mockUserId };
+      const input: Parameters<IVault["getWallet"]>[0] = { userId: mockUserId };
       const result = await vaultWithTracking.getWallet(input);
 
       // Verify the operation succeeded
@@ -265,7 +269,7 @@ describe("Vault", () => {
         customWalletDerivation: trackingCustomDerivation,
       });
 
-      const input: GetWalletInput = { userId: mockUserId };
+      const input: Parameters<IVault["getWallet"]>[0] = { userId: mockUserId };
       const result = await vaultWithTracking.getWallet(input);
 
       // Verify the operation succeeded
@@ -286,7 +290,7 @@ describe("Vault", () => {
         customWalletDerivation: trackingCustomDerivation,
       });
 
-      const input: SignDataInput = {
+      const input: Parameters<IVault["signData"]>[0] = {
         userId: mockUserId,
         payload: "test data to sign",
       };

@@ -1,8 +1,8 @@
+import type { Derivation } from "@anvil-vault/handler";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it, vi } from "vitest";
 import { deriveWallet } from "./derive-wallet";
-import type { Derivation } from "./types";
 
 const validRootKeyHex =
   "40d0f8821976d097ad6c22e75f3ee2e725750a33f9e0c8ba4978245e9b74ae57604f2a17296ef2dcd9febf5e14adc4efe627bf5666db302da2ee1e94009f8c9bf529816cb417e611404426a46aca8697f7e815032a07aa156ed0fbbe5aa75cdc";

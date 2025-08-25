@@ -1,22 +1,17 @@
 import { signDataWallet } from "@anvil-vault/cms";
 import { type ExtractKeysOutput, deriveAddresses, signTransaction } from "@anvil-vault/csl";
+import { VaultError } from "@anvil-vault/handler";
+import type {
+  Derivation,
+  DeriveWalletOutput,
+  IVault,
+  RequiredVaultConfig,
+  VaultConfig,
+} from "@anvil-vault/handler";
 import { parseFromHex } from "@anvil-vault/utils";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 import { deriveWallet } from "./derive-wallet";
-import { VaultError } from "./errors";
-import type {
-  Derivation,
-  DeriveWalletOutput,
-  GetWalletInput,
-  GetWalletOutput,
-  RequiredVaultConfig,
-  SignDataInput,
-  SignDataOutput,
-  SignTransactionInput,
-  SignTransactionOutput,
-  VaultConfig,
-} from "./types";
 
 export const DEFAULT_VAULT_DERIVATIONS = {
   account: {
@@ -33,7 +28,7 @@ export const DEFAULT_VAULT_DERIVATIONS = {
   },
 } satisfies Record<string, Derivation>;
 
-export class Vault {
+export class Vault implements IVault {
   constructor(public config: VaultConfig) {}
 
   set<T extends keyof VaultConfig>(key: T, value: VaultConfig[T]): this {
@@ -48,7 +43,7 @@ export class Vault {
     });
   }
 
-  async getWallet(input: GetWalletInput): Promise<Result<GetWalletOutput, VaultError>> {
+  getWallet: IVault["getWallet"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -85,9 +80,9 @@ export class Vault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
-  async signData(input: SignDataInput): Promise<Result<SignDataOutput, VaultError>> {
+  signData: IVault["signData"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -114,11 +109,9 @@ export class Vault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
-  async signTransaction(
-    input: SignTransactionInput,
-  ): Promise<Result<SignTransactionOutput, VaultError>> {
+  signTransaction: IVault["signTransaction"] = async (input) => {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
@@ -140,7 +133,7 @@ export class Vault {
         cause: parseError(error),
       });
     }
-  }
+  };
 
   protected async _withDerivedWallet<T>(
     input: { userId: string },

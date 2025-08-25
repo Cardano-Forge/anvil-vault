@@ -146,3 +146,5 @@ function findUser(id: string): Result<User, MyError> {
 - `turbo.json`: Build pipeline configuration with task dependencies
 - `biome.json`: Code formatting and linting rules
 - `package.json`: Root workspace configuration with shared scripts
+
+- dont add file extensions to import statements

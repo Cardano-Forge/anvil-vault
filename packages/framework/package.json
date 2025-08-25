@@ -1,8 +1,21 @@
 {
-  "name": "@anvil-vault/csl",
+  "name": "@anvil-vault/framework",
   "version": "0.0.0",
-  "keywords": [],
-  "license": "ISC",
+  "keywords": [
+    "cardano",
+    "anvil",
+    "vault",
+    "crypto",
+    "cryptography",
+    "blockchain",
+    "custodial",
+    "secure",
+    "wallet",
+    "javascript",
+    "typescript",
+    "ts",
+    "typesafe"
+  ],
   "author": "Cardano-Forge",
   "type": "module",
   "exports": {
@@ -17,17 +30,23 @@
     "check": "tsc --noEmit",
     "emit": "tsup --config emit.tsup.ts",
     "test": "vitest --run --passWithNoTests",
-    "test:watch": "vitest --watch --passWithNoTests"
+    "test:watch": "vitest --watch --passWithNoTests",
+    "publish": "tsx publish.ts"
   },
   "dependencies": {
+    "@anvil-vault/bip39": "*",
+    "@anvil-vault/cms": "*",
+    "@anvil-vault/csl": "*",
+    "@anvil-vault/express": "*",
+    "@anvil-vault/handler": "*",
     "@anvil-vault/utils": "*",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
-    "trynot": "^0.0.2"
+    "@anvil-vault/vault": "*"
   },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "tsup": "^8.5.0",
+    "tsx": "^4.20.4",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"
   }

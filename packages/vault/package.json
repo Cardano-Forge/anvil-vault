@@ -1,8 +1,7 @@
 {
-  "name": "@anvil-vault/utils",
+  "name": "@anvil-vault/vault",
   "version": "0.0.0",
   "keywords": [],
-  "license": "ISC",
   "author": "Cardano-Forge",
   "type": "module",
   "exports": {
@@ -20,12 +19,16 @@
     "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
+    "@anvil-vault/cms": "*",
+    "@anvil-vault/csl": "*",
+    "@anvil-vault/handler": "*",
+    "@anvil-vault/utils": "*",
+    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
-    "@emurgo/cardano-serialization-lib-nodejs-gc": "^15.0.0",
     "tsup": "^8.5.0",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"

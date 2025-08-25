@@ -1,35 +1,35 @@
+import { objectSchema, stringSchema } from "@anvil-vault/utils";
 import { type Result, isErr } from "trynot";
-import * as z from "zod/mini";
 import { VaultError } from "./errors";
 import type { AnyParams, HandlerAdapter } from "./handler-types";
-import type { Vault } from "./vault";
+import type { IVault } from "./types";
 
 const vaultApiDef = {
   wallet: {
     method: "GET",
-    input: z.object({
-      userId: z.string(),
+    input: objectSchema({
+      userId: stringSchema(),
     }),
   },
   "sign-data": {
     method: "POST",
-    input: z.object({
-      userId: z.string(),
-      payload: z.string(),
-      externalAad: z.optional(z.string()),
+    input: objectSchema({
+      userId: stringSchema(),
+      payload: stringSchema(),
+      externalAad: stringSchema({ optional: true }),
     }),
   },
   "sign-transaction": {
     method: "POST",
-    input: z.object({
-      userId: z.string(),
-      transaction: z.string(),
+    input: objectSchema({
+      userId: stringSchema(),
+      transaction: stringSchema(),
     }),
   },
 } as const;
 
 export function createVaultHandler<TParams extends AnyParams, TContext, TResponse>(input: {
-  vault: Vault;
+  vault: IVault;
   adapter: HandlerAdapter<TParams, TContext, TResponse>;
 }) {
   return async (...args: TParams) => {
@@ -41,7 +41,7 @@ export function createVaultHandler<TParams extends AnyParams, TContext, TRespons
 
 export async function handleVaultRequest<TParams extends AnyParams, TContext, TResponse>(
   context: TContext,
-  vault: Vault,
+  vault: IVault,
   adapter: HandlerAdapter<TParams, TContext, TResponse>,
 ): Promise<Result<{ response: unknown }, VaultError>> {
   try {
@@ -99,16 +99,16 @@ export async function handleVaultRequest<TParams extends AnyParams, TContext, TR
 
     Object.assign(inputData, { userId });
 
-    const validationResult = apiDef.input.safeParse(inputData);
-    if (!validationResult.success) {
+    const validationResult = apiDef.input.parse(inputData);
+    if (isErr(validationResult)) {
       return new VaultError({
         message: "Bad request",
         statusCode: 400,
-        cause: validationResult.error,
+        cause: validationResult,
       });
     }
 
-    const input = validationResult.data;
+    const input = validationResult;
 
     let result: Result<unknown, VaultError>;
     switch (operation) {

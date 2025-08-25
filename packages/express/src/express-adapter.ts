@@ -1,8 +1,14 @@
+import type { HandlerAdapter } from "@anvil-vault/handler";
 import type { Request, Response } from "express";
 import { isErr } from "trynot";
-import { createHandlerAdapter } from "./handler-types";
 
-export const expressAdapter = createHandlerAdapter({
+export type ExpressAdapter = HandlerAdapter<
+  [req: Request, res: Response],
+  { req: Request; res: Response },
+  void
+>;
+
+export const expressAdapter: ExpressAdapter = {
   getContext: (req: Request, res: Response) => ({ req, res }),
   getBody: (ctx) => ctx.req.body || {},
   getMethod: (ctx) => ctx.req.method,
@@ -15,7 +21,7 @@ export const expressAdapter = createHandlerAdapter({
       ctx.res.status(200).json(result.response);
     }
   },
-});
+};
 
 type JsonError = {
   message: string;

@@ -1,6 +1,6 @@
+import { VaultError } from "@anvil-vault/handler";
 import type { Request, Response } from "express";
 import { describe, expect, it, vi } from "vitest";
-import { VaultError } from "./errors";
 import { expressAdapter } from "./express-adapter";
 
 const createMockRequest = (overrides: Partial<Request> = {}): Request =>

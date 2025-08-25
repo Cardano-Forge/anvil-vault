@@ -3,38 +3,6 @@ import type { MaybePromise } from "@anvil-vault/utils";
 import type { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import type { Result } from "trynot";
 
-export type GetWalletInput = {
-  userId: string;
-};
-
-export type GetWalletOutput = {
-  addresses: {
-    base: { bech32: string; hex: string };
-    enterprise: { bech32: string; hex: string };
-    reward: { bech32: string; hex: string };
-  };
-};
-
-export type SignDataInput = {
-  userId: string;
-  payload: string;
-  externalAad?: string;
-};
-
-export type SignDataOutput = {
-  signature: string;
-  key: string;
-};
-
-export type SignTransactionInput = {
-  userId: string;
-  transaction: string;
-};
-
-export type SignTransactionOutput = {
-  signedTransaction: string;
-};
-
 export type RequiredVaultConfig = {
   rootKey: () => MaybePromise<Bip32PrivateKey | string>;
   network: Network | NetworkId;
@@ -83,4 +51,36 @@ export type VaultConfig = RequiredVaultConfig & {
     config: RequiredVaultConfig,
   ) => MaybePromise<Result<DeriveWalletOutput>>;
   ignoreDefaultPaymentDerivationWarning?: boolean;
+};
+
+export type IVault = {
+  getWallet: (input: {
+    userId: string;
+  }) => MaybePromise<
+    Result<{
+      addresses: {
+        base: { bech32: string; hex: string };
+        enterprise: { bech32: string; hex: string };
+        reward: { bech32: string; hex: string };
+      };
+    }>
+  >;
+  signData: (input: {
+    userId: string;
+    payload: string;
+    externalAad?: string;
+  }) => MaybePromise<
+    Result<{
+      signature: string;
+      key: string;
+    }>
+  >;
+  signTransaction: (input: {
+    userId: string;
+    transaction: string;
+  }) => MaybePromise<
+    Result<{
+      signedTransaction: string;
+    }>
+  >;
 };
