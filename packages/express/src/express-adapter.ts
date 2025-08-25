@@ -1,6 +1,7 @@
 import type { HandlerAdapter } from "@anvil-vault/handler";
+import { errorToString } from "@anvil-vault/utils";
 import type { Request, Response } from "express";
-import { isErr, parseError } from "trynot";
+import { isErr } from "trynot";
 
 export type ExpressAdapter = HandlerAdapter<
   [req: Request, res: Response],
@@ -24,25 +25,3 @@ export const expressAdapter: ExpressAdapter = {
     }
   },
 };
-
-function errorToString(error: unknown): string | undefined {
-  if (typeof error === "string") {
-    return error;
-  }
-  const parsed = parseError(error);
-  if (!parsed.cause) {
-    return parsed.message || undefined;
-  }
-  const cause = parseError(parsed.cause);
-  if (!cause.message) {
-    return parsed.message || undefined;
-  }
-  if (cause.message === parsed.message) {
-    return errorToString(
-      new Error(parsed.message, {
-        cause: cause.cause,
-      }),
-    );
-  }
-  return `${parsed.message}: ${cause.message}`;
-}

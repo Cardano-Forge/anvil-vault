@@ -137,14 +137,11 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(422);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Test error",
-        cause: {
-          message: "Root cause",
-        },
+        error: "Test error: Root cause",
       });
     });
 
-    it("should send error response with nested causes", async () => {
+    it("should send error response with nested causes keeping only the first cause", async () => {
       const req = createMockRequest();
       const res = createMockResponse();
       const context = { req, res };
@@ -163,13 +160,7 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
-        cause: {
-          message: "Middle cause",
-          cause: {
-            message: "Root cause",
-          },
-        },
+        error: "Main error: Middle cause",
       });
     });
 
@@ -187,7 +178,7 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Simple error",
+        error: "Simple error",
       });
     });
   });
@@ -208,10 +199,7 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Wrapper error",
-        cause: {
-          message: "Test error",
-        },
+        error: "Wrapper error: Test error",
       });
     });
 
@@ -229,7 +217,7 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
+        error: "Main error: string cause",
       });
     });
 
@@ -247,7 +235,7 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
+        error: "Main error",
       });
     });
   });

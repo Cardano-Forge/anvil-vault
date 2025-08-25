@@ -1,5 +1,5 @@
-import { createVaultHandler } from "@anvil-vault/handler";
 import { expressAdapter } from "@anvil-vault/express";
+import { createVaultHandler } from "@anvil-vault/handler";
 import { Vault } from "@anvil-vault/vault";
 import express from "express";
 
