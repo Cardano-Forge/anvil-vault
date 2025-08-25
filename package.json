@@ -2,8 +2,12 @@
   "name": "anvil-vault",
   "version": "0.0.0",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
+    "dev": "turbo watch dev",
     "build": "turbo run build",
     "publish": "turbo run emit && turbo run publish",
     "emit": "turbo run emit",

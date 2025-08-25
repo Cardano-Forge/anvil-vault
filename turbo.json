@@ -17,6 +17,12 @@
       "outputs": ["out/**"],
       "dependsOn": ["^build"]
     },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "interruptible": true,
+      "dependsOn": ["^build"]
+    },
     "test": {
       "outputs": ["coverage/**"],
       "cache": false,

@@ -1,6 +1,6 @@
 import type { HandlerAdapter } from "@anvil-vault/handler";
 import type { Request, Response } from "express";
-import { isErr } from "trynot";
+import { isErr, parseError } from "trynot";
 
 export type ExpressAdapter = HandlerAdapter<
   [req: Request, res: Response],
@@ -16,26 +16,33 @@ export const expressAdapter: ExpressAdapter = {
   getQuery: (ctx) => ctx.req.query as Record<string, unknown>,
   sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      ctx.res.status(result.statusCode).json(errorToJson(result));
+      ctx.res.status(result.statusCode).json({
+        error: errorToString(result) || "Internal server error",
+      });
     } else {
       ctx.res.status(200).json(result.response);
     }
   },
 };
 
-type JsonError = {
-  message: string;
-  cause?: JsonError;
-};
-
-function errorToJson(error: unknown): JsonError | undefined {
-  if (error instanceof Error) {
-    const res: JsonError = { message: error.message };
-    const cause = errorToJson(error.cause);
-    if (cause) {
-      res.cause = cause;
-    }
-    return res;
+function errorToString(error: unknown): string | undefined {
+  if (typeof error === "string") {
+    return error;
   }
-  return undefined;
+  const parsed = parseError(error);
+  if (!parsed.cause) {
+    return parsed.message || undefined;
+  }
+  const cause = parseError(parsed.cause);
+  if (!cause.message) {
+    return parsed.message || undefined;
+  }
+  if (cause.message === parsed.message) {
+    return errorToString(
+      new Error(parsed.message, {
+        cause: cause.cause,
+      }),
+    );
+  }
+  return `${parsed.message}: ${cause.message}`;
 }
