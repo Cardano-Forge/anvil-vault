@@ -1,5 +1,5 @@
 import type { HandlerAdapter } from "@anvil-vault/handler";
-import { errorToString } from "@anvil-vault/utils";
+import { errorToJson } from "@anvil-vault/utils";
 import type { Request, Response } from "express";
 import { isErr } from "trynot";
 
@@ -17,9 +17,7 @@ export const expressAdapter: ExpressAdapter = {
   getQuery: (ctx) => ctx.req.query as Record<string, unknown>,
   sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      ctx.res.status(result.statusCode).json({
-        error: errorToString(result) || "Internal server error",
-      });
+      ctx.res.status(result.statusCode).json(errorToJson(result));
     } else {
       ctx.res.status(200).json(result.response);
     }

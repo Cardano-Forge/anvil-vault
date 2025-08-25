@@ -1,4 +1,4 @@
-import { VaultError } from "@anvil-vault/handler";
+import { VaultError } from "@anvil-vault/utils";
 import type { Request, Response } from "express";
 import { describe, expect, it, vi } from "vitest";
 import { expressAdapter } from "./express-adapter";
@@ -138,6 +138,7 @@ describe("expressAdapter", () => {
       expect(res.status).toHaveBeenCalledWith(422);
       expect(res.json).toHaveBeenCalledWith({
         error: "Test error: Root cause",
+        statusCode: 422,
       });
     });
 
@@ -161,6 +162,7 @@ describe("expressAdapter", () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         error: "Main error: Middle cause",
+        statusCode: 500,
       });
     });
 
@@ -179,6 +181,7 @@ describe("expressAdapter", () => {
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         error: "Simple error",
+        statusCode: 400,
       });
     });
   });
@@ -200,6 +203,7 @@ describe("expressAdapter", () => {
 
       expect(res.json).toHaveBeenCalledWith({
         error: "Wrapper error: Test error",
+        statusCode: 500,
       });
     });
 
@@ -218,6 +222,7 @@ describe("expressAdapter", () => {
 
       expect(res.json).toHaveBeenCalledWith({
         error: "Main error: string cause",
+        statusCode: 500,
       });
     });
 
@@ -236,6 +241,7 @@ describe("expressAdapter", () => {
 
       expect(res.json).toHaveBeenCalledWith({
         error: "Main error",
+        statusCode: 500,
       });
     });
   });

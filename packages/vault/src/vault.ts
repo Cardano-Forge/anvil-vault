@@ -1,6 +1,5 @@
 import { signDataWallet } from "@anvil-vault/cms";
 import { type ExtractKeysOutput, deriveAddresses, signTransaction } from "@anvil-vault/csl";
-import { VaultError } from "@anvil-vault/handler";
 import type {
   Derivation,
   DeriveWalletOutput,
@@ -8,6 +7,7 @@ import type {
   RequiredVaultConfig,
   VaultConfig,
 } from "@anvil-vault/handler";
+import { VaultError } from "@anvil-vault/utils";
 import { parseFromHex } from "@anvil-vault/utils";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";

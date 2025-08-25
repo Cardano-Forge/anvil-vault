@@ -1,6 +1,5 @@
-import type { MaybePromise } from "@anvil-vault/utils";
+import type { MaybePromise, VaultError } from "@anvil-vault/utils";
 import type { Result } from "trynot";
-import type { VaultError } from "./errors";
 
 // biome-ignore lint/suspicious/noExplicitAny: any params are fine
 export type AnyParams = any[];
