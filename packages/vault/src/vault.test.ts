@@ -1,5 +1,5 @@
-import { VaultError } from "@anvil-vault/handler";
 import type { IVault, VaultConfig } from "@anvil-vault/handler";
+import { VaultError } from "@anvil-vault/utils";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { assert, isErr, isOk } from "trynot";
 import { beforeEach, describe, expect, it } from "vitest";

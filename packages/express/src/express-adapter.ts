@@ -1,4 +1,5 @@
 import type { HandlerAdapter } from "@anvil-vault/handler";
+import { errorToJson } from "@anvil-vault/utils";
 import type { Request, Response } from "express";
 import { isErr } from "trynot";
 
@@ -22,20 +23,3 @@ export const expressAdapter: ExpressAdapter = {
     }
   },
 };
-
-type JsonError = {
-  message: string;
-  cause?: JsonError;
-};
-
-function errorToJson(error: unknown): JsonError | undefined {
-  if (error instanceof Error) {
-    const res: JsonError = { message: error.message };
-    const cause = errorToJson(error.cause);
-    if (cause) {
-      res.cause = cause;
-    }
-    return res;
-  }
-  return undefined;
-}

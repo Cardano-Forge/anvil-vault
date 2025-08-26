@@ -25,8 +25,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(1);
     });
@@ -40,8 +42,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(2);
     });
@@ -56,8 +60,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(1);
     });
@@ -72,8 +78,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(1);
     });
@@ -88,8 +96,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(1);
     });
@@ -120,8 +130,10 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       assert(vkeys, "vkeys should be present");
       expect(vkeys.length).toBe(2);
     });
@@ -172,9 +184,127 @@ describe("signTransaction", () => {
       const result = signTransaction(input);
 
       assert(isOk(result), "Result should not be an error");
-      expect(result).toBeInstanceOf(FixedTransaction);
-      const vkeys = result.witness_set().vkeys()?.to_js_value();
+      expect(result.signedTransaction).toBeInstanceOf(FixedTransaction);
+      expect(result.witnessSet).toBeDefined();
+      const vkeys = result.witnessSet.vkeys()?.to_js_value();
       expect(vkeys?.length || 0).toBe(0);
+    });
+  });
+
+  describe("witnessSet validation", () => {
+    it("should return separate witnessSet with correct signature data", () => {
+      const input: SignTransactionInput = {
+        transaction: validTransactionHex,
+        privateKeys: [validPrivateKeyHex],
+      };
+
+      const result = signTransaction(input);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+
+      // Validate witness set contains correct number of signatures
+      const witnessVkeys = result.witnessSet.vkeys()?.to_js_value();
+      assert(witnessVkeys, "witness vkeys should be present");
+      expect(witnessVkeys.length).toBe(1);
+
+      // Validate signed transaction also has the same signatures
+      const signedTxVkeys = result.signedTransaction.witness_set().vkeys()?.to_js_value();
+      assert(signedTxVkeys, "signed transaction vkeys should be present");
+      expect(signedTxVkeys.length).toBe(1);
+
+      // Both witness sets should contain the same signature data
+      expect(witnessVkeys[0].vkey).toBe(signedTxVkeys[0].vkey);
+      expect(witnessVkeys[0].signature).toBe(signedTxVkeys[0].signature);
+    });
+
+    it("should return witnessSet with multiple signatures when multiple keys provided", () => {
+      const input: SignTransactionInput = {
+        transaction: validTransactionHex,
+        privateKeys: [validPrivateKeyHex, secondPrivateKeyHex],
+      };
+
+      const result = signTransaction(input);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result.witnessSet).toBeDefined();
+      expect(result.witnessSet.vkeys()).toBeDefined();
+
+      const witnessVkeys = result.witnessSet.vkeys()?.to_js_value();
+      assert(witnessVkeys, "witness vkeys should be present");
+      expect(witnessVkeys.length).toBe(2);
+
+      // Each signature should have different vkey (public key)
+      expect(witnessVkeys[0].vkey).not.toBe(witnessVkeys[1].vkey);
+      expect(witnessVkeys[0].signature).not.toBe(witnessVkeys[1].signature);
+    });
+
+    it("should return empty witnessSet when no private keys provided", () => {
+      const input: SignTransactionInput = {
+        transaction: validTransactionHex,
+        privateKeys: [],
+      };
+
+      const result = signTransaction(input);
+
+      assert(isOk(result), "Result should not be an error");
+      expect(result.witnessSet).toBeDefined();
+
+      const witnessVkeys = result.witnessSet.vkeys()?.to_js_value();
+      expect(witnessVkeys?.length || 0).toBe(0);
+    });
+
+    it("should only include new signatures in witnessSet, not existing ones from partially signed transaction", () => {
+      // First, create a partially signed transaction
+      const firstSignInput: SignTransactionInput = {
+        transaction: validTransactionHex,
+        privateKeys: [validPrivateKeyHex],
+      };
+
+      const firstSignResult = signTransaction(firstSignInput);
+      assert(isOk(firstSignResult), "First signing should not be an error");
+
+      // Verify the first signature is present in the signed transaction
+      const firstSignedTxVkeys = firstSignResult.signedTransaction
+        .witness_set()
+        .vkeys()
+        ?.to_js_value();
+      assert(firstSignedTxVkeys, "first signed transaction vkeys should be present");
+      expect(firstSignedTxVkeys.length).toBe(1);
+      const firstSignatureVkey = firstSignedTxVkeys[0].vkey;
+
+      // Now sign the partially signed transaction with a second key
+      const secondSignInput: SignTransactionInput = {
+        transaction: firstSignResult.signedTransaction,
+        privateKeys: [secondPrivateKeyHex],
+      };
+
+      const secondSignResult = signTransaction(secondSignInput);
+      assert(isOk(secondSignResult), "Second signing should not be an error");
+
+      // The final signed transaction should have both signatures
+      const finalSignedTxVkeys = secondSignResult.signedTransaction
+        .witness_set()
+        .vkeys()
+        ?.to_js_value();
+      assert(finalSignedTxVkeys, "final signed transaction vkeys should be present");
+      expect(finalSignedTxVkeys.length).toBe(2);
+
+      // But the witnessSet should ONLY contain the new signature, not the existing one
+      const witnessSetVkeys = secondSignResult.witnessSet.vkeys()?.to_js_value();
+      assert(witnessSetVkeys, "witness set vkeys should be present");
+      expect(witnessSetVkeys.length).toBe(1);
+
+      // The witnessSet should not contain the first signature
+      const witnessSetVkey = witnessSetVkeys[0].vkey;
+      expect(witnessSetVkey).not.toBe(firstSignatureVkey);
+
+      // Verify the witnessSet contains the second signature by checking it matches one of the final signatures
+      const secondSignatureVkey = finalSignedTxVkeys.find(
+        (vkey) => vkey.vkey !== firstSignatureVkey,
+      )?.vkey;
+      expect(witnessSetVkey).toBe(secondSignatureVkey);
     });
   });
 });

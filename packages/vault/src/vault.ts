@@ -1,6 +1,5 @@
 import { signDataWallet } from "@anvil-vault/cms";
 import { type ExtractKeysOutput, deriveAddresses, signTransaction } from "@anvil-vault/csl";
-import { VaultError } from "@anvil-vault/handler";
 import type {
   Derivation,
   DeriveWalletOutput,
@@ -8,6 +7,7 @@ import type {
   RequiredVaultConfig,
   VaultConfig,
 } from "@anvil-vault/handler";
+import { VaultError } from "@anvil-vault/utils";
 import { parseFromHex } from "@anvil-vault/utils";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
@@ -115,7 +115,7 @@ export class Vault implements IVault {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
-          const signedTransaction = unwrap(
+          const { signedTransaction, witnessSet } = unwrap(
             signTransaction({
               transaction: input.transaction,
               privateKeys: [wallet.paymentKey.to_raw_key()],
@@ -123,6 +123,7 @@ export class Vault implements IVault {
           );
           return {
             signedTransaction: signedTransaction.to_hex(),
+            witnessSet: witnessSet.to_hex(),
           };
         }),
       );

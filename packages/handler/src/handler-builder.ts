@@ -1,6 +1,5 @@
-import { objectSchema, stringSchema } from "@anvil-vault/utils";
+import { VaultError, objectSchema, stringSchema } from "@anvil-vault/utils";
 import { type Result, isErr } from "trynot";
-import { VaultError } from "./errors";
 import type { AnyParams, HandlerAdapter } from "./handler-types";
 import type { IVault } from "./types";
 

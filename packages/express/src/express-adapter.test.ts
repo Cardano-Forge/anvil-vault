@@ -1,4 +1,4 @@
-import { VaultError } from "@anvil-vault/handler";
+import { VaultError } from "@anvil-vault/utils";
 import type { Request, Response } from "express";
 import { describe, expect, it, vi } from "vitest";
 import { expressAdapter } from "./express-adapter";
@@ -137,14 +137,12 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(422);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Test error",
-        cause: {
-          message: "Root cause",
-        },
+        error: "Test error: Root cause",
+        statusCode: 422,
       });
     });
 
-    it("should send error response with nested causes", async () => {
+    it("should send error response with nested causes keeping only the first cause", async () => {
       const req = createMockRequest();
       const res = createMockResponse();
       const context = { req, res };
@@ -163,13 +161,8 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
-        cause: {
-          message: "Middle cause",
-          cause: {
-            message: "Root cause",
-          },
-        },
+        error: "Main error: Middle cause",
+        statusCode: 500,
       });
     });
 
@@ -187,7 +180,8 @@ describe("expressAdapter", () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
-        message: "Simple error",
+        error: "Simple error",
+        statusCode: 400,
       });
     });
   });
@@ -208,10 +202,8 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Wrapper error",
-        cause: {
-          message: "Test error",
-        },
+        error: "Wrapper error: Test error",
+        statusCode: 500,
       });
     });
 
@@ -229,7 +221,8 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
+        error: "Main error: string cause",
+        statusCode: 500,
       });
     });
 
@@ -247,7 +240,8 @@ describe("expressAdapter", () => {
       expressAdapter.sendResponse(context, vaultError);
 
       expect(res.json).toHaveBeenCalledWith({
-        message: "Main error",
+        error: "Main error",
+        statusCode: 500,
       });
     });
   });

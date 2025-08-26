@@ -1,0 +1,38 @@
+{
+  "name": "@anvil-vault/express-example",
+  "version": "0.0.0",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Cardano-Forge",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsup --config build.tsup.ts",
+    "check": "tsc --noEmit",
+    "emit": "tsup --config emit.tsup.ts",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch --passWithNoTests"
+  },
+  "dependencies": {
+    "@anvil-vault/express": "*",
+    "@anvil-vault/handler": "*",
+    "@anvil-vault/vault": "*",
+    "express": "^5.1.0",
+    "trynot": "^0.0.2"
+  },
+  "devDependencies": {
+    "@anvil-vault/tsconfig": "*",
+    "@anvil-vault/tsup": "*",
+    "@types/express": "^5.0.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.4"
+  }
+}

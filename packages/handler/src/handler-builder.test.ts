@@ -1,6 +1,6 @@
+import { VaultError } from "@anvil-vault/utils";
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it, vi } from "vitest";
-import { VaultError } from "./errors";
 import { createVaultHandler, handleVaultRequest } from "./handler-builder";
 import type { HandlerAdapter } from "./handler-types";
 import type { IVault } from "./types";
@@ -410,6 +410,7 @@ describe("handleVaultRequest", () => {
       const vault = createMockVault();
       const expectedResponse = {
         signedTransaction: "signed-tx-hex",
+        witnessSet: "witness-set-hex",
       };
       vi.mocked(vault.signTransaction).mockResolvedValue(expectedResponse);
 
