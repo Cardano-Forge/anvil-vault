@@ -115,7 +115,7 @@ export class Vault implements IVault {
     try {
       return await unwrap(
         this._withDerivedWallet(input, async (wallet) => {
-          const signedTransaction = unwrap(
+          const { signedTransaction, witnessSet } = unwrap(
             signTransaction({
               transaction: input.transaction,
               privateKeys: [wallet.paymentKey.to_raw_key()],
@@ -123,6 +123,7 @@ export class Vault implements IVault {
           );
           return {
             signedTransaction: signedTransaction.to_hex(),
+            witnessSet: witnessSet.to_hex(),
           };
         }),
       );

@@ -81,6 +81,7 @@ export type IVault = {
   }) => MaybePromise<
     Result<{
       signedTransaction: string;
+      witnessSet: string;
     }>
   >;
 };

@@ -3,6 +3,8 @@ import {
   FixedTransaction,
   PrivateKey,
   Transaction,
+  TransactionWitnessSet,
+  Vkeywitnesses,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { type Result, parseError, unwrap } from "trynot";
 
@@ -11,10 +13,15 @@ export type SignTransactionInput = {
   privateKeys: Array<PrivateKey | string>;
 };
 
+export type SignTransactionOutput = {
+  signedTransaction: FixedTransaction;
+  witnessSet: TransactionWitnessSet;
+};
+
 /**
  * Signs a transaction with the given private keys.
  */
-export function signTransaction(input: SignTransactionInput): Result<FixedTransaction> {
+export function signTransaction(input: SignTransactionInput): Result<SignTransactionOutput> {
   try {
     let fixedTx: FixedTransaction;
     if (input.transaction instanceof Transaction) {
@@ -23,11 +30,26 @@ export function signTransaction(input: SignTransactionInput): Result<FixedTransa
       fixedTx = unwrap(parseFromHex(input.transaction, FixedTransaction));
     }
 
+    const vkeys = Vkeywitnesses.new();
+
     for (const privateKeyInput of input.privateKeys) {
+      const nextIndex = fixedTx.witness_set().vkeys()?.len() ?? 0;
       const privateKey = unwrap(parseFromHex(privateKeyInput, PrivateKey));
       fixedTx.sign_and_add_vkey_signature(privateKey);
+      const vkey = fixedTx.witness_set().vkeys()?.get(nextIndex);
+      if (!vkey) {
+        return new Error("Failed to sign transaction");
+      }
+      vkeys.add(vkey);
     }
-    return fixedTx;
+
+    const witnessSet = TransactionWitnessSet.new();
+    witnessSet.set_vkeys(vkeys);
+
+    return {
+      signedTransaction: fixedTx,
+      witnessSet,
+    };
   } catch (error) {
     return parseError(error);
   }

@@ -410,6 +410,7 @@ describe("handleVaultRequest", () => {
       const vault = createMockVault();
       const expectedResponse = {
         signedTransaction: "signed-tx-hex",
+        witnessSet: "witness-set-hex",
       };
       vi.mocked(vault.signTransaction).mockResolvedValue(expectedResponse);
 
