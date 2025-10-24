@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - task/publish-vault
 
 env:
   NODE_OPTIONS: "--max_old_space_size=7000"
