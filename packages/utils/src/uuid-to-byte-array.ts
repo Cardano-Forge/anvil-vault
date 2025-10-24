@@ -1,4 +1,4 @@
-import { type Result, parseError } from "trynot";
+import { parseError, type Result } from "trynot";
 
 export function uuidToByteArray(uuid: string): Result<number[]> {
   try {

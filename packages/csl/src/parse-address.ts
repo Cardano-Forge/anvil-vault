@@ -6,7 +6,7 @@ import {
   PointerAddress,
   RewardAddress,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError } from "trynot";
+import { parseError, type Result } from "trynot";
 
 export type ParsedAddress = BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress;
 

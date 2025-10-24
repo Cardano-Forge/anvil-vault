@@ -1,6 +1,6 @@
 import { assert, isErr, isOk } from "trynot";
 import { describe, expect, it } from "vitest";
-import { type ParsedSchema, ValidationError, objectSchema, stringSchema } from "./validation";
+import { objectSchema, type ParsedSchema, stringSchema, ValidationError } from "./validation";
 
 describe("ValidationError", () => {
   it("should create error with message and default empty path", () => {

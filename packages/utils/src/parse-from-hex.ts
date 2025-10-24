@@ -1,4 +1,4 @@
-import { type Result, parseError } from "trynot";
+import { parseError, type Result } from "trynot";
 
 // biome-ignore lint/suspicious/noExplicitAny: don't care about the constructor if input is always undefined
 export function parseFromHex(hexOrInstance: undefined, HexConstuctor?: any): undefined;

@@ -5,7 +5,7 @@ import {
   FixedTransaction,
   Transaction,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError, unwrap } from "trynot";
+import { parseError, type Result, unwrap } from "trynot";
 
 export type TransactionInput = Transaction | FixedTransaction | string;
 

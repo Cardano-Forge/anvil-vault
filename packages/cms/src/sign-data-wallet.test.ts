@@ -15,7 +15,7 @@ import {
   RewardAddress,
   ScriptHash,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { assert, type Result, isErr, isOk } from "trynot";
+import { assert, isErr, isOk, type Result } from "trynot";
 import { describe, expect, it } from "vitest";
 import { type SignDataWalletOutput, signDataWallet } from "./sign-data-wallet";
 

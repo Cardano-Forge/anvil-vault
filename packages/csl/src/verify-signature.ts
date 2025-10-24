@@ -1,6 +1,6 @@
 import { parseFromHex } from "@anvil-vault/utils";
 import { Ed25519Signature, PublicKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError, unwrap } from "trynot";
+import { parseError, type Result, unwrap } from "trynot";
 
 export type VerifySignatureInput = {
   signature: Ed25519Signature | string;

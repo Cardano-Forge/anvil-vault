@@ -6,8 +6,8 @@ import {
   EnterpriseAddress,
   RewardAddress,
 } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError, unwrap } from "trynot";
-import { type Network, type NetworkId, getNetworkId } from "./network";
+import { parseError, type Result, unwrap } from "trynot";
+import { getNetworkId, type Network, type NetworkId } from "./network";
 
 export type DeriveAddressesInput = {
   paymentKey: Bip32PrivateKey | string;

@@ -1,4 +1,4 @@
-import { type Result, isErr } from "trynot";
+import { isErr, type Result } from "trynot";
 
 export class ValidationError extends Error {
   public path: string[];

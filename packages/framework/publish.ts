@@ -1,8 +1,7 @@
-import { copyFile, readFile, writeFile } from "node:fs/promises";
-import { readdir } from "node:fs/promises";
+import { copyFile, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { type Options, build } from "tsup";
-import internalPkg from "./package.json" assert { type: "json" };
+import { build, type Options } from "tsup";
+import internalPkg from "./package.json" with { type: "json" };
 
 const OUT_DIR = "out";
 const INTERNAL_PKG_ORG = "@anvil-vault";

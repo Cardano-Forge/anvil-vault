@@ -54,9 +54,7 @@ export type VaultConfig = RequiredVaultConfig & {
 };
 
 export type IVault = {
-  getWallet: (input: {
-    userId: string;
-  }) => MaybePromise<
+  getWallet: (input: { userId: string }) => MaybePromise<
     Result<{
       addresses: {
         base: { bech32: string; hex: string };
@@ -65,20 +63,13 @@ export type IVault = {
       };
     }>
   >;
-  signData: (input: {
-    userId: string;
-    payload: string;
-    externalAad?: string;
-  }) => MaybePromise<
+  signData: (input: { userId: string; payload: string; externalAad?: string }) => MaybePromise<
     Result<{
       signature: string;
       key: string;
     }>
   >;
-  signTransaction: (input: {
-    userId: string;
-    transaction: string;
-  }) => MaybePromise<
+  signTransaction: (input: { userId: string; transaction: string }) => MaybePromise<
     Result<{
       signedTransaction: string;
       witnessSet: string;

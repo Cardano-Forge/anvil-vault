@@ -1,5 +1,5 @@
 import { uuidToByteArray } from "@anvil-vault/utils";
-import { type Result, parseError, unwrap } from "trynot";
+import { parseError, type Result, unwrap } from "trynot";
 import type { Derivation } from "./types";
 
 export type GetDerivationInput<TContext = undefined> = {

@@ -1,6 +1,6 @@
 import { mnemonicToEntropy, validateMnemonic } from "bip39";
-import { type Result, parseError, unwrap } from "trynot";
-import { type BuiltinWordList, type WordList, defaultWordList, getWordList } from "./wordlists";
+import { parseError, type Result, unwrap } from "trynot";
+import { type BuiltinWordList, defaultWordList, getWordList, type WordList } from "./wordlists";
 
 export type Entropy = string;
 

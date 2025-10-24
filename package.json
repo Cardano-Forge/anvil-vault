@@ -2,7 +2,10 @@
   "name": "anvil-vault",
   "version": "0.0.0",
   "private": true,
-  "workspaces": ["packages/*", "examples/*"],
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
     "dev": "turbo watch dev",
     "build": "turbo run build",
@@ -18,7 +21,7 @@
     "sherif": "sherif --fix"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.0",
+    "@biomejs/biome": "2.0.6",
     "@types/node": "^22.13.1",
     "dotenv-cli": "^7.4.2",
     "knip": "^5.50.5",

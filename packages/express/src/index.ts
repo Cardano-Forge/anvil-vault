@@ -1,1 +1,1 @@
-export { expressAdapter, type ExpressAdapter } from "./express-adapter";
+export { type ExpressAdapter, expressAdapter } from "./express-adapter";

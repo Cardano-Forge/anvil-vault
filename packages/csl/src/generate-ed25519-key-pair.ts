@@ -1,5 +1,5 @@
 import { PrivateKey, type PublicKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError } from "trynot";
+import { parseError, type Result } from "trynot";
 
 export type GenerateKeyPairOutput = {
   privateKey: PrivateKey;

@@ -1,6 +1,6 @@
 import { parseFromHex } from "@anvil-vault/utils";
 import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { type Result, parseError, unwrap } from "trynot";
+import { parseError, type Result, unwrap } from "trynot";
 
 export type DerivePrivateKeyInput = {
   entropy: Buffer | string;

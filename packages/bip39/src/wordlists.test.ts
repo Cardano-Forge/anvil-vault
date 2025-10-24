@@ -2,9 +2,9 @@ import { assert, isErr } from "trynot";
 import { describe, expect, it } from "vitest";
 import {
   type BuiltinWordList,
-  type WordList,
   builtinWordLists,
   getWordList,
+  type WordList,
   wordListLength,
 } from "./wordlists";
 

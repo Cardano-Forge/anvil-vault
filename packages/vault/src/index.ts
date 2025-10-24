@@ -1,2 +1,2 @@
-export { deriveWallet, type DeriveWalletInput } from "./derive-wallet";
-export { Vault, DEFAULT_VAULT_DERIVATIONS } from "./vault";
+export { type DeriveWalletInput, deriveWallet } from "./derive-wallet";
+export { DEFAULT_VAULT_DERIVATIONS, Vault } from "./vault";
