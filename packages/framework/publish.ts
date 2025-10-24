@@ -83,10 +83,13 @@ async function copyPackageJson() {
       { "./package.json": "./package.json" } as Exports,
     ),
     peerDependencies: externalDeps,
-    peerDependenciesMeta: Object.keys(externalDeps).reduce((acc, key) => {
-      acc[key] = { optional: true };
-      return acc;
-    }, {}),
+    peerDependenciesMeta: Object.keys(externalDeps).reduce<{ [index: string]: { optional: true } }>(
+      (acc, key) => {
+        acc[key] = { optional: true };
+        return acc;
+      },
+      {},
+    ),
   };
 
   await writeFile(path.join(OUT_DIR, "package.json"), JSON.stringify(pkg, null, 2));
