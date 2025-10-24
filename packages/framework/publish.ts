@@ -3,6 +3,7 @@ import path from "node:path";
 import { build, type Options } from "tsup";
 import internalPkg from "./package.json" with { type: "json" };
 
+const PUBLISHED_PKG_NAME = "@cardano-forge/vault";
 const OUT_DIR = "out";
 const INTERNAL_PKG_ORG = "@anvil-vault";
 const INTERNAL_IMPORT_REGEX = new RegExp(
@@ -59,7 +60,7 @@ async function copyPackageJson() {
   );
 
   const pkg = {
-    name: internalPkg.name,
+    name: PUBLISHED_PKG_NAME,
     version: internalPkg.version,
     keywords: internalPkg.keywords,
     author: internalPkg.author,
