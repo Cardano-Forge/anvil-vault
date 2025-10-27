@@ -31,8 +31,8 @@ app.use(
   }),
 );
 
-const server = app.listen(3000, () => {
-  console.log("listening on port 3000");
+const server = app.listen(3001, () => {
+  console.log("listening on port 3001");
 });
 
 process.on("SIGINT", () => {
