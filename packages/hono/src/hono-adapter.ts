@@ -4,7 +4,11 @@ import type { Context, Env } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { isErr } from "trynot";
 
-export type HonoAdapter<TEnv extends Env = Env> = HandlerAdapter<[c: Context<TEnv>], Context, void>;
+export type HonoAdapter<TEnv extends Env = Env> = HandlerAdapter<
+  [c: Context<TEnv>],
+  Context,
+  Response
+>;
 
 export const honoAdapter: HonoAdapter = {
   getContext: (c) => c,
@@ -14,9 +18,8 @@ export const honoAdapter: HonoAdapter = {
   getQuery: (ctx) => ctx.req.query(),
   sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      ctx.json(errorToJson(result), result.statusCode as ContentfulStatusCode);
-    } else {
-      ctx.json(result.response, 200);
+      return ctx.json(errorToJson(result), result.statusCode as ContentfulStatusCode);
     }
+    return ctx.json(result.response, 200);
   },
 };
