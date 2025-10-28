@@ -22,10 +22,15 @@ app.use(
         scrambler: (path) => path.reverse(),
       },
     }),
-    adapter: honoAdapter,
+    adapter: {
+      ...honoAdapter,
+      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
+    },
   }),
 );
-const server = serve(app);
+const server = serve(app, (info) => {
+  console.log(`listening on port ${info.port}`);
+});
 
 // graceful shutdown
 process.on("SIGINT", () => {
