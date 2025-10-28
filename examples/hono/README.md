@@ -37,7 +37,7 @@ GET http://localhost:3000/users/me/wallet
 
 This endpoint returns wallet information provided by the example adapter. See `src/index.ts` for implementation details.
 
-Complete vault api definition can be found in [`hanlder-builder.ts`]("../../../../packages/handler/src/handler-builder.ts")
+Complete vault api definition can be found in [`hanlder-builder.ts`](../../../../packages/handler/src/handler-builder.ts)
 
 
 ## Project layout
