@@ -1,7 +1,8 @@
-import { expressAdapter } from "@anvil-vault/express";
 import { createVaultHandler } from "@anvil-vault/handler";
+import { honoAdapter } from "@anvil-vault/hono";
 import { Vault } from "@anvil-vault/vault";
-import express from "express";
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 
 const env = {
   ME: "f3aa7d40-58c2-44df-ba49-d4026c822571",
@@ -10,10 +11,7 @@ const env = {
   NETWORK: "preprod",
 } as const;
 
-const app = express();
-
-app.use(express.json());
-
+const app = new Hono();
 app.use(
   createVaultHandler({
     vault: new Vault({
@@ -25,18 +23,26 @@ app.use(
       },
     }),
     adapter: {
-      ...expressAdapter,
+      ...honoAdapter,
       getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
     },
   }),
 );
-
-const server = app.listen(3001, () => {
-  console.log("listening on port 3001");
+const server = serve(app, (info) => {
+  console.log(`listening on port ${info.port}`);
 });
 
+// graceful shutdown
 process.on("SIGINT", () => {
-  console.log("SIGINT received, exiting");
   server.close();
   process.exit(0);
+});
+process.on("SIGTERM", () => {
+  server.close((err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    process.exit(0);
+  });
 });

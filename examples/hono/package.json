@@ -1,21 +1,8 @@
 {
-  "name": "@anvil-vault/framework",
-  "version": "0.0.1",
-  "keywords": [
-    "cardano",
-    "anvil",
-    "vault",
-    "crypto",
-    "cryptography",
-    "blockchain",
-    "custodial",
-    "secure",
-    "wallet",
-    "javascript",
-    "typescript",
-    "ts",
-    "typesafe"
-  ],
+  "name": "@anvil-vault/hono-example",
+  "version": "0.0.0",
+  "keywords": [],
+  "license": "ISC",
   "author": "Cardano-Forge",
   "type": "module",
   "exports": {
@@ -26,28 +13,25 @@
   },
   "main": "./src/index.ts",
   "scripts": {
+    "dev": "tsx src/index.ts",
     "build": "tsup --config build.tsup.ts",
     "check": "tsc --noEmit",
     "emit": "tsup --config emit.tsup.ts",
     "test": "vitest --run --passWithNoTests",
-    "test:watch": "vitest --watch --passWithNoTests",
-    "publish": "tsx publish.ts"
+    "test:watch": "vitest --watch --passWithNoTests"
   },
   "dependencies": {
-    "@anvil-vault/bip39": "*",
-    "@anvil-vault/cms": "*",
-    "@anvil-vault/csl": "*",
-    "@anvil-vault/express": "*",
     "@anvil-vault/handler": "*",
     "@anvil-vault/hono": "*",
-    "@anvil-vault/utils": "*",
-    "@anvil-vault/vault": "*"
+    "@anvil-vault/vault": "*",
+    "@hono/node-server": "^1.19.5",
+    "hono": "^4.10.3",
+    "trynot": "^0.0.2"
   },
   "devDependencies": {
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
     "tsup": "^8.5.0",
-    "tsx": "^4.20.4",
     "typescript": "^5.6.2",
     "vitest": "^2.1.4"
   }
