@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="anvil-vaultutils">@anvil-vault/utils</h1>
+<p>Shared utility functions and types for the Anvil Vault ecosystem. This package provides error handling, validation, parsing, and type utilities used across all Anvil Vault packages.</p>
+<h2 id="installation">Installation</h2>
+<pre class="hljs"><code><div>npm install @anvil-vault/utils
+</div></code></pre>
+<h2 id="overview">Overview</h2>
+<p>The utils package includes:</p>
+<ul>
+<li><strong>Error Handling</strong>: Utilities for converting errors to JSON and strings</li>
+<li><strong>Validation</strong>: Schema-based validation with detailed error messages</li>
+<li><strong>Parsing</strong>: Hex and UUID parsing utilities</li>
+<li><strong>Type Utilities</strong>: TypeScript helper types</li>
+<li><strong>Cardano Utilities</strong>: Bech32 address validation</li>
+</ul>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="error-handling">Error Handling</h3>
+<h4 id="errortojsonerror-opts"><code>errorToJson(error, opts?)</code></h4>
+<p>Converts any error to a JSON-serializable object with status code.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>error: unknown</code> - The error to convert</li>
+<li><code>opts?: ErrorToJsonOpts</code> - Optional configuration
+<ul>
+<li><code>defaultStatusCode?: number</code> - Status code for non-VaultError errors (default: 500)</li>
+<li><code>defaultError?: string</code> - Fallback error message (default: &quot;Internal server error&quot;)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns:</strong> <code>ErrorToJsonOutput</code></p>
+<ul>
+<li><code>statusCode: number</code> - HTTP status code</li>
+<li><code>error: string</code> - Error message</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { errorToJson, VaultError } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> VaultError({ message: <span class="hljs-string">"Invalid input"</span>, statusCode: <span class="hljs-number">400</span> });
+} <span class="hljs-keyword">catch</span> (error) {
+  <span class="hljs-keyword">const</span> json = errorToJson(error);
+  <span class="hljs-comment">// { statusCode: 400, error: "Invalid input" }</span>
+}
+
+<span class="hljs-comment">// With custom defaults</span>
+<span class="hljs-keyword">const</span> json = errorToJson(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Something went wrong"</span>), {
+  defaultStatusCode: <span class="hljs-number">503</span>,
+  defaultError: <span class="hljs-string">"Service unavailable"</span>
+});
+<span class="hljs-comment">// { statusCode: 503, error: "Something went wrong" }</span>
+</div></code></pre>
+<h4 id="errortostringerror-opts"><code>errorToString(error, opts?)</code></h4>
+<p>Converts any error to a human-readable string, including nested causes.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>error: unknown</code> - The error to convert</li>
+<li><code>opts?: ErrorToStringOpts</code> - Optional configuration
+<ul>
+<li><code>cause?: boolean</code> - Include error causes in output (default: true)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns:</strong> <code>string | undefined</code> - Error message with causes</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { errorToString } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-keyword">const</span> error = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Failed to process"</span>, {
+  cause: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Database connection failed"</span>)
+});
+
+<span class="hljs-keyword">const</span> message = errorToString(error);
+<span class="hljs-comment">// "Failed to process: Database connection failed"</span>
+
+<span class="hljs-comment">// Without causes</span>
+<span class="hljs-keyword">const</span> messageNoCause = errorToString(error, { cause: <span class="hljs-literal">false</span> });
+<span class="hljs-comment">// "Failed to process"</span>
+</div></code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Handles nested error causes recursively</li>
+<li>Avoids duplicate messages in cause chains</li>
+<li>Works with string errors and Error objects</li>
+<li>Integrates with <code>trynot</code> library for Result types</li>
+</ul>
+<h4 id="vaulterror"><code>VaultError</code></h4>
+<p>Custom error class with HTTP status code support.</p>
+<p><strong>Constructor:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">new</span> VaultError({
+  message: <span class="hljs-built_in">string</span>,
+  statusCode: <span class="hljs-built_in">number</span>,
+  cause?: unknown
+})
+</div></code></pre>
+<p><strong>Properties:</strong></p>
+<ul>
+<li><code>message: string</code> - Error message</li>
+<li><code>statusCode: number</code> - HTTP status code</li>
+<li><code>name: &quot;VaultError&quot;</code> - Error name</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { VaultError } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> VaultError({
+  message: <span class="hljs-string">"User not found"</span>,
+  statusCode: <span class="hljs-number">404</span>
+});
+
+<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> VaultError({
+  message: <span class="hljs-string">"Failed to sign transaction"</span>,
+  statusCode: <span class="hljs-number">500</span>,
+  cause: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Invalid private key"</span>)
+});
+</div></code></pre>
+<h3 id="validation">Validation</h3>
+<h4 id="validationerror"><code>ValidationError</code></h4>
+<p>Custom error class for validation failures with path tracking.</p>
+<p><strong>Constructor:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">new</span> ValidationError(message: <span class="hljs-built_in">string</span>, opts?: { path?: <span class="hljs-built_in">string</span>[] })
+</div></code></pre>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><code>withPath(path: string | string[]): ValidationError</code> - Add path segments to the error</li>
+</ul>
+<p><strong>Properties:</strong></p>
+<ul>
+<li><code>message: string</code> - Error message with path (e.g., &quot;user.email: Expected a string&quot;)</li>
+<li><code>path: string[]</code> - Path segments to the invalid field</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { ValidationError } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-keyword">const</span> error = <span class="hljs-keyword">new</span> ValidationError(<span class="hljs-string">"Expected a string"</span>, { path: [<span class="hljs-string">"user"</span>, <span class="hljs-string">"email"</span>] });
+<span class="hljs-built_in">console</span>.log(error.message); <span class="hljs-comment">// "user.email: Expected a string"</span>
+
+<span class="hljs-keyword">const</span> nestedError = error.withPath(<span class="hljs-string">"request"</span>);
+<span class="hljs-built_in">console</span>.log(nestedError.message); <span class="hljs-comment">// "request.user.email: Expected a string"</span>
+</div></code></pre>
+<h4 id="stringschemaopts"><code>stringSchema(opts?)</code></h4>
+<p>Creates a schema for validating string values.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>opts?: { optional?: boolean }</code> - Make the string optional</li>
+</ul>
+<p><strong>Returns:</strong> <code>Schema&lt;string&gt;</code> or <code>Schema&lt;string | undefined&gt;</code></p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { stringSchema } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+<span class="hljs-keyword">import</span> { isErr } <span class="hljs-keyword">from</span> <span class="hljs-string">"trynot"</span>;
+
+<span class="hljs-keyword">const</span> schema = stringSchema();
+<span class="hljs-keyword">const</span> result = schema.parse(<span class="hljs-string">"hello"</span>);
+<span class="hljs-keyword">if</span> (!isErr(result)) {
+  <span class="hljs-built_in">console</span>.log(result); <span class="hljs-comment">// "hello"</span>
+}
+
+<span class="hljs-keyword">const</span> optionalSchema = stringSchema({ optional: <span class="hljs-literal">true</span> });
+<span class="hljs-keyword">const</span> undefinedResult = optionalSchema.parse(<span class="hljs-literal">undefined</span>);
+<span class="hljs-keyword">if</span> (!isErr(undefinedResult)) {
+  <span class="hljs-built_in">console</span>.log(undefinedResult); <span class="hljs-comment">// undefined</span>
+}
+
+<span class="hljs-keyword">const</span> invalidResult = schema.parse(<span class="hljs-number">123</span>);
+<span class="hljs-keyword">if</span> (isErr(invalidResult)) {
+  <span class="hljs-built_in">console</span>.log(invalidResult.message); <span class="hljs-comment">// "Expected a string, received number"</span>
+}
+</div></code></pre>
+<h4 id="objectschemarecord"><code>objectSchema(record)</code></h4>
+<p>Creates a schema for validating objects with typed fields.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>record: Record&lt;string, Schema&gt;</code> - Object defining the schema for each field</li>
+</ul>
+<p><strong>Returns:</strong> <code>Schema&lt;ParsedSchema&lt;T&gt;&gt;</code> - Schema that validates and types the object</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { objectSchema, stringSchema } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+<span class="hljs-keyword">import</span> { isErr } <span class="hljs-keyword">from</span> <span class="hljs-string">"trynot"</span>;
+
+<span class="hljs-keyword">const</span> userSchema = objectSchema({
+  name: stringSchema(),
+  email: stringSchema(),
+  bio: stringSchema({ optional: <span class="hljs-literal">true</span> })
+});
+
+<span class="hljs-keyword">const</span> result = userSchema.parse({
+  name: <span class="hljs-string">"Alice"</span>,
+  email: <span class="hljs-string">"alice@example.com"</span>
+});
+
+<span class="hljs-keyword">if</span> (!isErr(result)) {
+  <span class="hljs-built_in">console</span>.log(result.name); <span class="hljs-comment">// "Alice" (fully typed)</span>
+  <span class="hljs-built_in">console</span>.log(result.bio);  <span class="hljs-comment">// undefined</span>
+}
+
+<span class="hljs-keyword">const</span> invalidResult = userSchema.parse({
+  name: <span class="hljs-string">"Bob"</span>,
+  email: <span class="hljs-number">123</span> <span class="hljs-comment">// Invalid type</span>
+});
+
+<span class="hljs-keyword">if</span> (isErr(invalidResult)) {
+  <span class="hljs-built_in">console</span>.log(invalidResult.message); <span class="hljs-comment">// "email: Expected a string, received number"</span>
+}
+</div></code></pre>
+<h4 id="schemat"><code>Schema&lt;T&gt;</code></h4>
+<p>Base schema type for validation.</p>
+<p><strong>Type:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">type</span> Schema&lt;T&gt; = {
+  parse: <span class="hljs-function">(<span class="hljs-params">value: unknown</span>) =&gt;</span> Result&lt;T, ValidationError&gt;;
+};
+</div></code></pre>
+<h4 id="parsedschemat"><code>ParsedSchema&lt;T&gt;</code></h4>
+<p>Utility type that extracts the parsed type from a schema.</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { ParsedSchema } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-keyword">const</span> schema = objectSchema({
+  name: stringSchema(),
+  age: stringSchema()
+});
+
+<span class="hljs-keyword">type</span> User = ParsedSchema&lt;<span class="hljs-keyword">typeof</span> schema&gt;;
+<span class="hljs-comment">// { name: string; age: string }</span>
+</div></code></pre>
+<h3 id="parsing-utilities">Parsing Utilities</h3>
+<h4 id="parsefromhexhexorinstance-hexconstructor"><code>parseFromHex(hexOrInstance, HexConstructor?)</code></h4>
+<p>Parses a hex string or returns the instance if already parsed. Works with Cardano Serialization Library types.</p>
+<p><strong>Overloads:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">// Parse to Buffer</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseFromHex</span>(<span class="hljs-params">hexOrInstance: <span class="hljs-built_in">string</span> | Buffer</span>): <span class="hljs-title">Result</span>&lt;<span class="hljs-title">Buffer</span>&gt;</span>;
+
+<span class="hljs-comment">// Parse with CSL constructor</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseFromHex</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  hexOrInstance: <span class="hljs-built_in">string</span> | T,
+  HexConstructor: { from_hex: (hex: <span class="hljs-built_in">string</span>) =&gt; T }
+</span>): <span class="hljs-title">Result</span>&lt;<span class="hljs-title">T</span>&gt;</span>;
+
+<span class="hljs-comment">// Handle undefined</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseFromHex</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  hexOrInstance: <span class="hljs-built_in">string</span> | T | <span class="hljs-literal">undefined</span>,
+  HexConstructor?: { from_hex: (hex: <span class="hljs-built_in">string</span>) =&gt; T }
+</span>): <span class="hljs-title">Result</span>&lt;<span class="hljs-title">T</span> | <span class="hljs-title">undefined</span>&gt;</span>;
+</div></code></pre>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { parseFromHex } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+<span class="hljs-keyword">import</span> { Transaction } <span class="hljs-keyword">from</span> <span class="hljs-string">"@emurgo/cardano-serialization-lib-nodejs"</span>;
+<span class="hljs-keyword">import</span> { isErr } <span class="hljs-keyword">from</span> <span class="hljs-string">"trynot"</span>;
+
+<span class="hljs-comment">// Parse to Buffer</span>
+<span class="hljs-keyword">const</span> buffer = parseFromHex(<span class="hljs-string">"48656c6c6f"</span>);
+<span class="hljs-keyword">if</span> (!isErr(buffer)) {
+  <span class="hljs-built_in">console</span>.log(buffer.toString()); <span class="hljs-comment">// "Hello"</span>
+}
+
+<span class="hljs-comment">// Parse with CSL constructor</span>
+<span class="hljs-keyword">const</span> txHex = <span class="hljs-string">"84a500d90102..."</span>;
+<span class="hljs-keyword">const</span> tx = parseFromHex(txHex, Transaction);
+<span class="hljs-keyword">if</span> (!isErr(tx)) {
+  <span class="hljs-built_in">console</span>.log(tx.to_hex());
+}
+
+<span class="hljs-comment">// Already parsed - returns as-is</span>
+<span class="hljs-keyword">const</span> existingTx = Transaction.from_hex(txHex);
+<span class="hljs-keyword">const</span> result = parseFromHex(existingTx, Transaction);
+<span class="hljs-keyword">if</span> (!isErr(result)) {
+  <span class="hljs-built_in">console</span>.log(result === existingTx); <span class="hljs-comment">// true</span>
+}
+</div></code></pre>
+<h4 id="uuidtobytearrayuuid"><code>uuidToByteArray(uuid)</code></h4>
+<p>Converts a UUID string to a byte array.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>uuid: string</code> - UUID in standard format (with or without dashes)</li>
+</ul>
+<p><strong>Returns:</strong> <code>Result&lt;number[]&gt;</code> - Array of 16 bytes</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { uuidToByteArray } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+<span class="hljs-keyword">import</span> { isErr } <span class="hljs-keyword">from</span> <span class="hljs-string">"trynot"</span>;
+
+<span class="hljs-keyword">const</span> bytes = uuidToByteArray(<span class="hljs-string">"550e8400-e29b-41d4-a716-446655440000"</span>);
+<span class="hljs-keyword">if</span> (!isErr(bytes)) {
+  <span class="hljs-built_in">console</span>.log(bytes); <span class="hljs-comment">// [0x55, 0x0e, 0x84, 0x00, ...]</span>
+  <span class="hljs-built_in">console</span>.log(bytes.length); <span class="hljs-comment">// 16</span>
+}
+
+<span class="hljs-comment">// Works without dashes</span>
+<span class="hljs-keyword">const</span> bytes2 = uuidToByteArray(<span class="hljs-string">"550e8400e29b41d4a716446655440000"</span>);
+
+<span class="hljs-comment">// Works with uppercase</span>
+<span class="hljs-keyword">const</span> bytes3 = uuidToByteArray(<span class="hljs-string">"550E8400-E29B-41D4-A716-446655440000"</span>);
+
+<span class="hljs-comment">// Invalid UUID</span>
+<span class="hljs-keyword">const</span> invalid = uuidToByteArray(<span class="hljs-string">"not-a-uuid"</span>);
+<span class="hljs-keyword">if</span> (isErr(invalid)) {
+  <span class="hljs-built_in">console</span>.log(invalid.message); <span class="hljs-comment">// "Invalid UUID"</span>
+}
+</div></code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Accepts UUIDs with or without dashes</li>
+<li>Case-insensitive</li>
+<li>Returns error for invalid UUIDs</li>
+<li>Validates hex characters</li>
+</ul>
+<h3 id="cardano-utilities">Cardano Utilities</h3>
+<h4 id="isbech32addressaddress"><code>isBech32Address(address)</code></h4>
+<p>Checks if a string is a Cardano bech32-encoded address.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>address: string</code> - The address string to check</li>
+</ul>
+<p><strong>Returns:</strong> <code>boolean</code> - True if the address uses bech32 encoding</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { isBech32Address } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-comment">// Valid bech32 addresses</span>
+isBech32Address(<span class="hljs-string">"addr1qx..."</span>); <span class="hljs-comment">// true</span>
+isBech32Address(<span class="hljs-string">"addr_test1qx..."</span>); <span class="hljs-comment">// true</span>
+isBech32Address(<span class="hljs-string">"stake1ux..."</span>); <span class="hljs-comment">// true</span>
+isBech32Address(<span class="hljs-string">"stake_test1ux..."</span>); <span class="hljs-comment">// true</span>
+
+<span class="hljs-comment">// Invalid addresses</span>
+isBech32Address(<span class="hljs-string">"00a1b2c3..."</span>); <span class="hljs-comment">// false (hex format)</span>
+isBech32Address(<span class="hljs-string">"addr"</span>); <span class="hljs-comment">// false (too short)</span>
+isBech32Address(<span class="hljs-string">"invalid"</span>); <span class="hljs-comment">// false</span>
+</div></code></pre>
+<p><strong>Supported Prefixes:</strong></p>
+<ul>
+<li><code>addr</code> - Payment addresses (mainnet)</li>
+<li><code>addr_test</code> - Payment addresses (testnet)</li>
+<li><code>stake</code> - Stake addresses (mainnet)</li>
+<li><code>stake_test</code> - Stake addresses (testnet)</li>
+</ul>
+<h3 id="type-utilities">Type Utilities</h3>
+<h4 id="maybepromiset"><code>MaybePromise&lt;T&gt;</code></h4>
+<p>Utility type for values that may or may not be promises.</p>
+<p><strong>Type:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">type</span> MaybePromise&lt;T&gt; = T | <span class="hljs-built_in">Promise</span>&lt;T&gt;;
+</div></code></pre>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { MaybePromise } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processValue</span>(<span class="hljs-params">value: MaybePromise&lt;<span class="hljs-built_in">string</span>&gt;</span>): <span class="hljs-title">Promise</span>&lt;<span class="hljs-title">string</span>&gt; </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(value);
+}
+
+<span class="hljs-comment">// Both work</span>
+processValue(<span class="hljs-string">"hello"</span>);
+processValue(<span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">"hello"</span>));
+
+<span class="hljs-comment">// Useful for flexible APIs</span>
+<span class="hljs-keyword">interface</span> Config {
+  getRootKey: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> MaybePromise&lt;<span class="hljs-built_in">string</span>&gt;;
+}
+
+<span class="hljs-keyword">const</span> syncConfig: Config = {
+  getRootKey: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"key123"</span>
+};
+
+<span class="hljs-keyword">const</span> asyncConfig: Config = {
+  getRootKey: <span class="hljs-keyword">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> key = <span class="hljs-keyword">await</span> fetchFromDatabase();
+    <span class="hljs-keyword">return</span> key;
+  }
+};
+</div></code></pre>
+<h2 id="error-handling-pattern">Error Handling Pattern</h2>
+<p>All parsing and validation functions use the <code>trynot</code> library's <code>Result</code> type:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { isErr, isOk, unwrap } <span class="hljs-keyword">from</span> <span class="hljs-string">"trynot"</span>;
+<span class="hljs-keyword">import</span> { parseFromHex } <span class="hljs-keyword">from</span> <span class="hljs-string">"@anvil-vault/utils"</span>;
+
+<span class="hljs-comment">// Check for errors</span>
+<span class="hljs-keyword">const</span> result = parseFromHex(<span class="hljs-string">"48656c6c6f"</span>);
+<span class="hljs-keyword">if</span> (isErr(result)) {
+  <span class="hljs-built_in">console</span>.error(<span class="hljs-string">"Failed to parse:"</span>, result.message);
+  <span class="hljs-keyword">return</span>;
+}
+
+<span class="hljs-comment">// Use the value</span>
+<span class="hljs-built_in">console</span>.log(result.toString());
+
+<span class="hljs-comment">// Or unwrap (throws on error)</span>
+<span class="hljs-keyword">const</span> buffer = unwrap(parseFromHex(<span class="hljs-string">"48656c6c6f"</span>));
+</div></code></pre>
+<h2 id="usage-in-anvil-vault">Usage in Anvil Vault</h2>
+<p>These utilities are used throughout the Anvil Vault packages:</p>
+<ul>
+<li><strong><code>@anvil-vault/vault</code></strong>: Uses validation schemas for configuration</li>
+<li><strong><code>@anvil-vault/handler</code></strong>: Uses error conversion for HTTP responses</li>
+<li><strong><code>@anvil-vault/csl</code></strong>: Uses <code>parseFromHex</code> for CSL type conversion</li>
+<li><strong><code>@anvil-vault/bip39</code></strong>: Uses <code>uuidToByteArray</code> for entropy generation</li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><strong><code>trynot</code></strong>: Result type and error handling utilities</li>
+</ul>
+
+</body>
+</html>
