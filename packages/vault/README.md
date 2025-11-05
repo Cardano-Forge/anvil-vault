@@ -374,7 +374,7 @@ const vault = new Vault({
   paymentDerivation: {
     type: "custom",
     derive: async (input, context) => {
-      // Custom logic based on userId
+      // Custom logic based on userId (example)
       const userIndex = await getUserIndexFromDatabase(input.userId);
       return [0, userIndex];
     },
@@ -668,4 +668,3 @@ console.log("Stake key:", wallet.stakeKey.to_bech32());
 4. **Memory Management**: The vault automatically frees keys, but avoid storing derived keys in memory.
 
 5. **User ID Security**: User IDs should be non-guessable (use UUIDs, not sequential integers).
-
