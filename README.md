@@ -2,8 +2,6 @@
 
 > A secure, production-ready custodial wallet infrastructure for Cardano blockchain applications
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
-
 ## Overview
 
 Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano. Built with security, flexibility, and developer experience in mind, it offers a complete toolkit from low-level cryptographic operations to high-level HTTP handlers.
@@ -24,7 +22,7 @@ Anvil Vault is a comprehensive TypeScript monorepo that provides everything you 
 
 **For complete documentation, API reference, and usage examples, see:**
 
-**[Documentation](./packages/framework/README.md)** - Complete entry point for Anvil Vault
+**[Framework Documentation](./packages/framework/README.md)** - Complete entry point for Anvil Vault
 
 ## Monorepo Structure
 
@@ -145,8 +143,8 @@ npm run test:watch
 
 Complete, runnable examples are available in the `examples/` directory:
 
-- **[Express Example](./examples/express/README.md)** - Full Express.js integration with authentication, rate limiting, and error handling
-- **[Hono Example](./examples/hono/README.md)** - Modern Hono framework with multi-runtime deployment examples
+- **[Express Example](./examples/express/README.md)** - Complete Express.js integration example with code walkthrough
+- **[Hono Example](./examples/hono/README.md)** - Modern Hono framework example with code walkthrough
 
 Each example includes:
 
@@ -161,26 +159,31 @@ Each example includes:
 ⚠️ **Critical Security Guidelines:**
 
 1. **Root Key Management**
+
    - Never hardcode root keys in your application
    - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault, etc.)
    - Rotate keys regularly and have a key rotation strategy
 
 2. **Derivation Strategies**
+
    - Always use unique derivation with scrambling for payment keys
    - The default payment derivation is NOT secure for production
    - Use pool derivation for stake keys to consolidate rewards
 
 3. **Network Isolation**
+
    - Use separate root keys for mainnet and testnets
    - Never reuse keys across different networks
    - Clearly label and separate environment configurations
 
 4. **Memory Management**
+
    - Private keys are automatically freed after use via RAII pattern
    - Avoid logging or storing private keys
    - Use secure memory allocation when possible
 
 5. **Transport Security**
+
    - Always use HTTPS in production
    - Implement proper authentication and authorization
    - Use rate limiting to prevent abuse
@@ -192,4 +195,4 @@ Each example includes:
    - Implement alerting for critical operations
    - Regular security audits of your implementation
 
-For detailed security best practices, see the [Framework Security Guide](./packages/framework/README.md#security-best-practices).
+For detailed security best practices, see the [Framework Documentation](./packages/framework/README.md).
