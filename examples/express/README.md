@@ -14,7 +14,7 @@ This example demonstrates:
 
 ## Prerequisites
 
-- Node.js >= 18.0.0
+- Node.js >= 20.0.0
 - npm or compatible package manager
 - Basic understanding of Express.js
 
@@ -66,7 +66,7 @@ const env = {
 } as const;
 ```
 
-**What's happening:**
+**Configuration breakdown:**
 
 - `ME`: A hardcoded UUID representing the current user (for demo purposes)
 - `ROOT_KEY`: The BIP32 root private key in hex format (⚠️ **Never hardcode in production!**)
@@ -79,7 +79,7 @@ const app = express();
 app.use(express.json());
 ```
 
-**What's happening:**
+**Express setup:**
 
 - Creates an Express application
 - Adds JSON body parser middleware (required for POST requests)
@@ -105,7 +105,7 @@ app.use(
 );
 ```
 
-**What's happening:**
+**Configuration details:**
 
 **Vault Configuration:**
 
@@ -129,7 +129,7 @@ const server = app.listen(3001, () => {
 });
 ```
 
-**What's happening:**
+**Server initialization:**
 
 - Starts the Express server on port 3001
 - Logs a message when the server is ready
@@ -144,7 +144,7 @@ process.on("SIGINT", () => {
 });
 ```
 
-**What's happening:**
+**Shutdown handling:**
 
 - Listens for `SIGINT` signal (Ctrl+C)
 - Closes the server gracefully before exiting
@@ -232,7 +232,7 @@ This example uses a simplified authentication pattern:
 getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 ```
 
-**How it works:**
+**Pattern explanation:**
 
 1. Client requests `/users/me/wallet`
 2. Adapter rewrites path to `/users/f3aa7d40-58c2-44df-ba49-d4026c822571/wallet`
@@ -243,36 +243,6 @@ getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 - Replace this with proper authentication middleware
 - Extract the user ID from JWT tokens or session data
 - Validate that the authenticated user matches the requested user ID
-
-## Security Considerations
-
-⚠️ **This example is for development and demonstration purposes only!**
-
-### What's NOT Production-Ready
-
-1. **Hardcoded Root Key**
-
-   - Never hardcode private keys in source code
-   - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault)
-
-2. **No Authentication**
-
-   - Anyone can access any user's wallet
-   - Implement JWT authentication or session-based auth
-
-3. **No Authorization**
-
-   - No validation that the requester owns the wallet
-   - Verify authenticated user matches the requested user ID
-
-4. **No Rate Limiting**
-
-   - Vulnerable to abuse and DoS attacks
-   - Implement rate limiting with `express-rate-limit`
-
-5. **No HTTPS**
-   - Data transmitted in plain text
-   - Use HTTPS in production with valid SSL certificates
 
 ## Troubleshooting
 

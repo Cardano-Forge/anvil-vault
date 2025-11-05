@@ -23,7 +23,7 @@ This example demonstrates:
 
 ## Prerequisites
 
-- Node.js >= 18.0.0 (or Deno/Bun)
+- Node.js >= 20.0.0 (or Deno/Bun)
 - npm or compatible package manager
 - Basic understanding of Hono
 
@@ -75,7 +75,7 @@ const env = {
 } as const;
 ```
 
-**What's happening:**
+**Configuration breakdown:**
 
 - `ME`: A hardcoded UUID representing the current user (for demo purposes)
 - `ROOT_KEY`: The BIP32 root private key in hex format (⚠️ **Never hardcode in production!**)
@@ -87,7 +87,7 @@ const env = {
 const app = new Hono();
 ```
 
-**What's happening:**
+**Application setup:**
 
 - Creates a new Hono application instance
 - Hono automatically handles JSON parsing, no middleware needed!
@@ -113,7 +113,7 @@ app.use(
 );
 ```
 
-**What's happening:**
+**Configuration details:**
 
 **Vault Configuration:**
 
@@ -137,7 +137,7 @@ const server = serve(app, (info) => {
 });
 ```
 
-**What's happening:**
+**Server initialization:**
 
 - Uses `@hono/node-server` to run Hono on Node.js
 - The `serve` function starts the server and returns a server instance
@@ -162,7 +162,7 @@ process.on("SIGTERM", () => {
 });
 ```
 
-**What's happening:**
+**Shutdown handling:**
 
 - Listens for `SIGINT` (Ctrl+C) and `SIGTERM` signals
 - Closes the server gracefully before exiting
@@ -251,7 +251,7 @@ This example uses a simplified authentication pattern:
 getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 ```
 
-**How it works:**
+**Pattern explanation:**
 
 1. Client requests `/users/me/wallet`
 2. Adapter rewrites path to `/users/f3aa7d40-58c2-44df-ba49-d4026c822571/wallet`
@@ -263,51 +263,9 @@ getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 - Extract the user ID from JWT tokens or session data
 - Validate that the authenticated user matches the requested user ID
 
-## Multi-Runtime Deployment
-
-One of Hono's key advantages is its ability to run on multiple runtimes. Here's how to deploy this example on different platforms:
-
-### Node.js (Current Setup)
-
-```bash
-npm run dev
-```
-
-Already configured with `@hono/node-server`.
-
-## Security Considerations
-
-⚠️ **This example is for development and demonstration purposes only!**
-
-### What's NOT Production-Ready
-
-1. **Hardcoded Root Key**
-
-   - Never hardcode private keys in source code
-   - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault)
-
-2. **No Authentication**
-
-   - Anyone can access any user's wallet
-   - Implement JWT authentication or session-based auth
-
-3. **No Authorization**
-
-   - No validation that the requester owns the wallet
-   - Verify authenticated user matches the requested user ID
-
-4. **No Rate Limiting**
-
-   - Vulnerable to abuse and DoS attacks
-   - Implement rate limiting with `hono-rate-limiter`
-
-5. **No HTTPS**
-   - Data transmitted in plain text
-   - Use HTTPS in production with valid SSL certificates
-
 ## Project Structure
 
-```t
+```text
 examples/hono/
 ├── src/
 │   └── index.ts          # Main server implementation
@@ -338,7 +296,7 @@ examples/hono/
 
 ## Related Documentation
 
-- [Core Documentation](../../packages/framework/README.md) - Complete Anvil Vault guide
+- [Framework Documentation](../../packages/framework/README.md) - Complete Anvil Vault guide
 - [Hono Adapter](../../packages/hono/README.md) - Hono adapter documentation
 - [Handler Package](../../packages/handler/README.md) - REST API reference
 - [Vault Package](../../packages/vault/README.md) - Vault configuration and usage
