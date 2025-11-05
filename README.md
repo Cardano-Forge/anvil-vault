@@ -1,97 +1,152 @@
 # Anvil Vault
 
-> A secure, custodial wallet infrastructure for Cardano blockchain applications
+> A secure, production-ready custodial wallet infrastructure for Cardano blockchain applications
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
 
 ## Overview
 
-Anvil Vault is a TypeScript monorepo providing a complete custodial wallet solution for Cardano. It offers secure key derivation, transaction signing, and data signing capabilities with flexible derivation strategies and framework-agnostic HTTP handlers.
+Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano. Built with security, flexibility, and developer experience in mind, it offers a complete toolkit from low-level cryptographic operations to high-level HTTP handlers.
 
-### Key Features
+### Why Anvil Vault?
 
-- **Secure Key Management**: BIP39 mnemonic generation and hierarchical deterministic (HD) key derivation
-- **Transaction Signing**: Sign Cardano transactions with automatic witness set generation
-- **Data Signing**: CIP-30 compliant data signing with optional external AAD
-- **Flexible Derivation**: Multiple derivation strategies (unique, pool, constant, custom)
-- **Framework Agnostic**: Built-in adapters for Express and Hono with extensible adapter pattern
-- **Type Safe**: Full TypeScript support with strict type checking
-- **Error Handling**: Consistent error handling with `trynot` library
+- **Security First**: BIP39/BIP32 compliant key derivation with automatic memory cleanup
+- **Production Ready**: Battle-tested cryptographic operations with comprehensive error handling
+- **Framework Agnostic**: Built-in adapters for Express and Hono, easily extensible to any framework
+- **Type Safe**: Full TypeScript support with strict type checking and Result-based error handling
+- **Flexible**: Multiple derivation strategies (unique, pool, constant, custom) for any use case
+- **Modular**: Use the complete framework or individual packages as needed
+- **Standards Compliant**: CIP-8, CIP-30, and CIP-1852 compliant implementations
 
-## Architecture
+## Getting Started
 
-Anvil Vault is organized as a monorepo with the following packages:
+### Documentation
+
+**For complete documentation, API reference, and usage examples, see:**
+
+**[Documentation](./packages/framework/README.md)** - Complete entry point for Anvil Vault
+
+## Monorepo Structure
+
+Anvil Vault is organized as a monorepo with specialized packages for different concerns:
 
 ### Main Package
 
-- **`@anvil-vault/framework`**: Convenience package that re-exports all core packages
+- **[`@anvil-vault/framework`](./packages/framework/README.md)** - Complete framework package that re-exports all core functionality.
 
 ### Core Packages
 
-- **`@anvil-vault/vault`**: Main vault implementation with wallet derivation and signing logic
-- **`@anvil-vault/csl`**: Cardano Serialization Library wrappers and utilities
-- **`@anvil-vault/cms`**: Cardano Message Signing (CIP-8/CIP-30) implementation
-- **`@anvil-vault/handler`**: Framework-agnostic HTTP request handler builder
-- **`@anvil-vault/bip39`**: BIP39 mnemonic generation and entropy parsing
+- **[`@anvil-vault/vault`](./packages/vault/README.md)** - Main vault implementation with hierarchical deterministic wallet derivation, address generation, and signing operations
+- **[`@anvil-vault/csl`](./packages/csl/README.md)** - Type-safe wrappers around Cardano Serialization Library for key derivation, address generation, and transaction signing
+- **[`@anvil-vault/cms`](./packages/cms/README.md)** - Cardano Message Signing (CIP-8/CIP-30) implementation using COSE standards
+- **[`@anvil-vault/handler`](./packages/handler/README.md)** - Framework-agnostic HTTP request handler builder with REST API endpoints
+- **[`@anvil-vault/bip39`](./packages/bip39/README.md)** - BIP-39 mnemonic generation and entropy parsing utilities
 
 ### Framework Adapters
 
-- **`@anvil-vault/express`**: Express.js adapter for vault handlers
-- **`@anvil-vault/hono`**: Hono adapter for vault handlers
+- **[`@anvil-vault/express`](./packages/express/README.md)** - Express.js adapter for seamless integration with Express applications
+- **[`@anvil-vault/hono`](./packages/hono/README.md)** - Hono adapter for modern, lightweight applications (Cloudflare Workers, Deno, Bun, Node.js)
 
 ### Utilities
 
-- **`@anvil-vault/utils`**: Shared utilities and helper functions
+- **[`@anvil-vault/utils`](./packages/utils/README.md)** - Shared utilities including error handling, validation, parsing, and type utilities
 
 ### Build Configuration
 
-- **`@anvil-vault/tsconfig`**: Shared TypeScript configuration
-- **`@anvil-vault/tsup`**: Build configuration utilities
+- **`@anvil-vault/tsconfig`** - Shared TypeScript configuration for consistent type checking
+- **`@anvil-vault/tsup`** - Build configuration utilities for package compilation
 
-## Installation
+### Layer Responsibilities
+
+**Application Layer:**
+
+- `vault`: Orchestrates wallet operations and key management
+- `handler`: Provides REST API endpoints and request handling
+- `express`/`hono`: Framework-specific adapters
+
+**Cryptographic Layer:**
+
+- `csl`: Cardano-specific cryptographic operations
+- `cms`: Message signing standards (CIP-8/CIP-30)
+- `bip39`: Mnemonic and entropy handling
+- `utils`: Common utilities and error handling
+
+## Key Features
+
+### Secure Key Derivation
+
+- **BIP39 Mnemonic Generation**: Create secure 12 or 24-word mnemonic phrases
+- **BIP32 HD Derivation**: Hierarchical deterministic key derivation following CIP-1852
+- **Flexible Strategies**: Unique, pool, constant, or custom derivation patterns
+- **Memory Safety**: Automatic cleanup of cryptographic keys
+
+### Transaction & Data Signing
+
+- **Transaction Signing**: Sign Cardano transactions with automatic witness set generation
+- **CIP-8/CIP-30 Compliance**: Standards-compliant data signing for dApp integration
+- **COSE Format**: CBOR Object Signing and Encryption for Ed25519 signatures
+- **Address Verification**: Ensures private key matches signing address
+
+### Framework Integration
+
+- **Express.js**: Full middleware support with authentication, rate limiting, and error handling
+- **Hono**: Multi-runtime support (Cloudflare Workers, Deno, Bun, Node.js)
+- **Custom Adapters**: Easy to create adapters for any framework
+- **Type Safety**: Full TypeScript support with framework-specific types
+
+### Developer Experience
+
+- **Result Types**: Consistent error handling with `trynot` library
+- **Comprehensive Docs**: Detailed documentation for every package
+- **Type Inference**: Excellent TypeScript type inference
+- **Examples**: Complete working examples for common use cases
+
+## Development
 
 ### Prerequisites
 
 - Node.js >= 20.0.0
 - npm >= 10.0.0
 
-### Using in Your Project
+### Setup
 
 ```bash
-# Install the framework package (includes all core packages)
-npm install @anvil-vault/framework
+# Clone the repository
+git clone https://github.com/Cardano-Forge/anvil-vault.git
+cd anvil-vault
 
-# Or install individual packages
-npm install @anvil-vault/vault @anvil-vault/handler @anvil-vault/express
+# Install dependencies
+npm install
+
+# Build all packages
+npm run build
+
+# Run tests
+npm test
 ```
 
-## Quick Start
+### Monorepo Commands
 
-Anvil Vault provides framework-agnostic handlers with built-in adapters for popular web frameworks.
+```bash
+# Build all packages
+npm run build
 
-### Basic Usage
+# Type check all packages
+npm run check
 
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { Vault } from "@anvil-vault/vault";
+# Run tests
+npm test
 
-const handler = createVaultHandler({
-  vault: new Vault({
-    rootKey: () => process.env.ROOT_KEY,
-    network: "preprod",
-    paymentDerivation: {
-      type: "unique",
-      scrambler: (path) => path.reverse(),
-    },
-  }),
-  adapter: yourFrameworkAdapter,
-});
+# Run tests in watch mode
+npm run test:watch
 ```
 
-### Framework Examples
+## Examples
 
-For complete, runnable examples with detailed documentation:
+Complete, runnable examples are available in the `examples/` directory:
 
-- **[Express Example](./examples/express/README.md)** - Full Express.js integration with API endpoints
-- **[Hono Example](./examples/hono/README.md)** - Modern Hono framework integration
+- **[Express Example](./examples/express/README.md)** - Full Express.js integration with authentication, rate limiting, and error handling
+- **[Hono Example](./examples/hono/README.md)** - Modern Hono framework with multi-runtime deployment examples
 
 Each example includes:
 
@@ -101,158 +156,40 @@ Each example includes:
 - Security best practices
 - Troubleshooting guides
 
-## API Reference
-
-### Vault Configuration
-
-```typescript
-interface VaultConfig {
-  // Required
-  rootKey: () => MaybePromise<Bip32PrivateKey | string>;
-  network: "mainnet" | "preprod" | "preview" | 0 | 1;
-
-  // Optional derivation strategies
-  accountDerivation?: Derivation;
-  paymentDerivation?: Derivation;
-  stakeDerivation?: Derivation;
-
-  // Advanced customization
-  customWalletDerivation?: (input, config) => MaybePromise<Result<DeriveWalletOutput>>;
-  additionalWalletDerivation?: (keys, input, config) => MaybePromise<Result<DeriveWalletOutput>>;
-  ignoreDefaultPaymentDerivationWarning?: boolean;
-}
-```
-
-### Derivation Strategies
-
-#### Unique Derivation
-
-Generates a unique derivation path for each user:
-
-```typescript
-{
-  type: "unique",
-  scrambler?: (path: number[], input, context) => MaybePromise<Result<number[]>>
-}
-```
-
-#### Pool Derivation
-
-Uses a fixed pool of derivation indices:
-
-```typescript
-{
-  type: "pool",
-  size: number  // Number of indices in the pool
-}
-```
-
-#### Constant Derivation
-
-Uses a fixed derivation path:
-
-```typescript
-{
-  type: "constant",
-  value: number | number[]  // Fixed index or path
-}
-```
-
-#### Custom Derivation
-
-Fully custom derivation logic:
-
-```typescript
-{
-  type: "custom",
-  provider: (input, context) => MaybePromise<Result<number | number[] | Derivation>>
-}
-```
-
-### HTTP Endpoints
-
-The vault handler exposes three REST endpoints:
-
-#### Get Wallet
-
-```http
-GET /users/:userId/wallet
-```
-
-Returns wallet addresses (base, enterprise, and reward).
-
-**Response:**
-
-```json
-{
-  "addresses": {
-    "base": {
-      "bech32": "addr_test1...",
-      "hex": "00..."
-    },
-    "enterprise": {
-      "bech32": "addr_test1...",
-      "hex": "60..."
-    },
-    "reward": {
-      "bech32": "stake_test1...",
-      "hex": "e0..."
-    }
-  }
-}
-```
-
-#### Sign Data
-
-```http
-POST /users/:userId/sign-data
-Content-Type: application/json
-
-{
-  "payload": "hex-encoded-data",
-  "externalAad": "optional-hex-encoded-aad"
-}
-```
-
-Signs arbitrary data using CIP-8/CIP-30 standard.
-
-**Response:**
-
-```json
-{
-  "signature": "hex-encoded-signature",
-  "key": "hex-encoded-public-key"
-}
-```
-
-#### Sign Transaction
-
-```http
-POST /users/:userId/sign-transaction
-Content-Type: application/json
-
-{
-  "transaction": "hex-encoded-transaction"
-}
-```
-
-Signs a Cardano transaction.
-
-**Response:**
-
-```json
-{
-  "signedTransaction": "hex-encoded-signed-tx",
-  "witnessSet": "hex-encoded-witness-set"
-}
-```
-
 ## Security Considerations
 
-⚠️ **Important Security Notes:**
+⚠️ **Critical Security Guidelines:**
 
-1. **Root Key Management**: Never hardcode root keys. Use environment variables or secure key management systems.
-2. **Default Derivation Warning**: The default payment derivation is not secure for production. Always provide a custom `scrambler` function.
-3. **Network Isolation**: Use different root keys for mainnet and testnets.
-4. **Memory Management**: Private keys are automatically freed after use via RAII pattern.
-5. **HTTPS Required**: Always use HTTPS in production to protect API communications.
+1. **Root Key Management**
+   - Never hardcode root keys in your application
+   - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault, etc.)
+   - Rotate keys regularly and have a key rotation strategy
+
+2. **Derivation Strategies**
+   - Always use unique derivation with scrambling for payment keys
+   - The default payment derivation is NOT secure for production
+   - Use pool derivation for stake keys to consolidate rewards
+
+3. **Network Isolation**
+   - Use separate root keys for mainnet and testnets
+   - Never reuse keys across different networks
+   - Clearly label and separate environment configurations
+
+4. **Memory Management**
+   - Private keys are automatically freed after use via RAII pattern
+   - Avoid logging or storing private keys
+   - Use secure memory allocation when possible
+
+5. **Transport Security**
+   - Always use HTTPS in production
+   - Implement proper authentication and authorization
+   - Use rate limiting to prevent abuse
+   - Validate all inputs before processing
+
+6. **Monitoring & Auditing**
+   - Log all wallet operations (without sensitive data)
+   - Monitor for unusual patterns or suspicious activity
+   - Implement alerting for critical operations
+   - Regular security audits of your implementation
+
+For detailed security best practices, see the [Framework Security Guide](./packages/framework/README.md#security-best-practices).

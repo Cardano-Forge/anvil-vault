@@ -39,13 +39,13 @@ console.log(wallet.addresses.base.bech32);
 
 // Sign data
 const signature = await vault.signData({
-  userId: "user123",
+  userId: "user123", // uuid
   payload: "Hello, Cardano!",
 });
 
 // Sign transaction
 const signed = await vault.signTransaction({
-  userId: "user123",
+  userId: "user123", // uuid
   transaction: txHex,
 });
 ```
@@ -171,24 +171,18 @@ const vault = new Vault({
 });
 
 const result = await vault.signData({
-  userId: "user123",
+  userId: "user123", // uuid
   payload: Buffer.from("Verify my identity", "utf8"),
 });
 
 if (!isErr(result)) {
   console.log("Signature:", result.signature);
   console.log("Public key:", result.key);
-
-  // Send to dApp for verification
-  await sendToDApp({
-    signature: result.signature,
-    key: result.key,
-  });
 }
 
 // With external AAD
 const resultWithAad = await vault.signData({
-  userId: "user123",
+  userId: "user123", // uuid
   payload: "Transaction data",
   externalAad: "Additional context",
 });
@@ -226,7 +220,7 @@ const vault = new Vault({
 const txHex = "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667...";
 
 const result = await vault.signTransaction({
-  userId: "user123",
+  userId: "user123", // uuid
   transaction: txHex,
 });
 
@@ -337,13 +331,13 @@ The scrambler function transforms the derivation path for additional security:
 
 ```typescript
 // Reverse the path
-scrambler: (path) => path.reverse()
+scrambler: (path) => path.reverse();
 
 // Custom scrambling
 scrambler: (path) => {
   const [a, b, c, d] = path;
   return [d, c, b, a];
-}
+};
 ```
 
 ### Pool Derivation
@@ -513,7 +507,7 @@ const vault = new Vault({
 });
 
 // 2. Get wallet for user
-const userId = "user-123";
+const userId = "user123";
 const wallet = unwrap(await vault.getWallet({ userId }));
 
 console.log("User wallet:", wallet.addresses.base.bech32);
@@ -628,15 +622,12 @@ The package also exports a lower-level `deriveWallet` function:
 
 ```typescript
 import { deriveWallet } from "@anvil-vault/vault";
-import { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { unwrap } from "trynot";
-
-const rootKey = Bip32PrivateKey.from_hex(rootKeyHex);
 
 const wallet = unwrap(
   await deriveWallet({
-    userId: "user123",
-    rootKey,
+    userId: "user123", // uuid
+    rootKey: process.env.ROOT_KEY,
     accountDerivation: { type: "constant", value: 0 },
     paymentDerivation: { type: "unique", scrambler: (i) => i.reverse() },
     stakeDerivation: { type: "pool", size: 10 },
