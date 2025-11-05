@@ -688,6 +688,6 @@ const handler = createVaultHandler({ vault, adapter: expressAdapter });
 ## Related Packages
 
 - **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
-- **[@anvil-vault/express](../express)**: Express.js adapter
-- **[@anvil-vault/hono](../hono)**: Hono adapter
+- **[@anvil-vault/express](../express/README.md)**: Express.js adapter
+- **[@anvil-vault/hono](../hono/README.md)**: Hono adapter
 - **[@anvil-vault/utils](../utils/README.md)**: Shared utilities

@@ -126,7 +126,7 @@ BIP-39 mnemonic utilities for deterministic mnemonic phrase generation and entro
 
 ---
 
-#### [@anvil-vault/handler](../handler)
+#### [@anvil-vault/handler](../handler/README.md)
 
 Framework-agnostic HTTP request handler builder for creating vault API endpoints.
 
