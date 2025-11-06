@@ -2,6 +2,28 @@
 
 Express.js adapter for Anvil Vault handlers. This package provides seamless integration between Anvil Vault and Express.js applications.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+  - [expressAdapter](#expressadapter)
+  - [ExpressAdapter](#expressadapter-1)
+- [Usage Examples](#usage-examples)
+  - [Basic Setup](#basic-setup)
+  - [With Authentication Middleware](#with-authentication-middleware)
+  - [With Rate Limiting](#with-rate-limiting)
+  - [With Error Handling](#with-error-handling)
+  - [Multiple Vault Instances](#multiple-vault-instances)
+- [API Endpoints](#api-endpoints)
+- [Requirements](#requirements)
+  - [JSON Body Parser](#json-body-parser)
+- [Error Responses](#error-responses)
+- [TypeScript Support](#typescript-support)
+- [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
+
 ## Installation
 
 ```bash
@@ -45,6 +67,9 @@ app.listen(3000, () => {
 ```
 
 ## API Reference
+
+- [expressAdapter](#expressadapter)
+- [ExpressAdapter](#expressadapter-1)
 
 ### `expressAdapter`
 
@@ -126,6 +151,23 @@ const handler = createVaultHandler({ vault, adapter: expressAdapter });
 app.all("/users/:userId/*", handler);
 
 app.listen(3000);
+```
+
+#### Overriding getPath (advanced)
+
+```typescript
+import { createVaultHandler } from "@anvil-vault/handler";
+import { expressAdapter } from "@anvil-vault/express";
+
+const handler = createVaultHandler({
+  vault,
+  adapter: {
+    ...expressAdapter,
+    getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${ctx.req.user.id}`),
+  },
+});
+
+app.all("/users/:userId/*", handler);
 ```
 
 ---
