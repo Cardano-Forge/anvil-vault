@@ -2,6 +2,38 @@
 
 Cardano Serialization Library (CSL) wrappers and utilities for Anvil Vault. This package provides type-safe, Result-based wrappers around the Emurgo Cardano Serialization Library, making it easier to work with Cardano cryptographic operations.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [API Reference](#api-reference)
+  - [Key Derivation](#key-derivation)
+    - [deriveAccount](#deriveaccountinput)
+    - [derivePrivateKey](#deriveprivatekeyinput)
+    - [extractKeys](#extractkeysinput)
+    - [harden](#hardennum)
+  - [Address Generation](#address-generation)
+    - [deriveAddresses](#deriveaddressesinput)
+    - [parseAddress](#parseaddressinput)
+  - [Transaction Operations](#transaction-operations)
+    - [signTransaction](#signtransactioninput)
+    - [addRequiredSigner](#addrequiredsignerinput)
+  - [Data Signing & Verification](#data-signing--verification)
+    - [signDataRaw](#signdatarawinput)
+    - [verifySignature](#verifysignatureinput)
+  - [Key Generation](#key-generation)
+    - [generateEd25519KeyPair](#generateed25519keypair)
+  - [Network Utilities](#network-utilities)
+    - [getNetworkId](#getnetworkidnetwork)
+    - [networks](#networks)
+- [Type Definitions](#type-definitions)
+- [Complete Example: Wallet Creation](#complete-example-wallet-creation)
+- [Error Handling](#error-handling)
+- [CIP Standards](#cip-standards)
+- [Dependencies](#dependencies)
+
 ## Installation
 
 ```bash
@@ -23,6 +55,26 @@ The CSL package provides:
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## API Reference
+
+- [Key Derivation](#key-derivation)
+  - [deriveAccount](#deriveaccountinput)
+  - [derivePrivateKey](#deriveprivatekeyinput)
+  - [extractKeys](#extractkeysinput)
+  - [harden](#hardennum)
+- [Address Generation](#address-generation)
+  - [deriveAddresses](#deriveaddressesinput)
+  - [parseAddress](#parseaddressinput)
+- [Transaction Operations](#transaction-operations)
+  - [signTransaction](#signtransactioninput)
+  - [addRequiredSigner](#addrequiredsignerinput)
+- [Data Signing & Verification](#data-signing--verification)
+  - [signDataRaw](#signdatarawinput)
+  - [verifySignature](#verifysignatureinput)
+- [Key Generation](#key-generation)
+  - [generateEd25519KeyPair](#generateed25519keypair)
+- [Network Utilities](#network-utilities)
+  - [getNetworkId](#getnetworkidnetwork)
+  - [networks](#networks)
 
 ### Key Derivation
 
@@ -77,7 +129,7 @@ Derives a BIP32 private key from BIP39 entropy (mnemonic seed).
 
 **Parameters:**
 
-- `input.entropy: Buffer | string` - BIP39 entropy (hex string or Buffer)
+- `input.entropy: Buffer | string` - BIP39 entropy (hex string without 0x prefix, or Buffer)
 - `input.password?: Buffer | string` - Optional password for entropy (default: empty)
 
 **Returns:** `Result<Bip32PrivateKey>`
@@ -234,7 +286,7 @@ Parses a Cardano address from various formats (bech32, hex, or CSL object).
 
 ```typescript
 import { parseAddress } from "@anvil-vault/csl";
-import { BaseAddress } from "@emurgo/cardano-serialization-lib-nodejs";
+import { BaseAddress } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import { isErr } from "trynot";
 
 // Parse bech32 address
@@ -268,7 +320,7 @@ Signs a Cardano transaction with one or more private keys.
 
 **Parameters:**
 
-- `input.transaction: Transaction | FixedTransaction | string` - Transaction to sign
+- `input.transaction: Transaction | FixedTransaction | string` - Transaction to sign (hex-encoded CBOR when string)
 - `input.privateKeys: Array<PrivateKey | string>` - Private keys for signing
 
 **Returns:** `Result<SignTransactionOutput>`
@@ -343,7 +395,7 @@ Signs arbitrary data with an Ed25519 private key.
 
 **Parameters:**
 
-- `input.data: Buffer | string` - Data to sign (hex string or Buffer)
+- `input.data: Buffer | string` - Data to sign (hex string; for UTF-8 text use `Buffer.from(text, "utf8")`)
 - `input.privateKey: PrivateKey | string` - Private key for signing
 
 **Returns:** `Result<SignDataRawOutput>`
@@ -396,9 +448,9 @@ const result = verifySignature({
 
 if (!isErr(result)) {
   if (result.isValid) {
-    console.log("✓ Signature is valid");
+    console.log("Signature is valid");
   } else {
-    console.log("✗ Signature is invalid");
+    console.log("Signature is invalid");
   }
 }
 ```
@@ -554,7 +606,7 @@ console.log(
 All functions return `Result` types from the `trynot` library:
 
 ```typescript
-import { isErr, isOk, unwrap } from "trynot";
+import { isErr, unwrap } from "trynot";
 import { deriveAccount } from "@anvil-vault/csl";
 
 // Check for errors
