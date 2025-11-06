@@ -60,8 +60,6 @@ The framework re-exports key building blocks for:
 - Transaction signing and witness generation
 - Framework-agnostic HTTP request handling via adapters
 
-Deep-dive package documentation is available in the [Packages](#packages) section.
-
 ## Packages
 
 The framework is composed of specialized packages:
