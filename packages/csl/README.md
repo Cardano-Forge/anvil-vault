@@ -8,7 +8,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [API Reference](#api-reference)
+- [Functions](#functions)
   - [Key Derivation](#key-derivation)
     - [deriveAccount](#deriveaccountinput)
     - [derivePrivateKey](#deriveprivatekeyinput)
@@ -54,7 +54,7 @@ The CSL package provides:
 
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
-## API Reference
+## Functions
 
 - [Key Derivation](#key-derivation)
   - [deriveAccount](#deriveaccountinput)

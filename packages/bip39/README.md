@@ -8,7 +8,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [API Reference](#api-reference)
+- [Functions](#functions)
   - [generateMnemonic](#generatemnemonicinput)
   - [parseEntropy](#parseentropyinput)
   - [Wordlist Utilities](#wordlist-utilities)

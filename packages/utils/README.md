@@ -8,7 +8,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [API Reference](#api-reference)
+- [Functions](#functions)
   - [Error Handling](#error-handling)
     - [errorToJson](#errortojsonerror-opts)
     - [errorToString](#errortostringerror-opts)

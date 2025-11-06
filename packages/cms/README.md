@@ -6,7 +6,7 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [API Reference](#api-reference)
+- [Functions](#functions)
   - [signDataWallet](#signdatawalletinput)
   - [Type Definitions](#type-definitions)
   - [COSE Sign1 Structure](#cose-sign1-structure)
@@ -34,7 +34,7 @@ The CMS package implements:
 
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
-## API Reference
+## Functions
 
 - [signDataWallet](#signdatawalletinput)
 - [Type Definitions](#type-definitions)

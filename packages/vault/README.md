@@ -9,7 +9,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 - [Installation](#installation)
 - [Overview](#overview)
 - [Quick Start](#quick-start)
-- [API Reference](#api-reference)
+- [Class Reference](#class-reference)
   - [Vault Class](#vault-class)
     - [Constructor](#constructor)
     - [vault.getWallet](#vaultgetwalletinput)
@@ -84,7 +84,7 @@ const signed = await vault.signTransaction({
 });
 ```
 
-## API Reference
+## Class Reference
 
 - [Vault Class](#vault-class)
   - [Constructor](#constructor)
