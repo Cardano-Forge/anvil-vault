@@ -227,10 +227,9 @@ For issues, questions, or contributions, please visit the [Anvil Vault repositor
 ---
 
 <p align="center">
-  |
   <a href="https://ada-anvil.io">Ada Anvil</a>
   |
-  <a href="https://discord.gg/RN4D7wzc"><img style="height: 0.8rem; margin-right: 4px" src=".github/discord.svg" alt="Discord">Discord</a>
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
   |
-  <a href="https://x.com/ada_anvil"><img style="height: 0.70rem; margin-bottom: -1px; margin-right: 4px" src=".github/x.svg" alt="X">@ada_anvil</a>
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
 </p>
