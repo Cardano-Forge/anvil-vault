@@ -119,21 +119,8 @@ npm install
 # Build all packages
 npm run build
 
-# Run tests
-npm test
-```
-
-### Monorepo Commands
-
-```bash
-# Build all packages
-npm run build
-
-# Type check all packages
-npm run check
-
-# Run tests
-npm test
+# Run all checks: lint, check, test
+npm run pre
 
 # Run tests in watch mode
 npm run test:watch
@@ -151,12 +138,10 @@ Each example includes:
 - Complete implementation code
 - API endpoint documentation with curl examples
 - Configuration options
-- Security best practices
-- Troubleshooting guides
 
 ## Security Considerations
 
-⚠️ **Critical Security Guidelines:**
+**Critical Security Guidelines:**
 
 1. **Root Key Management**
 
@@ -169,33 +154,6 @@ Each example includes:
    - Always use unique derivation with scrambling for payment keys
    - The default payment derivation is NOT secure for production
    - Use pool derivation for stake keys to consolidate rewards
-
-3. **Network Isolation**
-
-   - Use separate root keys for mainnet and testnets
-   - Never reuse keys across different networks
-   - Clearly label and separate environment configurations
-
-4. **Memory Management**
-
-   - Private keys are automatically freed after use via RAII pattern
-   - Avoid logging or storing private keys
-   - Use secure memory allocation when possible
-
-5. **Transport Security**
-
-   - Always use HTTPS in production
-   - Implement proper authentication and authorization
-   - Use rate limiting to prevent abuse
-   - Validate all inputs before processing
-
-6. **Monitoring & Auditing**
-   - Log all wallet operations (without sensitive data)
-   - Monitor for unusual patterns or suspicious activity
-   - Implement alerting for critical operations
-   - Regular security audits of your implementation
-
-For detailed security best practices, see the [Framework Documentation](./packages/framework/README.md).
 
 ---
 

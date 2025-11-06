@@ -238,12 +238,6 @@ getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 2. Adapter rewrites path to `/users/f3aa7d40-58c2-44df-ba49-d4026c822571/wallet`
 3. Vault handler processes the request with the actual user ID
 
-**In production:**
-
-- Replace this with proper authentication middleware
-- Extract the user ID from JWT tokens or session data
-- Validate that the authenticated user matches the requested user ID
-
 ## Troubleshooting
 
 ### Invalid Transaction Format

@@ -257,23 +257,6 @@ getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`);
 2. Adapter rewrites path to `/users/f3aa7d40-58c2-44df-ba49-d4026c822571/wallet`
 3. Vault handler processes the request with the actual user ID
 
-**In production:**
-
-- Replace this with proper authentication middleware
-- Extract the user ID from JWT tokens or session data
-- Validate that the authenticated user matches the requested user ID
-
-## Project Structure
-
-```text
-examples/hono/
-├── src/
-│   └── index.ts          # Main server implementation
-├── package.json          # Dependencies and scripts
-├── tsconfig.json         # TypeScript configuration
-└── README.md            # This file
-```
-
 ## Troubleshooting
 
 ### Invalid Transaction Format
@@ -287,12 +270,6 @@ examples/hono/
 **Error:** Addresses don't match expected format
 
 **Solution:** Verify the `NETWORK` configuration matches your intended network (`mainnet`, `preprod`, or `preview`).
-
-### Runtime Compatibility Issues
-
-**Error:** Module not found or import errors
-
-**Solution:** Ensure you're using the correct imports for your target runtime. Some packages may need runtime-specific versions.
 
 ## Related Documentation
 
