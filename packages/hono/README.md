@@ -80,12 +80,12 @@ The main adapter instance that implements the `HandlerAdapter` interface.
 import { honoAdapter } from "@anvil-vault/hono";
 import { createVaultHandler } from "@anvil-vault/handler";
 
-const handler = createVaultHandler({
-  vault,
-  adapter: honoAdapter,
-});
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 ```
 
 ---
@@ -134,9 +134,12 @@ const vault = new Vault({
 
 const app = new Hono();
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 export default app;
 ```
@@ -174,9 +177,12 @@ app.use("/users/:userId/*", async (c, next) => {
   await next();
 });
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 export default app;
 ```
@@ -209,9 +215,12 @@ const limiter = rateLimiter({
 
 app.use("/users/*", limiter);
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 export default app;
 ```
@@ -242,9 +251,12 @@ app.use("/users/*", cors({
   maxAge: 600,
 }));
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 export default app;
 ```
@@ -306,18 +318,21 @@ const testnetVault = new Vault({
 
 const app = new Hono();
 
-const mainnetHandler = createVaultHandler({
-  vault: mainnetVault,
-  adapter: honoAdapter,
-});
+app.use(
+  "/mainnet",
+  createVaultHandler({
+    vault: mainnetVault,
+    adapter: honoAdapter,
+  })
+);
 
-const testnetHandler = createVaultHandler({
-  vault: testnetVault,
-  adapter: honoAdapter,
-});
-
-app.all("/mainnet/users/:userId/*", mainnetHandler);
-app.all("/testnet/users/:userId/*", testnetHandler);
+app.use(
+  "/testnet",
+  createVaultHandler({
+    vault: testnetVault,
+    adapter: honoAdapter,
+  })
+);
 
 export default app;
 ```
@@ -404,9 +419,12 @@ const vault = new Vault({
 
 const app = new Hono();
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 Deno.serve(app.fetch);
 ```

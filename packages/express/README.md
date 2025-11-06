@@ -70,12 +70,12 @@ The main adapter instance that implements the `HandlerAdapter` interface.
 import { expressAdapter } from "@anvil-vault/express";
 import { createVaultHandler } from "@anvil-vault/handler";
 
-const handler = createVaultHandler({
-  vault,
-  adapter: expressAdapter,
-});
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 ```
 
 ---
@@ -124,9 +124,12 @@ const vault = new Vault({
 const app = express();
 app.use(express.json());
 
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 
 app.listen(3000);
 ```
@@ -141,11 +144,10 @@ const handler = createVaultHandler({
   vault,
   adapter: {
     ...expressAdapter,
-    getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${ctx.req.user.id}`),
+    getPath: (ctx) =>
+      ctx.req.path.replace("/users/me", `/users/${ctx.req.user.id}`),
   },
 });
-
-app.all("/users/:userId/*", handler);
 ```
 
 ---
@@ -243,9 +245,12 @@ const vault = new Vault({
 const app = express();
 app.use(express.json());
 
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -348,8 +353,12 @@ import express from "express";
 const app = express();
 app.use(express.json()); // Required!
 
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 ```
 
 Without this middleware, POST requests will fail because `req.body` will be undefined.
@@ -361,6 +370,7 @@ Without this middleware, POST requests will fail because `req.body` will be unde
 The adapter automatically formats errors as JSON responses with appropriate HTTP status codes:
 
 **Success Response (200):**
+
 ```json
 {
   "addresses": {
@@ -372,6 +382,7 @@ The adapter automatically formats errors as JSON responses with appropriate HTTP
 ```
 
 **Error Response (400/404/500):**
+
 ```json
 {
   "statusCode": 400,

@@ -96,13 +96,13 @@ const vault = new Vault({
   network: "mainnet",
 });
 
-const handler = createVaultHandler({
-  vault,
-  adapter: expressAdapter,
-});
-
 // Use with Express
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 ```
 
 ---
@@ -560,9 +560,12 @@ All endpoints return consistent error responses:
 import { createVaultHandler } from "@anvil-vault/handler";
 import { expressAdapter } from "@anvil-vault/express";
 
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
 
 // Errors are automatically handled and returned as JSON
 // GET /users/invalid-uuid/wallet
@@ -652,7 +655,12 @@ const handler = createVaultHandler({ vault, adapter: expressAdapter });
 
    ```typescript
    app.use("/users", authMiddleware);
-   app.all("/users/:userId/*", handler);
+   app.use(
+     createVaultHandler({
+       vault,
+       adapter: expressAdapter,
+     })
+   );
    ```
 
 2. **Authorization**: Verify that the authenticated user matches the `userId` in the path:
