@@ -169,11 +169,11 @@ app.use("/users/*", bearerAuth({ token: process.env.API_TOKEN }));
 app.use("/users/:userId/*", async (c, next) => {
   const userId = c.req.param("userId");
   const authenticatedUserId = c.get("userId"); // From auth middleware
-  
+
   if (userId !== authenticatedUserId) {
     return c.json({ error: "Forbidden" }, 403);
   }
-  
+
   await next();
 });
 
@@ -244,12 +244,15 @@ const vault = new Vault({
 const app = new Hono();
 
 // CORS middleware
-app.use("/users/*", cors({
-  origin: ["https://example.com", "https://app.example.com"],
-  allowMethods: ["GET", "POST"],
-  allowHeaders: ["Content-Type", "Authorization"],
-  maxAge: 600,
-}));
+app.use(
+  "/users/*",
+  cors({
+    origin: ["https://example.com", "https://app.example.com"],
+    allowMethods: ["GET", "POST"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    maxAge: 600,
+  })
+);
 
 app.use(
   createVaultHandler({
@@ -495,6 +498,7 @@ console.log("Vault API running on port 3000");
 The adapter automatically formats errors as JSON responses with appropriate HTTP status codes:
 
 **Success Response (200):**
+
 ```json
 {
   "addresses": {
@@ -506,6 +510,7 @@ The adapter automatically formats errors as JSON responses with appropriate HTTP
 ```
 
 **Error Response (400/404/500):**
+
 ```json
 {
   "statusCode": 400,
