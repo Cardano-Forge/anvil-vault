@@ -1,25 +1,52 @@
-# @anvil-vault/framework
+<div align="center">
+  <h3>Anvil Vault Framework</h3>
+  <p>
+    Unified, type-safe custodial wallet framework for Cardano
+    <br />
+    <a href="https://github.com/Cardano-Forge/anvil-vault/issues/new?labels=bug&template=bug_report.yml">Report Bug</a>
+    ·
+    <a href="https://github.com/Cardano-Forge/anvil-vault/issues/new?labels=enhancement&template=feature_request.yml">Request Feature</a>
+  </p>
+</div>
 
-The main entry point for Anvil Vault - a comprehensive, type-safe framework for building custodial Cardano wallets. This package re-exports all core functionality from the Anvil Vault ecosystem, providing a unified interface for wallet management, key derivation, message signing, and transaction handling.
+## Table of Contents
 
-## Installation
+- [About](#about)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Quick Start](#quick-start)
+  - [Examples](#examples)
+- [Usage](#usage)
+  - [Express Adapter](#express-adapter)
+  - [Hono Adapter](#hono-adapter)
+- [API Overview](#api-overview)
+- [Packages](#packages)
+  - [Core Packages](#core-packages)
+  - [Framework Adapters](#framework-adapters)
+- [Architecture](#architecture)
+- [Error Handling](#error-handling)
+- [Security Best Practices](#security-best-practices)
+- [TypeScript Support](#typescript-support)
+- [Development](#development)
+  - [Prerequisites](#prerequisites)
+  - [Scripts](#scripts)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
+
+## About
+
+`@anvil-vault/framework` is the main entry point for Anvil Vault. It re-exports core functionality to build secure, production-ready custodial wallet solutions on Cardano with a consistent, type-safe API.
+
+## Getting Started
+
+### Installation
 
 ```bash
 npm install @anvil-vault/framework
 ```
 
-## Overview
-
-Anvil Vault Framework is designed for building secure, production-ready custodial wallet solutions on Cardano. It provides:
-
-- **Hierarchical Deterministic Wallets**: CIP-1852 compliant key derivation
-- **Flexible Derivation Strategies**: Unique, constant, pool, and custom derivation patterns
-- **Message Signing**: CIP-8/CIP-30 compliant data signing
-- **Transaction Signing**: Full Cardano transaction support
-- **Framework Adapters**: Ready-to-use integrations for Express.js and Hono
-- **Type Safety**: Full TypeScript support with Result-based error handling
-
-## Quick Start
+### Quick Start
 
 ```typescript
 import { Vault } from "@anvil-vault/framework";
@@ -33,154 +60,24 @@ const vault = new Vault({
   },
 });
 
-// Get wallet addresses
 const wallet = await vault.getWallet({ userId: "user123" });
 console.log(wallet.addresses.base.bech32);
 
-// Sign data
 const signature = await vault.signData({
   userId: "user123",
   payload: "Hello, Cardano!",
 });
 ```
 
-## Packages
+### Examples
 
-The framework is composed of several specialized packages, each handling a specific aspect of Cardano wallet functionality:
+- [Express Example](../../examples/express/README.md)
+- [Hono Example](../../examples/hono/README.md)
 
-### Core Packages
+## Usage
 
-#### [@anvil-vault/vault](../vault/README.md)
+### Express Adapter
 
-The main vault implementation that orchestrates wallet derivation, address generation, and signing operations.
-
-**Main Functions:**
-- `Vault` - Main vault class for managing hierarchical deterministic wallets
-- `getWallet(input)` - Derive wallet addresses for a user
-- `signData(input)` - Sign arbitrary data with CIP-8/CIP-30 compliance
-- `signTransaction(input)` - Sign Cardano transactions
-- `deriveWallet(input)` - Low-level wallet derivation
-
-**Key Features:**
-- CIP-1852 compliant key derivation
-- Flexible derivation strategies (unique, constant, pool, custom)
-- Automatic memory cleanup of cryptographic keys
-- Base, enterprise, and reward address generation
-
----
-
-#### [@anvil-vault/csl](../csl/README.md)
-
-Cardano Serialization Library wrappers providing type-safe, Result-based interfaces for Cardano cryptographic operations.
-
-**Main Functions:**
-- `deriveAccount(input)` - Derive account keys from root key (CIP-1852)
-- `extractKeys(input)` - Extract payment and stake keys from account
-- `deriveAddresses(input)` - Generate base, enterprise, and reward addresses
-- `signTransaction(input)` - Sign transactions with private keys
-- `signData(input)` - Sign arbitrary data with Ed25519 keys
-- `verifySignature(input)` - Verify Ed25519 signatures
-- `parseAddress(input)` - Parse addresses from various formats
-- `getNetworkId(input)` - Get network ID from address or network name
-
-**Key Features:**
-- BIP32 hierarchical deterministic key derivation
-- Address generation for all Cardano address types
-- Transaction and data signing
-- Signature verification
-- Network utilities
-
----
-
-#### [@anvil-vault/cms](../cms/README.md)
-
-Cardano Message Signing implementation following CIP-8 and CIP-30 standards using COSE (CBOR Object Signing and Encryption).
-
-**Main Functions:**
-- `signDataWallet(input)` - Sign data with CIP-8/CIP-30 wallet standards
-- `verifyDataWallet(input)` - Verify CIP-8/CIP-30 signatures
-
-**Key Features:**
-- CIP-8 message signing specification
-- CIP-30 dApp-Wallet Web Bridge compliance
-- COSE Sign1 format for Ed25519 signatures
-- Address verification to ensure key-address matching
-
----
-
-#### [@anvil-vault/bip39](../bip39/README.md)
-
-BIP-39 mnemonic utilities for deterministic mnemonic phrase generation and entropy parsing.
-
-**Main Functions:**
-- `generateMnemonic(input?)` - Generate 12 or 24-word mnemonic phrases
-- `entropyToMnemonic(input)` - Convert entropy to mnemonic phrase
-- `mnemonicToEntropy(input)` - Convert mnemonic phrase to entropy
-- `getWordList(input?)` - Get BIP-39 wordlist in various languages
-
-**Key Features:**
-- BIP-39 compliant mnemonic generation
-- Support for 12 and 24-word phrases
-- Multiple language wordlists
-- Entropy validation and conversion
-
----
-
-#### [@anvil-vault/handler](../handler/README.md)
-
-Framework-agnostic HTTP request handler builder for creating vault API endpoints.
-
-**Main Functions:**
-- `createVaultHandler(config)` - Create a vault request handler
-- `handleVaultRequest(input)` - Process vault requests
-- `createHandlerAdapter(adapter)` - Create framework-specific adapters
-- `getDerivation(input)` - Parse and validate derivation parameters
-
-**Key Features:**
-- Framework-agnostic design
-- Type-safe request/response handling
-- Flexible derivation strategy support
-- Built-in error handling
-
----
-
-#### [@anvil-vault/utils](../utils/README.md)
-
-Shared utility functions and types used across all Anvil Vault packages.
-
-**Main Functions:**
-- `errorToJson(error, opts?)` - Convert errors to JSON with status codes
-- `errorToString(error)` - Convert errors to string messages
-- `validate(input)` - Schema-based validation with detailed errors
-- `parseHex(input)` - Parse and validate hex strings
-- `parseUuid(input)` - Parse and validate UUIDs
-- `isValidBech32Address(address)` - Validate Cardano bech32 addresses
-
-**Key Features:**
-- Error handling utilities
-- Schema validation
-- Hex and UUID parsing
-- Bech32 address validation
-- TypeScript helper types
-
----
-
-### Framework Adapters
-
-#### [@anvil-vault/express](../express/README.md)
-
-Express.js adapter for integrating Anvil Vault handlers into Express applications.
-
-**Main Functions:**
-- `expressAdapter` - Adapter for Express.js request/response handling
-
-**Key Features:**
-- Seamless Express.js integration
-- JSON body parsing support
-- Automatic error response formatting
-- Compatible with Express middleware ecosystem
-
-**Usage:**
 ```typescript
 import { createVaultHandler } from "@anvil-vault/handler";
 import { expressAdapter } from "@anvil-vault/express";
@@ -190,26 +87,11 @@ const app = express();
 app.use(express.json());
 
 const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
 app.all("/users/:userId/*", handler);
 ```
 
----
+### Hono Adapter
 
-#### [@anvil-vault/hono](../hono/README.md)
-
-Hono adapter for integrating Anvil Vault handlers into Hono applications.
-
-**Main Functions:**
-- `honoAdapter` - Adapter for Hono context handling
-
-**Key Features:**
-- Fast and lightweight
-- Multi-runtime support (Cloudflare Workers, Deno, Bun, Node.js)
-- Full TypeScript support with Hono's type system
-- Perfect for edge computing
-
-**Usage:**
 ```typescript
 import { createVaultHandler } from "@anvil-vault/handler";
 import { honoAdapter } from "@anvil-vault/hono";
@@ -217,29 +99,80 @@ import { Hono } from "hono";
 
 const app = new Hono();
 const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
 app.all("/users/:userId/*", handler);
 ```
 
+## API Overview
+
+The framework re-exports key building blocks for:
+
+- Hierarchical deterministic wallet derivation (CIP-1852)
+- Message signing (CIP-8/CIP-30)
+- Transaction signing and witness generation
+- Framework-agnostic HTTP request handling via adapters
+
+Deep-dive package documentation is available in the [Packages](#packages) section.
+
+## Packages
+
+The framework is composed of specialized packages:
+
+### Core Packages
+
+#### [@anvil-vault/vault](../vault/README.md)
+
+- Main vault orchestration for key derivation, address generation, and signing operations
+- CIP-1852 compliant derivation with flexible strategies
+
+#### [@anvil-vault/csl](../csl/README.md)
+
+- Type-safe wrappers around Cardano Serialization Library
+- Derivation, address generation, signing, verification, parsing, and network utilities
+
+#### [@anvil-vault/cms](../cms/README.md)
+
+- Cardano Message Signing (CIP-8/CIP-30) using COSE
+- Sign and verify wallet messages
+
+#### [@anvil-vault/bip39](../bip39/README.md)
+
+- BIP-39 mnemonic generation and entropy parsing
+
 ---
+
+#### [@anvil-vault/handler](../handler/README.md)
+
+- Framework-agnostic HTTP handler builder and derivation utilities
+
+#### [@anvil-vault/utils](../utils/README.md)
+
+- Shared utilities for error handling, validation, parsing, and helper types
+
+### Framework Adapters
+
+#### [@anvil-vault/express](../express/README.md)
+
+- Adapter to use handlers with Express.js
+
+#### [@anvil-vault/hono](../hono/README.md)
+
+- Adapter to use handlers with Hono across multiple runtimes
 
 ## Architecture
 
-The framework follows a layered architecture:
-
-```
+```text
 ┌─────────────────────────────────────────┐
 │         @anvil-vault/framework          │  ← Main entry point
 └─────────────────────────────────────────┘
-                    │
-        ┌───────────┼───────────┐
-        ▼           ▼           ▼
-   ┌────────┐  ┌────────┐  ┌─────────┐
-   │ vault  │  │handler │  │ express │     ← Core & Adapters
-   └────────┘  └────────┘  │  hono   │
-        │           │       └─────────┘
-   ┌────┼───────────┼────┐
-   ▼    ▼           ▼    ▼
+                   │
+       ┌───────────┼───────────┐
+       ▼           ▼           ▼
+  ┌────────┐  ┌────────┐  ┌─────────┐
+  │ vault  │  │handler │  │ express │     ← Core & Adapters
+  └────────┘  └────────┘  │  hono   │
+       │           │       └─────────┘
+  ┌────┼───────────┼────┐
+  ▼    ▼           ▼    ▼
 ┌─────┐┌─────┐  ┌─────┐┌─────┐
 │ csl ││ cms │  │utils││bip39│           ← Utilities
 └─────┘└─────┘  └─────┘└─────┘
@@ -259,24 +192,21 @@ if (isErr(result)) {
   return;
 }
 
-const wallet = result; // Type-safe access
+const wallet = result;
 console.log(wallet.addresses.base.bech32);
 
-// Or use unwrap (throws on error)
-const wallet = unwrap(await vault.getWallet({ userId: "user123" }));
+const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 ```
 
 ## Security Best Practices
 
-1. **Root Key Management**: Never hardcode root keys. Use environment variables or secure key management systems.
-2. **Derivation Strategies**: Use unique derivation with scrambling for payment keys to prevent address correlation.
-3. **Memory Cleanup**: The vault automatically cleans up cryptographic keys from memory.
-4. **Network Isolation**: Always specify the correct network (mainnet/testnet) to prevent address confusion.
-5. **Input Validation**: All inputs are validated using schema-based validation.
+- Root keys must never be hardcoded. Use environment variables or a key management system.
+- Use unique derivation with scrambling for payment keys to prevent address correlation.
+- Sensitive key material is automatically freed after use; avoid logging keys.
+- Specify the correct network (mainnet or testnets) and isolate environments.
+- Validate all inputs using schema-based validation.
 
 ## TypeScript Support
-
-Full TypeScript support with comprehensive type definitions:
 
 ```typescript
 import type {
@@ -288,13 +218,36 @@ import type {
 } from "@anvil-vault/framework";
 ```
 
-## License
+## Development
 
-ISC
+### Prerequisites
+
+- Node.js >= 20.0.0
+- npm >= 10.0.0
+
+### Scripts
+
+```bash
+# Build all packages
+npm run build
+
+# Type check all packages
+npm run check
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
 
 ## Contributing
 
-Contributions are welcome! Please see the main repository for contribution guidelines.
+Please see the main repository for contribution guidelines.
+
+## License
+
+ISC
 
 ## Support
 
