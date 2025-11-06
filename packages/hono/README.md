@@ -2,6 +2,35 @@
 
 Hono adapter for Anvil Vault handlers. This package provides seamless integration between Anvil Vault and Hono applications.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+  - [honoAdapter](#honoadapter)
+  - [HonoAdapter](#honoadaptertenv)
+- [Usage Examples](#usage-examples)
+  - [Basic Setup](#basic-setup)
+  - [With Authentication Middleware](#with-authentication-middleware)
+  - [With Rate Limiting](#with-rate-limiting)
+  - [With CORS](#with-cors)
+  - [With Custom Environment Types](#with-custom-environment-types)
+  - [Multiple Vault Instances](#multiple-vault-instances)
+- [API Endpoints](#api-endpoints)
+- [Deployment](#deployment)
+  - [Cloudflare Workers](#cloudflare-workers)
+  - [Deno Deploy](#deno-deploy)
+  - [Bun](#bun)
+  - [Node.js](#nodejs)
+- [Error Responses](#error-responses)
+- [TypeScript Support](#typescript-support)
+- [Advantages of Hono](#advantages-of-hono)
+- [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
+
 ## Installation
 
 ```bash
@@ -18,6 +47,8 @@ The Hono adapter implements the `HandlerAdapter` interface from `@anvil-vault/ha
 - **Response Handling**: Returns JSON responses with appropriate status codes
 - **Error Formatting**: Converts vault errors to JSON error responses
 - **Type Safety**: Full TypeScript support with Hono's type system
+
+All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## Quick Start
 
@@ -43,6 +74,9 @@ export default app;
 ```
 
 ## API Reference
+
+- [honoAdapter](#honoadapter)
+- [HonoAdapter](#honoadaptertenv)
 
 ### `honoAdapter`
 
