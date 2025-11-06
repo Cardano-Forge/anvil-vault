@@ -444,9 +444,12 @@ const vault = new Vault({
 
 const app = new Hono();
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 export default {
   port: 3000,
@@ -470,9 +473,12 @@ const vault = new Vault({
 
 const app = new Hono();
 
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: honoAdapter,
+  })
+);
 
 serve({
   fetch: app.fetch,
