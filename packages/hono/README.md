@@ -52,26 +52,7 @@ All functions return `Result` types from the `trynot` library for consistent err
 
 ## Quick Start
 
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { honoAdapter } from "@anvil-vault/hono";
-import { Vault } from "@anvil-vault/vault";
-import { Hono } from "hono";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = new Hono();
-
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-// Handle all vault operations
-app.all("/users/:userId/*", handler);
-
-export default app;
-```
+- [Hono Quick Start](../../examples/hono/README.md#quick-start)
 
 ## API Reference
 

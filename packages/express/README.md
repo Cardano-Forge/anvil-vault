@@ -42,29 +42,7 @@ The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault
 
 ## Quick Start
 
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = express();
-app.use(express.json()); // Required for parsing JSON bodies
-
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-// Handle all vault operations
-app.all("/users/:userId/*", handler);
-
-app.listen(3000, () => {
-  console.log("Vault API running on port 3000");
-});
-```
+- [Express Quick Start](../../examples/express/README.md#quick-start)
 
 ## API Reference
 

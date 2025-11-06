@@ -53,51 +53,8 @@ All functions return `Result` types from the `trynot` library for consistent err
 
 ## Quick Start
 
-### With Express
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = express();
-app.use(express.json());
-
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-// All vault operations are handled through a single endpoint
-app.all("/users/:userId/*", handler);
-
-app.listen(3000);
-```
-
-### With Hono
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { honoAdapter } from "@anvil-vault/hono";
-import { Vault } from "@anvil-vault/vault";
-import { Hono } from "hono";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = new Hono();
-
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-
-app.all("/users/:userId/*", handler);
-
-export default app;
-```
+- [Express Quick Start](../../examples/express/README.md#quick-start)
+- [Hono Quick Start](../../examples/hono/README.md#quick-start)
 
 ## API Reference
 
@@ -191,7 +148,7 @@ type HandlerAdapter<TParams extends AnyParams, TContext, TResponse> = {
   getQuery: (context: TContext) => MaybePromise<Record<string, unknown>>;
   sendResponse: (
     context: TContext,
-    result: Result<{ response: unknown }, VaultError>,
+    result: Result<{ response: unknown }, VaultError>
   ) => MaybePromise<TResponse>;
 };
 ```
@@ -314,7 +271,7 @@ type Derivation<TContext = undefined> =
       scrambler?: (
         derivationPath: number[],
         input: { userId: string },
-        context: TContext,
+        context: TContext
       ) => MaybePromise<Result<number[]>>;
     }
   | {
@@ -329,7 +286,7 @@ type Derivation<TContext = undefined> =
       type: "custom";
       provider: (
         input: { userId: string },
-        context: TContext,
+        context: TContext
       ) => MaybePromise<Result<number | number[] | Derivation<TContext>>>;
     };
 ```
@@ -337,15 +294,18 @@ type Derivation<TContext = undefined> =
 **Strategies:**
 
 - **`unique`**: Derives a unique path from the user's UUID (16 bytes)
+
   - Optional `scrambler` function to transform the derivation path
   - Recommended for payment keys to prevent address correlation
 
 - **`pool`**: Distributes users across a fixed pool of keys
+
   - `size`: Number of keys in the pool
   - Deterministic assignment based on userId
   - Useful for stake keys to consolidate rewards
 
 - **`constant`**: Uses the same derivation for all users
+
   - `value`: Single index or array of indices
   - Simple but provides no privacy
 
@@ -444,12 +404,12 @@ type VaultConfig = RequiredVaultConfig & {
   stakeDerivation?: Derivation<RequiredVaultConfig>;
   customWalletDerivation?: (
     input: { userId: string },
-    config: RequiredVaultConfig,
+    config: RequiredVaultConfig
   ) => MaybePromise<Result<DeriveWalletOutput>>;
   additionalWalletDerivation?: (
     keys: DeriveWalletOutput,
     input: { userId: string },
-    config: RequiredVaultConfig,
+    config: RequiredVaultConfig
   ) => MaybePromise<Result<DeriveWalletOutput>>;
   ignoreDefaultPaymentDerivationWarning?: boolean;
 };
@@ -629,9 +589,7 @@ export const fastifyAdapter = createHandlerAdapter({
   getQuery: (ctx) => ctx.request.query || {},
   sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      return ctx.reply
-        .status(result.statusCode)
-        .send(errorToJson(result));
+      return ctx.reply.status(result.statusCode).send(errorToJson(result));
     }
     return ctx.reply.status(200).send(result.response);
   },
@@ -661,7 +619,11 @@ class CustomVault implements IVault {
     };
   }
 
-  async signData(input: { userId: string; payload: string; externalAad?: string }) {
+  async signData(input: {
+    userId: string;
+    payload: string;
+    externalAad?: string;
+  }) {
     // Custom signing logic
     return {
       signature: "845846a201276761646472657373...",
@@ -708,12 +670,12 @@ const handler = createVaultHandler({ vault, adapter: expressAdapter });
 
    ```typescript
    import rateLimit from "express-rate-limit";
-   
+
    const limiter = rateLimit({
      windowMs: 15 * 60 * 1000, // 15 minutes
      max: 100, // limit each IP to 100 requests per windowMs
    });
-   
+
    app.use("/users", limiter);
    ```
 
