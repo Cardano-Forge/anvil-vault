@@ -2,6 +2,36 @@
 
 Framework-agnostic HTTP request handler builder for Anvil Vault. This package provides a flexible system for creating vault API endpoints that work with any web framework through adapters.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+  - [With Express](#with-express)
+  - [With Hono](#with-hono)
+- [API Reference](#api-reference)
+  - [Handler Builder](#handler-builder)
+    - [createVaultHandler](#createvaulthandlerconfig)
+    - [handleVaultRequest](#handlevaultrequestcontext-vault-adapter)
+  - [Adapter System](#adapter-system)
+    - [HandlerAdapter](#handleradaptertparams-tcontext-tresponse)
+    - [createHandlerAdapter](#createhandleradapteradapter)
+  - [Derivation Utilities](#derivation-utilities)
+    - [getDerivation](#getderivationinput-context)
+  - [Types](#types)
+    - [Derivation](#derivationtcontext)
+    - [IVault](#ivault)
+    - [VaultConfig](#vaultconfig)
+- [REST API Endpoints](#rest-api-endpoints)
+- [Error Handling](#error-handling)
+- [Creating Custom Adapters](#creating-custom-adapters)
+- [Usage with Custom Vault](#usage-with-custom-vault)
+- [Security Considerations](#security-considerations)
+- [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
+
 ## Installation
 
 ```bash
@@ -18,6 +48,8 @@ The handler package provides:
 - **Built-in Validation**: Schema-based input validation with detailed error messages
 - **Flexible Derivation**: Support for unique, constant, pool, and custom derivation strategies
 - **Error Handling**: Consistent error responses with proper HTTP status codes
+
+All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## Quick Start
 
@@ -68,6 +100,19 @@ export default app;
 ```
 
 ## API Reference
+
+- [Handler Builder](#handler-builder)
+  - [createVaultHandler](#createvaulthandlerconfig)
+  - [handleVaultRequest](#handlevaultrequestcontext-vault-adapter)
+- [Adapter System](#adapter-system)
+  - [HandlerAdapter](#handleradaptertparams-tcontext-tresponse)
+  - [createHandlerAdapter](#createhandleradapteradapter)
+- [Derivation Utilities](#derivation-utilities)
+  - [getDerivation](#getderivationinput-context)
+- [Types](#types)
+  - [Derivation](#derivationtcontext)
+  - [IVault](#ivault)
+  - [VaultConfig](#vaultconfig)
 
 ### Handler Builder
 
