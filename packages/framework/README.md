@@ -16,9 +16,6 @@
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [Examples](#examples)
-- [Usage](#usage)
-  - [Express Adapter](#express-adapter)
-  - [Hono Adapter](#hono-adapter)
 - [API Overview](#api-overview)
 - [Packages](#packages)
   - [Core Packages](#core-packages)
@@ -72,34 +69,6 @@ const signature = await vault.signData({
 
 - [Express Example](../../examples/express/README.md)
 - [Hono Example](../../examples/hono/README.md)
-
-## Usage
-
-### Express Adapter
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import express from "express";
-
-const app = express();
-app.use(express.json());
-
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-app.all("/users/:userId/*", handler);
-```
-
-### Hono Adapter
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { honoAdapter } from "@anvil-vault/hono";
-import { Hono } from "hono";
-
-const app = new Hono();
-const handler = createVaultHandler({ vault, adapter: honoAdapter });
-app.all("/users/:userId/*", handler);
-```
 
 ## API Overview
 
