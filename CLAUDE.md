@@ -3,6 +3,7 @@
 ## Project Overview
 
 Anvil Vault is a TypeScript monorepo containing shared packages and tools for the Anvil ecosystem. It provides core building blocks including CSL (Cardano Serialization Library) wrappers, signing, and private key handling
+
 - **tsconfig**: Shared TypeScript configuration for Node.js 20
 - **tsup**: Build configuration utilities for bundling packages
 
@@ -34,7 +35,7 @@ npm run build:clean      # Clean build artifacts
 
 Each package follows a consistent structure:
 
-```
+```text
 packages/[name]/
 ├── src/                # Source TypeScript files (with co-located .test.ts files)
 ├── dist/               # Build output
@@ -64,11 +65,13 @@ packages/[name]/
 
 ```typescript
 // ✅ Good - Runtime validation
-const userInput = z.object({
-  name: z.string(),
-  age: z.coerce.number(),
-  email: z.string().email()
-}).parse(req.body);
+const userInput = z
+  .object({
+    name: z.string(),
+    age: z.coerce.number(),
+    email: z.string().email(),
+  })
+  .parse(req.body);
 
 // ❌ Bad - Type casting without validation
 const userInput = req.body as { name: string; age: number; email: string };
@@ -84,12 +87,12 @@ const userInput = req.body as { name: string; age: number; email: string };
 - **Simple Error Creation**: Use `parseError()` to create Error instances from unknown errors
 - **Direct Checking**: Use `isOk()` to check if a value is a successful result
 - **Direct Checking**: Use `isErr()` to check if a value is an error
- **Safe Unwrapping**: Use `unwrap()` to get values or throw on errors
+  **Safe Unwrapping**: Use `unwrap()` to get values or throw on errors
 - **Make uncontrolled code safe**: Use `wrap()` to wrap values from other libraries to prevent them from throwing and return errors instead
 - **Unwrap short hands**:
-    - Use `unwrapOr()` to return a default value in case of an error;
-    - `unwrapOrElse()` to execute a function with the error and return the result in case of an error;
-    - `unwrapOrUndefined()` to return `undefined` in case of an error;
+  - Use `unwrapOr()` to return a default value in case of an error;
+  - `unwrapOrElse()` to execute a function with the error and return the result in case of an error;
+  - `unwrapOrUndefined()` to return `undefined` in case of an error;
 - **Extracting error message**: Use `getFailureReason(error)` to get the error message from an unknown error. It works for errors, objects, string, and other types.
 - **Parsing errors**: Use `parseError()` to parse any unknown error into a `Error` instance.
 
@@ -148,3 +151,4 @@ function findUser(id: string): Result<User, MyError> {
 - `package.json`: Root workspace configuration with shared scripts
 
 - dont add file extensions to import statements
+```

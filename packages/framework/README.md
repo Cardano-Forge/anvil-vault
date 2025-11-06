@@ -23,7 +23,6 @@
 - [Packages](#packages)
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
-- [Architecture](#architecture)
 - [Error Handling](#error-handling)
 - [Security Best Practices](#security-best-practices)
 - [TypeScript Support](#typescript-support)
@@ -158,26 +157,6 @@ The framework is composed of specialized packages:
 
 - Adapter to use handlers with Hono across multiple runtimes
 
-## Architecture
-
-```text
-┌─────────────────────────────────────────┐
-│         @anvil-vault/framework          │  ← Main entry point
-└─────────────────────────────────────────┘
-                   │
-       ┌───────────┼───────────┐
-       ▼           ▼           ▼
-  ┌────────┐  ┌────────┐  ┌─────────┐
-  │ vault  │  │handler │  │ express │     ← Core & Adapters
-  └────────┘  └────────┘  │  hono   │
-       │           │       └─────────┘
-  ┌────┼───────────┼────┐
-  ▼    ▼           ▼    ▼
-┌─────┐┌─────┐  ┌─────┐┌─────┐
-│ csl ││ cms │  │utils││bip39│           ← Utilities
-└─────┘└─────┘  └─────┘└─────┘
-```
-
 ## Error Handling
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent, type-safe error handling:
@@ -241,14 +220,17 @@ npm test
 npm run test:watch
 ```
 
-## Contributing
-
-Please see the main repository for contribution guidelines.
-
-## License
-
-ISC
-
 ## Support
 
 For issues, questions, or contributions, please visit the [Anvil Vault repository](https://github.com/Cardano-Forge/anvil-vault).
+
+---
+
+<p align="center">
+  |
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc"><img style="height: 0.8rem; margin-right: 4px" src=".github/discord.svg" alt="Discord">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil"><img style="height: 0.70rem; margin-bottom: -1px; margin-right: 4px" src=".github/x.svg" alt="X">@ada_anvil</a>
+</p>
