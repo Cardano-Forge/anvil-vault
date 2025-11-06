@@ -2,6 +2,34 @@
 
 Shared utility functions and types for the Anvil Vault ecosystem. This package provides error handling, validation, parsing, and type utilities used across all Anvil Vault packages.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [API Reference](#api-reference)
+  - [Error Handling](#error-handling)
+    - [errorToJson](#errortojsonerror-opts)
+    - [errorToString](#errortostringerror-opts)
+    - [VaultError](#vaulterror)
+  - [Validation](#validation)
+    - [ValidationError](#validationerror)
+    - [stringSchema](#stringschemaopts)
+    - [objectSchema](#objectschemarecord)
+    - [Schema](#schemat)
+    - [ParsedSchema](#parsedschemat)
+  - [Parsing Utilities](#parsing-utilities)
+    - [parseFromHex](#parsefromhexhexorinstance-hexconstructor)
+    - [uuidToByteArray](#uuidtobytearrayuuid)
+  - [Cardano Utilities](#cardano-utilities)
+    - [isBech32Address](#isbech32addressaddress)
+  - [Type Utilities](#type-utilities)
+    - [MaybePromise](#maybepromiset)
+- [Error Handling Pattern](#error-handling-pattern)
+- [Usage in Anvil Vault](#usage-in-anvil-vault)
+- [Dependencies](#dependencies)
+
 ## Installation
 
 ```bash
@@ -17,6 +45,8 @@ The utils package includes:
 - **Parsing**: Hex and UUID parsing utilities
 - **Type Utilities**: TypeScript helper types
 - **Cardano Utilities**: Bech32 address validation
+
+All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## API Reference
 
