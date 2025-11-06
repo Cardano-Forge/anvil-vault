@@ -4,6 +4,23 @@ BIP-39 mnemonic utilities for Anvil Vault. This package provides deterministic m
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [API Reference](#api-reference)
+  - [generateMnemonic](#generatemnemonicinput)
+  - [parseEntropy](#parseentropyinput)
+  - [Wordlist Utilities](#wordlist-utilities)
+    - [getWordList](#getwordlistlanguage)
+    - [builtinWordLists](#builtinwordlists)
+    - [defaultWordList](#defaultwordlist)
+    - [wordListLength](#wordlistlength)
+- [Complete Example: Generate and Parse](#complete-example-generate-and-parse)
+- [Error Handling](#error-handling)
+- [Specification](#specification)
+- [Dependencies](#dependencies)
+
 ## Installation
 
 ```bash
@@ -30,8 +47,8 @@ Generates a new mnemonic phrase based on the specified or default wordlist.
 
 **Parameters:**
 
-- `input.wordCount?: 12 ¬ 24` - Number of words in the mnemonic. Defaults to 24.
-- `input.wordList? BuiltinWordList | WordList` - Language or custom list of words. Defaults to English.
+- `input.wordCount?: 12 | 24` - Number of words in the mnemonic. Defaults to 24.
+- `input.wordList?: BuiltinWordList | WordList` - Language or custom list of words. Defaults to English.
 
 ```typescript
 type GenerateMnemonicInput = {
@@ -62,7 +79,6 @@ if (!isErr(result)) {
 }
 
 // or using unwrap
-type Mnemonic = string;
 const { mnemonic } = unwrap(generateMnemonic());
 console.log(mnemonic.split(" ").length); // 24 words
 ```
@@ -73,7 +89,7 @@ Converts a mnemonic phrase back into entropy while validating the wordlist and c
 
 **Parameters:**
 
-- `input.mnemonic: String` - The mnemonic phrase to parse.
+- `input.mnemonic: string` - The mnemonic phrase to parse.
 - `input.wordList?: BuiltinWordList | WordList` - Optional wordlist to validate against. Defaults to English.
 
 ```typescript
