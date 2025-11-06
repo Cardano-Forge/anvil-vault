@@ -44,26 +44,7 @@ npm install @anvil-vault/framework
 
 ### Quick Start
 
-```typescript
-import { Vault } from "@anvil-vault/framework";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-  paymentDerivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(),
-  },
-});
-
-const wallet = await vault.getWallet({ userId: "user123" });
-console.log(wallet.addresses.base.bech32);
-
-const signature = await vault.signData({
-  userId: "user123",
-  payload: "Hello, Cardano!",
-});
-```
+- [Vault Quick Start](../../packages/vault/README.md#quick-start)
 
 ### Examples
 
