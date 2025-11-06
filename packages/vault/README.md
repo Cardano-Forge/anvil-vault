@@ -2,6 +2,38 @@
 
 Core vault implementation for Anvil Vault. This package provides the `Vault` class that manages hierarchical deterministic wallet derivation, address generation, data signing, and transaction signing for Cardano.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+  - [Vault Class](#vault-class)
+    - [Constructor](#constructor)
+    - [vault.getWallet](#vaultgetwalletinput)
+    - [vault.signData](#vaultsigndatainput)
+    - [vault.signTransaction](#vaultsigntransactioninput)
+    - [vault.set](#vaultsetkey-value)
+    - [vault.with](#vaultwithkey-value)
+- [Derivation Strategies](#derivation-strategies)
+  - [Constant Derivation](#constant-derivation)
+  - [Unique Derivation](#unique-derivation)
+  - [Pool Derivation](#pool-derivation)
+  - [Custom Derivation](#custom-derivation)
+- [Default Derivations](#default-derivations)
+- [Advanced Configuration](#advanced-configuration)
+  - [Custom Wallet Derivation](#custom-wallet-derivation)
+  - [Additional Wallet Derivation](#additional-wallet-derivation)
+- [Complete Example: Multi-User Wallet System](#complete-example-multi-user-wallet-system)
+- [Memory Management](#memory-management)
+- [Error Handling](#error-handling)
+- [Usage with Handler](#usage-with-handler)
+- [Helper Function: deriveWallet](#helper-function-derivewallet)
+- [Dependencies](#dependencies)
+- [Security Considerations](#security-considerations)
+
 ## Installation
 
 ```bash
@@ -18,6 +50,8 @@ The Vault package provides:
 - **Transaction Signing**: Sign Cardano transactions with derived keys
 - **Flexible Derivation Strategies**: Constant, unique, pool, and custom derivations
 - **Memory Management**: Automatic cleanup of cryptographic keys
+
+All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## Quick Start
 
@@ -51,6 +85,14 @@ const signed = await vault.signTransaction({
 ```
 
 ## API Reference
+
+- [Vault Class](#vault-class)
+  - [Constructor](#constructor)
+  - [vault.getWallet](#vaultgetwalletinput)
+  - [vault.signData](#vaultsigndatainput)
+  - [vault.signTransaction](#vaultsigntransactioninput)
+  - [vault.set](#vaultsetkey-value)
+  - [vault.with](#vaultwithkey-value)
 
 ### `Vault` Class
 
