@@ -2,6 +2,21 @@
 
 Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides CIP-8 and CIP-30 compliant data signing for Cardano wallets using COSE (CBOR Object Signing and Encryption) standards.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [API Reference](#api-reference)
+  - [signDataWallet](#signdatawalletinput)
+  - [Type Definitions](#type-definitions)
+  - [COSE Sign1 Structure](#cose-sign1-structure)
+  - [Validation](#validation)
+- [Complete Example: Sign and Verify](#complete-example-sign-and-verify)
+- [Usage in Anvil Vault](#usage-in-anvil-vault)
+- [CIP Standards](#cip-standards)
+- [Error Handling](#error-handling)
+- [Dependencies](#dependencies)
+
 ## Installation
 
 ```bash
@@ -20,6 +35,11 @@ The CMS package implements:
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## API Reference
+
+- [signDataWallet](#signdatawalletinput)
+- [Type Definitions](#type-definitions)
+- [COSE Sign1 Structure](#cose-sign1-structure)
+- [Validation](#validation)
 
 ### `signDataWallet(input)`
 
