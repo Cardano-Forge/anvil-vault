@@ -640,3 +640,13 @@ This package follows Cardano Improvement Proposals:
 - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Core Cardano serialization library
 - **`@anvil-vault/utils`**: Shared utilities (parseFromHex, error handling)
 - **`trynot`**: Result type for error handling
+
+---
+
+<p align="center">
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+</p>

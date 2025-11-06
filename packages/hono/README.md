@@ -559,3 +559,13 @@ const customAdapter: HonoAdapter<CustomEnv> = honoAdapter;
 - **[@anvil-vault/express](../express/README.md)**: Express.js adapter
 - **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
 - **[@anvil-vault/framework](../framework/README.md)**: Complete framework package
+
+---
+
+<p align="center">
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+</p>

@@ -234,3 +234,13 @@ Implements the [BIP-39: Mnemonic code for generating deterministic keys](https:/
 ## Dependencies
 
 - **`trynot`**: Result type for error handling
+
+---
+
+<p align="center">
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+</p>

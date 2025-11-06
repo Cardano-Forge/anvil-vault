@@ -196,3 +196,13 @@ Each example includes:
    - Regular security audits of your implementation
 
 For detailed security best practices, see the [Framework Documentation](./packages/framework/README.md).
+
+---
+
+<p align="center">
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+</p>

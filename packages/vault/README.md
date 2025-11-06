@@ -701,3 +701,13 @@ console.log("Stake key:", wallet.stakeKey.to_bech32());
 4. **Memory Management**: The vault automatically frees keys, but avoid storing derived keys in memory.
 
 5. **User ID Security**: User IDs should be non-guessable (use UUIDs, not sequential integers).
+
+---
+
+<p align="center">
+  <a href="https://ada-anvil.io">Ada Anvil</a>
+  |
+  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  |
+  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+</p>
