@@ -51,10 +51,6 @@ The handler package provides:
 
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
-## Quick Start
-
-- [Express Quick Start](../../examples/express/README.md#quick-start)
-- [Hono Quick Start](../../examples/hono/README.md#quick-start)
 
 ## API Reference
 

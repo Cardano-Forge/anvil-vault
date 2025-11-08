@@ -4,17 +4,16 @@
 
 ## Overview
 
-Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano. Built with security, flexibility, and developer experience in mind, it offers a complete toolkit from low-level cryptographic operations to high-level HTTP handlers.
+Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano.
 
 ### Why Anvil Vault?
 
-- **Security First**: BIP39/BIP32 compliant key derivation with automatic memory cleanup
-- **Production Ready**: Battle-tested cryptographic operations with comprehensive error handling
+- **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library with Result-based error handling
 - **Framework Agnostic**: Built-in adapters for Express and Hono, easily extensible to any framework
-- **Type Safe**: Full TypeScript support with strict type checking and Result-based error handling
-- **Flexible**: Multiple derivation strategies (unique, pool, constant, custom) for any use case
-- **Modular**: Use the complete framework or individual packages as needed
+- **Flexible Derivation**: Multiple strategies (unique, pool, constant, custom) with automatic memory cleanup
 - **Standards Compliant**: CIP-8, CIP-30, and CIP-1852 compliant implementations
+- **Modular Architecture**: Use the complete framework or individual packages as needed
+- **Developer Experience**: Full TypeScript support with comprehensive documentation and working examples
 
 ## Getting Started
 
@@ -69,15 +68,6 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 - `bip39`: Mnemonic and entropy handling
 - `utils`: Common utilities and error handling
 
-## Key Features
-
-### Secure Key Derivation
-
-- **BIP39 Mnemonic Generation**: Create secure 12 or 24-word mnemonic phrases
-- **BIP32 HD Derivation**: Hierarchical deterministic key derivation following CIP-1852
-- **Flexible Strategies**: Unique, pool, constant, or custom derivation patterns
-- **Memory Safety**: Automatic cleanup of cryptographic keys
-
 ### Transaction & Data Signing
 
 - **Transaction Signing**: Sign Cardano transactions with automatic witness set generation
@@ -126,18 +116,6 @@ npm run pre
 npm run test:watch
 ```
 
-## Examples
-
-Complete, runnable examples are available in the `examples/` directory:
-
-- **[Express Example](./examples/express/README.md)** - Complete Express.js integration example with code walkthrough
-- **[Hono Example](./examples/hono/README.md)** - Modern Hono framework example with code walkthrough
-
-Each example includes:
-
-- Complete implementation code
-- API endpoint documentation with curl examples
-- Configuration options
 
 ## Security Considerations
 
@@ -147,7 +125,6 @@ Each example includes:
 
    - Never hardcode root keys in your application
    - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault, etc.)
-   - Rotate keys regularly and have a key rotation strategy
 
 2. **Derivation Strategies**
 

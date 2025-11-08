@@ -50,9 +50,6 @@ The Hono adapter implements the `HandlerAdapter` interface from `@anvil-vault/ha
 
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
-## Quick Start
-
-- [Hono Quick Start](../../examples/hono/README.md#quick-start)
 
 ## API Reference
 

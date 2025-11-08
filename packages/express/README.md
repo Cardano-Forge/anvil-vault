@@ -40,9 +40,6 @@ The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault
 - **Response Handling**: Sends JSON responses with appropriate status codes
 - **Error Formatting**: Converts vault errors to JSON error responses
 
-## Quick Start
-
-- [Express Quick Start](../../examples/express/README.md#quick-start)
 
 ## API Reference
 

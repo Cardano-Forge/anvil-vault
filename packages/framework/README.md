@@ -46,10 +46,6 @@ npm install @anvil-vault/framework
 
 - [Vault Quick Start](../../packages/vault/README.md#quick-start)
 
-### Examples
-
-- [Express Example](../../examples/express/README.md)
-- [Hono Example](../../examples/hono/README.md)
 
 ## API Overview
 
