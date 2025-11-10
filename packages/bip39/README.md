@@ -1,6 +1,6 @@
 # @anvil-vault/bip39
 
-BIP-39 mnemonic utilities for Anvil Vault. This package provides deterministic mnemonic phrase generation and entropy parsing compliant with the [BIP-39 standard](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki), used across major blockchain wallets.
+BIP-39 mnemonic utilities for Anvil Vault. This package provides deterministic mnemonic phrase generation and entropy parsing compliant with the [BIP-39 standard](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki).
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
@@ -52,7 +52,7 @@ Generates a new mnemonic phrase based on the specified or default wordlist.
 
 ```typescript
 type GenerateMnemonicInput = {
-  wordCount?: 24 | 12;
+  wordCount?: 12 | 24;
   wordList?: BuiltinWordList | WordList;
 };
 ```
@@ -70,17 +70,13 @@ export type GenerateMnemonicOutput = {
 
 ```typescript
 import { generateMnemonic } from "@anvil-vault/bip39";
-import { isErr, unwrap } from "trynot";
+import { isErr } from "trynot";
 
 const result = generateMnemonic({ wordCount: 12 });
 
 if (!isErr(result)) {
   console.log("Mnemonic:", result.mnemonic);
 }
-
-// or using unwrap
-const { mnemonic } = unwrap(generateMnemonic());
-console.log(mnemonic.split(" ").length); // 24 words
 ```
 
 #### `parseEntropy(input)`
@@ -112,7 +108,7 @@ export type ParseEntropyOutput = {
 
 ```typescript
 import { parseEntropy } from "@anvil-vault/bip39";
-import { isErr, unwrap } from "trynot";
+import { isErr } from "trynot";
 
 const mnemonic =
   "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
@@ -121,10 +117,6 @@ const result = parseEntropy({ mnemonic });
 if (!isErr(result)) {
   console.log("Entropy:", result.entropy);
 }
-
-// unwrap will throw if invalid
-const { entropy } = unwrap(parseEntropy({ mnemonic }));
-console.log(entropy); // "00000000000000000000000000000000"
 ```
 
 ---
@@ -144,10 +136,8 @@ Retrieves a built-in or custom wordlist. If an invalid list or unsupported langu
 **Example:**
 
 ```typescript
-import { getWordList, builtinWordLists } from "@anvil-vault/bip39";
+import { getWordList } from "@anvil-vault/bip39";
 import { unwrap } from "trynot";
-
-console.log(builtinWordLists); // ["english", "japanese", "spanish", ...]
 
 const wordList = unwrap(getWordList("english"));
 console.log(wordList.length); // 2048
@@ -240,7 +230,7 @@ Implements the [BIP-39: Mnemonic code for generating deterministic keys](https:/
 <p align="center">
   <a href="https://ada-anvil.io">Ada Anvil</a>
   |
-  <a href="https://discord.gg/RN4D7wzc">Discord</a>
+  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
   |
-  <a href="https://x.com/ada_anvil">@ada_anvil</a>
+  <a href="https://x.com/AnvilDevAgency">@ada_anvil</a>
 </p>
