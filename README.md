@@ -112,7 +112,7 @@ npm run test:watch
 <p align="center">
   <a href="https://ada-anvil.io">Ada Anvil</a>
   |
-  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
+  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>  
   |
   <a href="https://x.com/AnvilDevAgency">@ada_anvil</a>
 </p>

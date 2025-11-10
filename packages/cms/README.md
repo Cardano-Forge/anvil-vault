@@ -5,14 +5,18 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
 ## Table of Contents
 
 - [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Overview](#overview)
-- [Functions](#functions)
+- [API Reference](#api-reference)
   - [signDataWallet](#signdatawalletinput)
-  - [Type Definitions](#type-definitions)
+- [Advanced Usage](#advanced-usage)
+  - [External AAD](#external-aad)
+  - [Address Types](#address-types)
+- [Type Definitions](#type-definitions)
+- [Technical Details](#technical-details)
   - [COSE Sign1 Structure](#cose-sign1-structure)
   - [Validation](#validation)
-- [Complete Example: Sign and Verify](#complete-example-sign-and-verify)
-- [Usage in Anvil Vault](#usage-in-anvil-vault)
+- [Verification (dApp Side)](#verification-dapp-side)
 - [CIP Standards](#cip-standards)
 - [Error Handling](#error-handling)
 - [Dependencies](#dependencies)
@@ -23,9 +27,27 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
 npm install @anvil-vault/cms
 ```
 
+## Quick Start
+
+```typescript
+import { signDataWallet } from "@anvil-vault/cms";
+import { isErr } from "trynot";
+
+const result = signDataWallet({
+  payload: Buffer.from("Hello, Cardano!", "utf8"),
+  address: myAddress,
+  privateKey: myPrivateKey,
+});
+
+if (!isErr(result)) {
+  console.log("Signature:", result.signature);
+  console.log("Public key:", result.key);
+}
+```
+
 ## Overview
 
-The CMS package implements:
+The `@anvil-vault/cms` package implements:
 
 - **CIP-8**: Message Signing specification for Cardano
 - **CIP-30**: Cardano dApp-Wallet Web Bridge signing standards
@@ -34,21 +56,16 @@ The CMS package implements:
 
 All functions return `Result` types from the `trynot` library for consistent error handling.
 
-## Functions
-
-- [signDataWallet](#signdatawalletinput)
-- [Type Definitions](#type-definitions)
-- [COSE Sign1 Structure](#cose-sign1-structure)
-- [Validation](#validation)
+## API Reference
 
 ### `signDataWallet(input)`
 
-Signs arbitrary data with a private key using CIP-8/CIP-30 wallet standards. The signature is COSE Sign1 formatted and includes the signing address in the protected headers.
+Signs arbitrary data with a private key using CIP-8/CIP-30 wallet standards.
 
 **Parameters:**
 
 - `input.payload: string | Buffer` - Data to sign (hex string or Buffer)
-- `input.address: ParsedAddress` - Cardano address (BaseAddress, EnterpriseAddress, or RewardAddress)
+- `input.address: ParsedAddress` - Cardano address
 - `input.privateKey: PrivateKey` - Ed25519 private key for signing
 - `input.externalAad?: string | Buffer` - Optional external Additional Authenticated Data
 
@@ -92,14 +109,18 @@ const result = signDataWallet({
 if (!isErr(result)) {
   console.log("Signature:", result.signature);
   console.log("Public key:", result.key);
-
-  // These can be used for verification by dApps
-  const signatureHex = result.signature;
-  const publicKeyHex = result.key;
 }
 ```
 
-**With External AAD:**
+## Advanced Usage
+
+### External AAD
+
+External Additional Authenticated Data (AAD) allows you to bind the signature to additional context without including it in the payload. This is useful for:
+
+- Binding signatures to specific transactions or sessions
+- Adding metadata that verifiers need to check
+- Preventing signature reuse in different contexts
 
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
@@ -109,7 +130,7 @@ const result = signDataWallet({
   payload: Buffer.from("Transaction data", "utf8"),
   address: addresses.baseAddress,
   privateKey: paymentKey.to_raw_key(),
-  externalAad: Buffer.from("Additional context", "utf8"),
+  externalAad: Buffer.from("session-id-12345", "utf8"),
 });
 
 if (!isErr(result)) {
@@ -117,31 +138,33 @@ if (!isErr(result)) {
 }
 ```
 
-**Address Types:**
+### Address Types
+
+You can sign with different Cardano address types. The private key must match the address's payment or stake credential:
 
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
-import { isErr, unwrap } from "trynot";
+import { unwrap } from "trynot";
 
-// Sign with Enterprise Address (payment only)
-const enterpriseResult = signDataWallet({
-  payload: Buffer.from("message", "utf8"),
-  address: addresses.enterpriseAddress,
-  privateKey: paymentKey.to_raw_key(),
-});
-
-// Sign with Base Address (payment + stake)
+// Base Address (payment + stake)
 const baseResult = signDataWallet({
   payload: Buffer.from("message", "utf8"),
   address: addresses.baseAddress,
-  privateKey: paymentKey.to_raw_key(),
+  privateKey: paymentKey.to_raw_key(), // Use payment key
 });
 
-// Sign with Reward Address (stake only)
+// Enterprise Address (payment only)
+const enterpriseResult = signDataWallet({
+  payload: Buffer.from("message", "utf8"),
+  address: addresses.enterpriseAddress,
+  privateKey: paymentKey.to_raw_key(), // Use payment key
+});
+
+// Reward Address (stake only)
 const rewardResult = signDataWallet({
   payload: Buffer.from("message", "utf8"),
   address: addresses.rewardAddress,
-  privateKey: stakeKey.to_raw_key(), // Use stake key for reward address
+  privateKey: stakeKey.to_raw_key(), // Use stake key
 });
 ```
 
@@ -167,7 +190,9 @@ type SignDataWalletOutput = {
 };
 ```
 
-## COSE Sign1 Structure
+## Technical Details
+
+### COSE Sign1 Structure
 
 The signature follows the COSE Sign1 format with these protected headers:
 
@@ -189,8 +214,6 @@ The function performs several validations:
 1. **Script Address Check**: Cannot sign with script addresses (only key hash addresses)
 2. **Key Match Verification**: Private key must match the payment credential of the address
 3. **Address Credential**: Address must have a valid payment key hash
-
-**Error Cases:**
 
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
@@ -219,53 +242,19 @@ if (isErr(mismatchResult)) {
 }
 ```
 
-## Complete Example: Sign and Verify
+## Verification (dApp Side)
 
-Here's a complete example showing how to sign data and verify it:
+> **Note:** The verification code below is **not part of Anvil Vault**. It demonstrates what a dApp or third party would do to verify signatures created by your vault. This is shown for educational purposes to illustrate the complete CIP-8/CIP-30 flow.
 
 ```typescript
-import { signDataWallet } from "@anvil-vault/cms";
-import { deriveAddresses, extractKeys } from "@anvil-vault/csl";
 import {
   COSESign1,
   COSEKey,
   Label,
 } from "@emurgo/cardano-message-signing-nodejs-gc";
 import { Ed25519Signature } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { isErr, unwrap } from "trynot";
 
-// 1. Setup wallet
-const { paymentKey, stakeKey } = unwrap(
-  extractKeys({
-    accountKey,
-    paymentDerivation: 0,
-    stakeDerivation: 0,
-  })
-);
-
-const addresses = unwrap(
-  deriveAddresses({
-    paymentKey,
-    stakeKey,
-    network: "mainnet",
-  })
-);
-
-// 2. Sign the message
-const message = "Verify my identity";
-const signResult = signDataWallet({
-  payload: Buffer.from(message, "utf8"),
-  address: addresses.baseAddress,
-  privateKey: paymentKey.to_raw_key(),
-});
-
-if (isErr(signResult)) {
-  throw new Error("Failed to sign: " + signResult.message);
-}
-
-const { signature, key } = signResult;
-
-// 3. Verify the signature (typically done by a dApp)
+// Parse the signature (typically done by a dApp)
 const coseSign1 = COSESign1.from_bytes(Buffer.from(signature, "hex"));
 const coseKey = COSEKey.from_bytes(Buffer.from(key, "hex"));
 
@@ -294,25 +283,6 @@ if (addressHeader) {
 }
 ```
 
-## Usage in Anvil Vault
-
-The `signDataWallet` function is used internally by the Vault's `signData` endpoint:
-
-```typescript
-// In @anvil-vault/vault
-import { signDataWallet } from "@anvil-vault/cms";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-// The vault uses signDataWallet internally
-const result = await vault.signData({
-  userId: "user123",
-  payload: "0x48656c6c6f",
-});
-```
 
 ## CIP Standards
 
