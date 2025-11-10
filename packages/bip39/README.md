@@ -16,7 +16,6 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
     - [builtinWordLists](#builtinwordlists)
     - [defaultWordList](#defaultwordlist)
     - [wordListLength](#wordlistlength)
-- [Complete Example: Generate and Parse](#complete-example-generate-and-parse)
 - [Error Handling](#error-handling)
 - [Specification](#specification)
 - [Dependencies](#dependencies)
@@ -39,7 +38,7 @@ It is designed for deterministic wallet creation and seed validation within the 
 
 ---
 
-## API Reference
+## Functions
 
 ### `generateMnemonic(input?)`
 
@@ -169,25 +168,6 @@ Default wordlist used for generation and parsing (`"english"`).
 ### `wordListLength`
 
 Number of words expected in a standard BIP-39 wordlist (2048).
-
----
-
-## Complete Example: Generate and Parse
-
-```typescript
-import { generateMnemonic, parseEntropy } from "@anvil-vault/bip39";
-import { unwrap } from "trynot";
-
-// 1. Generate a mnemonic
-const { mnemonic } = unwrap(generateMnemonic({ wordCount: 12 }));
-console.log("Mnemonic:", mnemonic);
-
-// 2. Parse it back into entropy
-const { entropy } = unwrap(parseEntropy({ mnemonic }));
-console.log("Entropy:", entropy);
-```
-
-This example demonstrates the full round-trip conversion between entropy and mnemonic using the default English wordlist.
 
 ---
 
