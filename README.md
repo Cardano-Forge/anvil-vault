@@ -8,20 +8,12 @@ Anvil Vault is a comprehensive TypeScript monorepo that provides everything you 
 
 ### Why Anvil Vault?
 
-- **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library with Result-based error handling
+- **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library with `trynot` error handling
 - **Framework Agnostic**: Built-in adapters for Express and Hono, easily extensible to any framework
 - **Flexible Derivation**: Multiple strategies (unique, pool, constant, custom) with automatic memory cleanup
 - **Standards Compliant**: CIP-8, CIP-30, and CIP-1852 compliant implementations
 - **Modular Architecture**: Use the complete framework or individual packages as needed
 - **Developer Experience**: Full TypeScript support with comprehensive documentation and working examples
-
-## Getting Started
-
-### Documentation
-
-**For complete documentation, API reference, and usage examples, see:**
-
-**[Framework Documentation](./packages/framework/README.md)** - Complete entry point for Anvil Vault
 
 ## Monorepo Structure
 
@@ -29,44 +21,29 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 
 ### Main Package
 
-- **[`@anvil-vault/framework`](./packages/framework/README.md)** - Complete framework package that re-exports all core functionality.
+- **[`@anvil-vault/framework`](./packages/framework/README.md)** - Complete entry point for Anvil Vault
 
 ### Core Packages
 
-- **[`@anvil-vault/vault`](./packages/vault/README.md)** - Main vault implementation with hierarchical deterministic wallet derivation, address generation, and signing operations
-- **[`@anvil-vault/csl`](./packages/csl/README.md)** - Type-safe wrappers around Cardano Serialization Library for key derivation, address generation, and transaction signing
+- **[`@anvil-vault/vault`](./packages/vault/README.md)** - Main vault implementation with hierarchical deterministic wallet derivation
+- **[`@anvil-vault/csl`](./packages/csl/README.md)** - Type-safe wrappers around Cardano Serialization Library
 - **[`@anvil-vault/cms`](./packages/cms/README.md)** - Cardano Message Signing (CIP-8/CIP-30) implementation using COSE standards
 - **[`@anvil-vault/handler`](./packages/handler/README.md)** - Framework-agnostic HTTP request handler builder with REST API endpoints
 - **[`@anvil-vault/bip39`](./packages/bip39/README.md)** - BIP-39 mnemonic generation and entropy parsing utilities
 
 ### Framework Adapters
 
-- **[`@anvil-vault/express`](./packages/express/README.md)** - Express.js adapter for seamless integration with Express applications
-- **[`@anvil-vault/hono`](./packages/hono/README.md)** - Hono adapter for modern, lightweight applications (Cloudflare Workers, Deno, Bun, Node.js)
+- **[`@anvil-vault/express`](./packages/express/README.md)** - Express.js adapter
+- **[`@anvil-vault/hono`](./packages/hono/README.md)** - Hono adapter
 
 ### Utilities
 
-- **[`@anvil-vault/utils`](./packages/utils/README.md)** - Shared utilities including error handling, validation, parsing, and type utilities
+- **[`@anvil-vault/utils`](./packages/utils/README.md)** - Shared utilities
 
 ### Build Configuration
 
-- **`@anvil-vault/tsconfig`** - Shared TypeScript configuration for consistent type checking
-- **`@anvil-vault/tsup`** - Build configuration utilities for package compilation
-
-### Layer Responsibilities
-
-**Application Layer:**
-
-- `vault`: Orchestrates wallet operations and key management
-- `handler`: Provides REST API endpoints and request handling
-- `express`/`hono`: Framework-specific adapters
-
-**Cryptographic Layer:**
-
-- `csl`: Cardano-specific cryptographic operations
-- `cms`: Message signing standards (CIP-8/CIP-30)
-- `bip39`: Mnemonic and entropy handling
-- `utils`: Common utilities and error handling
+- **`@anvil-vault/tsconfig`** - Shared TypeScript configuration
+- **`@anvil-vault/tsup`** - Build configuration utilities
 
 ### Transaction & Data Signing
 
@@ -77,15 +54,14 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 
 ### Framework Integration
 
-- **Express.js**: Full middleware support with authentication, rate limiting, and error handling
-- **Hono**: Multi-runtime support (Cloudflare Workers, Deno, Bun, Node.js)
+- **Express.js**: Full middleware support
+- **Hono**: Multi-runtime support
 - **Custom Adapters**: Easy to create adapters for any framework
 - **Type Safety**: Full TypeScript support with framework-specific types
 
 ### Developer Experience
 
 - **Result Types**: Consistent error handling with `trynot` library
-- **Comprehensive Docs**: Detailed documentation for every package
 - **Type Inference**: Excellent TypeScript type inference
 - **Examples**: Complete working examples for common use cases
 
@@ -115,7 +91,6 @@ npm run pre
 # Run tests in watch mode
 npm run test:watch
 ```
-
 
 ## Security Considerations
 
