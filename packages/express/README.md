@@ -10,11 +10,8 @@ Express.js adapter for Anvil Vault handlers. This package provides seamless inte
 - [API Reference](#api-reference)
   - [expressAdapter](#expressadapter)
   - [ExpressAdapter](#expressadapter-1)
-- [Usage Examples](#usage-examples)
-  - [Basic Setup](#basic-setup)
-  - [With Authentication Middleware](#with-authentication-middleware)
-  - [With Rate Limiting](#with-rate-limiting)
-  - [With Error Handling](#with-error-handling)
+- [Advanced Usage](#advanced-usage)
+  - [Custom Path Mapping](#custom-path-mapping)
   - [Multiple Vault Instances](#multiple-vault-instances)
 - [API Endpoints](#api-endpoints)
 - [Requirements](#requirements)
@@ -40,11 +37,33 @@ The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault
 - **Response Handling**: Sends JSON responses with appropriate status codes
 - **Error Formatting**: Converts vault errors to JSON error responses
 
+## Quick Start
+
+```typescript
+import { createVaultHandler } from "@anvil-vault/handler";
+import { expressAdapter } from "@anvil-vault/express";
+import { Vault } from "@anvil-vault/vault";
+import express from "express";
+
+const vault = new Vault({
+  rootKey: () => process.env.ROOT_KEY,
+  network: "preprod",
+});
+
+const app = express();
+app.use(express.json());
+
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: expressAdapter,
+  })
+);
+
+app.listen(3000);
+```
 
 ## API Reference
-
-- [expressAdapter](#expressadapter)
-- [ExpressAdapter](#expressadapter-1)
 
 ### `expressAdapter`
 
@@ -99,169 +118,25 @@ type ExpressAdapter = HandlerAdapter<
 
 ---
 
-## Usage Examples
+## Advanced Usage
 
-### Basic Setup
+### Custom Path Mapping
+
+Map `/users/me` to the actual user ID:
 
 ```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-  paymentDerivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(),
-  },
-});
-
-const app = express();
-app.use(express.json());
+const userId = "f3aa7d40-58c2-44df-ba49-d4026c822571"; // example
 
 app.use(
   createVaultHandler({
     vault,
-    adapter: expressAdapter,
+    adapter: {
+      ...expressAdapter,
+      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${userId}`),
+    },
   })
 );
-
-app.listen(3000);
 ```
-
-#### Overriding getPath (advanced)
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-
-const handler = createVaultHandler({
-  vault,
-  adapter: {
-    ...expressAdapter,
-    getPath: (ctx) =>
-      ctx.req.path.replace("/users/me", `/users/${ctx.req.user.id}`),
-  },
-});
-```
-
----
-
-### With Authentication Middleware
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = express();
-app.use(express.json());
-
-// Authentication middleware
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.replace("Bearer ", "");
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-  // Verify token and attach user to request
-  req.user = verifyToken(token);
-  next();
-};
-
-// Authorization middleware
-const authorize = (req, res, next) => {
-  if (req.user.id !== req.params.userId) {
-    return res.status(403).json({ error: "Forbidden" });
-  }
-  next();
-};
-
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-app.all("/users/:userId/*", authenticate, authorize, handler);
-
-app.listen(3000);
-```
-
----
-
-### With Rate Limiting
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-import rateLimit from "express-rate-limit";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = express();
-app.use(express.json());
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: "Too many requests, please try again later.",
-});
-
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
-
-app.all("/users/:userId/*", limiter, handler);
-
-app.listen(3000);
-```
-
----
-
-### With Error Handling
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-const app = express();
-app.use(express.json());
-
-app.use(
-  createVaultHandler({
-    vault,
-    adapter: expressAdapter,
-  })
-);
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error("Error:", err);
-  res.status(500).json({
-    statusCode: 500,
-    error: "Internal server error",
-  });
-});
-
-app.listen(3000);
-```
-
----
 
 ### Multiple Vault Instances
 
@@ -415,9 +290,7 @@ const adapter: ExpressAdapter = expressAdapter;
 ## Related Packages
 
 - **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
-- **[@anvil-vault/hono](../hono/README.md)**: Hono adapter
 - **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
-- **[@anvil-vault/framework](../framework/README.md)**: Complete framework package
 
 ---
 
