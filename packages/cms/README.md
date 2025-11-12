@@ -12,13 +12,13 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
 - [Advanced Usage](#advanced-usage)
   - [External AAD](#external-aad)
   - [Address Types](#address-types)
+  - [Error Cases](#error-cases)
 - [Type Definitions](#type-definitions)
 - [Technical Details](#technical-details)
   - [COSE Sign1 Structure](#cose-sign1-structure)
   - [Validation](#validation)
 - [Verification (dApp Side)](#verification-dapp-side)
 - [CIP Standards](#cip-standards)
-- [Error Handling](#error-handling)
 - [Dependencies](#dependencies)
 
 ## Installation
@@ -54,7 +54,7 @@ The `@anvil-vault/cms` package implements:
 - **COSE Sign1**: CBOR Object Signing and Encryption for Ed25519 signatures
 - **Address Verification**: Ensures private key matches the signing address
 
-All functions return `Result` types from the `trynot` library for consistent error handling.
+All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
 
 ## API Reference
 
@@ -168,6 +168,43 @@ const rewardResult = signDataWallet({
 });
 ```
 
+### Error Cases
+
+Common validation errors you may encounter:
+
+**Script Address Error:**
+
+```typescript
+import { signDataWallet } from "@anvil-vault/cms";
+import { isErr } from "trynot";
+
+// Error: Cannot sign with script addresses
+const scriptResult = signDataWallet({
+  payload: Buffer.from("data", "utf8"),
+  address: scriptAddress, // Has script hash instead of key hash
+  privateKey: paymentKey.to_raw_key(),
+});
+
+if (isErr(scriptResult)) {
+  console.error(scriptResult.message); // "Can't sign data with script address"
+}
+```
+
+**Key Mismatch Error:**
+
+```typescript
+// Error: Private key doesn't match address
+const mismatchResult = signDataWallet({
+  payload: Buffer.from("data", "utf8"),
+  address: addresses.baseAddress, // Uses payment key
+  privateKey: stakeKey.to_raw_key(), // Wrong key!
+});
+
+if (isErr(mismatchResult)) {
+  console.error(mismatchResult.message); // "Private key doesn't match the address"
+}
+```
+
 ## Type Definitions
 
 ### `SignDataWalletInput`
@@ -207,40 +244,13 @@ The COSE Key includes:
 - **Curve**: Ed25519 (crv: 6)
 - **Public Key**: x-coordinate (-2)
 
-## Validation
+### Validation
 
-The function performs several validations:
+The function performs these validations:
 
 1. **Script Address Check**: Cannot sign with script addresses (only key hash addresses)
 2. **Key Match Verification**: Private key must match the payment credential of the address
 3. **Address Credential**: Address must have a valid payment key hash
-
-```typescript
-import { signDataWallet } from "@anvil-vault/cms";
-import { isErr } from "trynot";
-
-// Error: Script address
-const scriptResult = signDataWallet({
-  payload: Buffer.from("data", "utf8"),
-  address: scriptAddress, // Has script hash instead of key hash
-  privateKey: paymentKey.to_raw_key(),
-});
-
-if (isErr(scriptResult)) {
-  console.error(scriptResult.message); // "Can't sign data with script address"
-}
-
-// Error: Mismatched private key
-const mismatchResult = signDataWallet({
-  payload: Buffer.from("data", "utf8"),
-  address: addresses.baseAddress, // Uses payment key
-  privateKey: stakeKey.to_raw_key(), // Wrong key!
-});
-
-if (isErr(mismatchResult)) {
-  console.error(mismatchResult.message); // "Private key doesn't match the address"
-}
-```
 
 ## Verification (dApp Side)
 
@@ -283,7 +293,6 @@ if (addressHeader) {
 }
 ```
 
-
 ## CIP Standards
 
 This package implements:
@@ -308,39 +317,6 @@ Defines the `signData` API for wallet-dApp communication:
 
 - [CIP-8: Message Signing](https://cips.cardano.org/cip/CIP-0008)
 - [CIP-30: Cardano dApp-Wallet Web Bridge](https://cips.cardano.org/cip/CIP-0030)
-
-## Error Handling
-
-All functions return `Result` types from the `trynot` library:
-
-```typescript
-import { isErr, isOk, unwrap } from "trynot";
-import { signDataWallet } from "@anvil-vault/cms";
-
-// Check for errors
-const result = signDataWallet({
-  payload: Buffer.from("data", "utf8"),
-  address: addresses.baseAddress,
-  privateKey: paymentKey.to_raw_key(),
-});
-
-if (isErr(result)) {
-  console.error("Failed to sign:", result.message);
-  return;
-}
-
-// Use the value
-console.log("Signature:", result.signature);
-
-// Or unwrap (throws on error)
-const { signature, key } = unwrap(
-  signDataWallet({
-    payload: Buffer.from("data", "utf8"),
-    address: addresses.baseAddress,
-    privateKey: paymentKey.to_raw_key(),
-  })
-);
-```
 
 ## Dependencies
 

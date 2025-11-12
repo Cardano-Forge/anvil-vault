@@ -530,11 +530,9 @@ curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/si
 
 ---
 
-## Error Handling
+## HTTP Error Responses
 
-All endpoints return consistent error responses:
-
-**Error Response Format:**
+All endpoints return consistent JSON error responses:
 
 ```json
 {
@@ -543,30 +541,13 @@ All endpoints return consistent error responses:
 }
 ```
 
-**HTTP Status Codes:**
+**Status Codes:**
+- `400` - Invalid input (validation failed)
+- `404` - Invalid path or operation
+- `405` - Wrong HTTP method
+- `500` - Vault operation failed
 
-- `400 Bad Request` - Invalid input (validation failed)
-- `404 Not Found` - Invalid path or operation
-- `405 Method Not Allowed` - Wrong HTTP method for endpoint
-- `500 Internal Server Error` - Vault operation failed
-
-**Example Error Handling:**
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-
-app.use(
-  createVaultHandler({
-    vault,
-    adapter: expressAdapter,
-  })
-);
-
-// Errors are automatically handled and returned as JSON
-// GET /users/invalid-uuid/wallet
-// Response: { "statusCode": 400, "error": "Bad request" }
-```
+For general error handling patterns, see [Error Handling](../framework/README.md#error-handling).
 
 ---
 

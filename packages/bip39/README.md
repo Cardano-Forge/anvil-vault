@@ -16,7 +16,6 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
     - [builtinWordLists](#builtinwordlists)
     - [defaultWordList](#defaultwordlist)
     - [wordListLength](#wordlistlength)
-- [Error Handling](#error-handling)
 - [Specification](#specification)
 - [Dependencies](#dependencies)
 
@@ -28,13 +27,15 @@ npm install @anvil-vault/bip39
 
 ## Overview
 
-The `bip39` package implements:
+The `@anvil-vault/bip39` package provides:
 
-- **Mnemonic Generation**: Create 12- or 24-word mnemonic phrases from secure entropy.
-- **Entropy Parsing**: Convert mnemonic phrases back into their underlying entropy.
-- **Wordlist Utilities**: Access and validate BIP-39 wordlists in multiple languages.
+- **Mnemonic Generation**: Create BIP-39 mnemonics from entropy or word count
+- **Entropy Parsing**: Convert mnemonics back to entropy
+- **Multi-language Support**: English, Spanish, French, Italian, Portuguese, Czech, Japanese, Korean, Chinese (Simplified & Traditional)
+- **Validation**: Automatic checksum validation
+- **Flexible Input**: Support for hex strings and Buffers
 
-It is designed for deterministic wallet creation and seed validation within the Anvil Vault ecosystem.
+All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
 
 ---
 
@@ -168,26 +169,6 @@ Default wordlist used for generation and parsing (`"english"`).
 ### `wordListLength`
 
 Number of words expected in a standard BIP-39 wordlist (2048).
-
----
-
-## Error Handling
-
-All functions return `Result` objects from the `trynot` library. Errors are non-throwing by default unless unwrapped.
-
-```typescript
-import { generateMnemonic } from "@anvil-vault/bip39";
-import { isErr, unwrap } from "trynot";
-
-const result = generateMnemonic({ wordList: "unsupported" });
-
-if (isErr(result)) {
-  console.error(result.message); // "Unsupported language: unsupported"
-}
-
-// Unwrap throws on error
-unwrap(result); // throws Error
-```
 
 ---
 
