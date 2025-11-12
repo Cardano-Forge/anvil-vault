@@ -1,6 +1,6 @@
 # @anvil-vault/csl
 
-Cardano Serialization Library (CSL) wrappers and utilities for Anvil Vault. This package provides type-safe, Result-based wrappers around the Emurgo Cardano Serialization Library, making it easier to work with Cardano cryptographic operations.
+Cardano Serialization Library (CSL) wrappers and utilities for Anvil Vault. This package provides type-safe, Result-based wrappers around the Emurgo Cardano Serialization Library.
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
@@ -29,8 +29,6 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
     - [getNetworkId](#getnetworkidnetwork)
     - [networks](#networks)
 - [Type Definitions](#type-definitions)
-- [Complete Example: Wallet Creation](#complete-example-wallet-creation)
-- [Error Handling](#error-handling)
 - [CIP Standards](#cip-standards)
 - [Dependencies](#dependencies)
 
@@ -56,35 +54,15 @@ All functions return `Result` types from the `trynot` library for consistent err
 
 ## Functions
 
-- [Key Derivation](#key-derivation)
-  - [deriveAccount](#deriveaccountinput)
-  - [derivePrivateKey](#deriveprivatekeyinput)
-  - [extractKeys](#extractkeysinput)
-  - [harden](#hardennum)
-- [Address Generation](#address-generation)
-  - [deriveAddresses](#deriveaddressesinput)
-  - [parseAddress](#parseaddressinput)
-- [Transaction Operations](#transaction-operations)
-  - [signTransaction](#signtransactioninput)
-  - [addRequiredSigner](#addrequiredsignerinput)
-- [Data Signing & Verification](#data-signing--verification)
-  - [signDataRaw](#signdatarawinput)
-  - [verifySignature](#verifysignatureinput)
-- [Key Generation](#key-generation)
-  - [generateEd25519KeyPair](#generateed25519keypair)
-- [Network Utilities](#network-utilities)
-  - [getNetworkId](#getnetworkidnetwork)
-  - [networks](#networks)
-
 ### Key Derivation
 
 #### `deriveAccount(input)`
 
-Derives an account key from a root key following CIP-1852 (Cardano's hierarchical deterministic wallet structure).
+Derives an account key from a root key following CIP-1852.
 
 **Parameters:**
 
-- `input.rootKey: Bip32PrivateKey | string` - Root private key (BIP32 extended key)
+- `input.rootKey: Bip32PrivateKey | string` - Root private key
 - `input.accountDerivation: number | number[]` - Account index or derivation path
 
 **Returns:** `Result<DeriveAccountOutput>`
@@ -102,25 +80,17 @@ Derives an account key from a root key following CIP-1852 (Cardano's hierarchica
 
 ```typescript
 import { deriveAccount } from "@anvil-vault/csl";
-import { isErr } from "trynot";
-
-const rootKeyHex = "40d0f8821976d097ad6c22e75f3ee2e725750a33...";
+import { isOk } from "trynot";
 
 // Derive account 0
 const result = deriveAccount({
-  rootKey: rootKeyHex,
+  rootKey: process.env.ROOT_KEY,
   accountDerivation: 0,
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Account key derived:", result.accountKey.to_bech32());
 }
-
-// Derive with custom path
-const customResult = deriveAccount({
-  rootKey: rootKeyHex,
-  accountDerivation: [0, 1], // m/1852'/1815'/0'/1'
-});
 ```
 
 #### `derivePrivateKey(input)`
@@ -129,8 +99,8 @@ Derives a BIP32 private key from BIP39 entropy (mnemonic seed).
 
 **Parameters:**
 
-- `input.entropy: Buffer | string` - BIP39 entropy (hex string without 0x prefix, or Buffer)
-- `input.password?: Buffer | string` - Optional password for entropy (default: empty)
+- `input.entropy: Buffer | string` - BIP39 entropy
+- `input.password?: Buffer | string` - Optional password for entropy
 
 **Returns:** `Result<Bip32PrivateKey>`
 
@@ -138,20 +108,14 @@ Derives a BIP32 private key from BIP39 entropy (mnemonic seed).
 
 ```typescript
 import { derivePrivateKey } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
-const entropy = "a1b2c3d4e5f6...";
+const entropy = process.env.ENTROPY;
 const result = derivePrivateKey({ entropy });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Root key:", result.to_bech32());
 }
-
-// With password
-const protectedResult = derivePrivateKey({
-  entropy,
-  password: "my-secure-password",
-});
 ```
 
 #### `extractKeys(input)`
@@ -179,25 +143,18 @@ Extracts payment and stake keys from an account key following CIP-1852.
 
 ```typescript
 import { extractKeys } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = extractKeys({
-  accountKey: accountKeyHex,
+  accountKey: process.env.ROOT_KEY,  
   paymentDerivation: 0, // First payment key
   stakeDerivation: 0, // First stake key
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Payment key:", result.paymentKey.to_public().to_bech32());
   console.log("Stake key:", result.stakeKey.to_public().to_bech32());
 }
-
-// Multiple derivation levels
-const customResult = extractKeys({
-  accountKey: accountKeyHex,
-  paymentDerivation: [0, 5], // account/0/0/5
-  stakeDerivation: [0], // account/2/0
-});
 ```
 
 #### `harden(num)`
@@ -217,12 +174,6 @@ import { harden } from "@anvil-vault/csl";
 
 console.log(harden(0)); // 2147483648 (0x80000000)
 console.log(harden(1852)); // 2147485500 (0x8000073C)
-
-// Use in manual derivation
-const accountKey = rootKey
-  .derive(harden(1852)) // Purpose
-  .derive(harden(1815)) // Coin type
-  .derive(harden(0)); // Account
 ```
 
 ### Address Generation
@@ -249,7 +200,7 @@ Derives Cardano addresses from payment and stake keys.
 
 ```typescript
 import { deriveAddresses } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = deriveAddresses({
   paymentKey: paymentKeyHex,
@@ -257,7 +208,7 @@ const result = deriveAddresses({
   network: "preprod",
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Base:", result.baseAddress.to_address().to_bech32());
   console.log("Enterprise:", result.enterpriseAddress.to_address().to_bech32());
   console.log("Reward:", result.rewardAddress.to_address().to_bech32());
@@ -287,29 +238,19 @@ Parses a Cardano address from various formats (bech32, hex, or CSL object).
 ```typescript
 import { parseAddress } from "@anvil-vault/csl";
 import { BaseAddress } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
-// Parse bech32 address
-const result1 = parseAddress({
+const result = parseAddress({
   address: "addr_test1qz...",
 });
 
-if (!isErr(result1) && result1 instanceof BaseAddress) {
+if (isOk(result) && result instanceof BaseAddress) {
   console.log(
     "Payment credential:",
-    result1.payment_cred().to_keyhash()?.to_hex()
+    result.payment_cred().to_keyhash()?.to_hex()
   );
-  console.log("Stake credential:", result1.stake_cred().to_keyhash()?.to_hex());
+  console.log("Stake credential:", result.stake_cred().to_keyhash()?.to_hex());
 }
-
-// Parse hex address
-const result2 = parseAddress({
-  address: "00a1b2c3...",
-});
-
-// Already parsed - returns as-is
-const baseAddr = BaseAddress.new(/* ... */);
-const result3 = parseAddress({ address: baseAddr });
 ```
 
 ### Transaction Operations
@@ -332,21 +273,18 @@ Signs a Cardano transaction with one or more private keys.
 
 ```typescript
 import { signTransaction } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
-const txHex = "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667...";
+const txHex = "<valid-transaction-hex>";
 
 const result = signTransaction({
   transaction: txHex,
   privateKeys: [paymentPrivateKeyHex, stakePrivateKeyHex],
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signed TX:", result.signedTransaction.to_hex());
   console.log("Witness set:", result.witnessSet.to_hex());
-
-  // Submit to blockchain
-  await submitTransaction(result.signedTransaction.to_hex());
 }
 ```
 
@@ -367,7 +305,7 @@ Adds a required signer key hash to a transaction.
 
 ```typescript
 import { addRequiredSigner } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const keyHash = paymentKey.to_public().to_raw_key().hash().to_hex();
 
@@ -376,16 +314,10 @@ const result = addRequiredSigner({
   keyHash,
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Updated transaction:", result.to_hex());
 }
 ```
-
-**Use Cases:**
-
-- Multi-signature transactions
-- Smart contract interactions requiring specific signers
-- Governance voting
 
 ### Data Signing & Verification
 
@@ -406,7 +338,7 @@ Signs arbitrary data with an Ed25519 private key.
 
 ```typescript
 import { signDataRaw } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const message = Buffer.from("Hello, Cardano!", "utf8");
 
@@ -415,7 +347,7 @@ const result = signDataRaw({
   privateKey: privateKeyHex,
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signature:", result.signature.to_hex());
 }
 ```
@@ -438,7 +370,7 @@ Verifies an Ed25519 signature against data and public key.
 
 ```typescript
 import { verifySignature } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = verifySignature({
   signature: signatureHex,
@@ -446,7 +378,7 @@ const result = verifySignature({
   data: Buffer.from("Hello, Cardano!", "utf8"),
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   if (result.isValid) {
     console.log("Signature is valid");
   } else {
@@ -470,11 +402,11 @@ Generates a new random Ed25519 key pair.
 
 ```typescript
 import { generateEd25519KeyPair } from "@anvil-vault/csl";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = generateEd25519KeyPair();
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Private key:", result.privateKey.to_hex());
   console.log("Public key:", result.publicKey.to_hex());
 
@@ -483,12 +415,6 @@ if (!isErr(result)) {
   const isValid = result.publicKey.verify(Buffer.from("data"), signature);
 }
 ```
-
-**Use Cases:**
-
-- Generating ephemeral keys
-- Testing and development
-- Creating non-hierarchical keys
 
 ### Network Utilities
 
@@ -543,84 +469,6 @@ type ParsedAddress =
   | EnterpriseAddress
   | PointerAddress
   | RewardAddress;
-```
-
-## Complete Example: Wallet Creation
-
-Here's a complete example showing how to create a wallet from a mnemonic:
-
-```typescript
-import {
-  derivePrivateKey,
-  deriveAccount,
-  extractKeys,
-  deriveAddresses,
-} from "@anvil-vault/csl";
-import { isErr, unwrap } from "trynot";
-
-// 1. Convert mnemonic to entropy (use @anvil-vault/bip39)
-const entropy = "a1b2c3d4e5f6...";
-
-// 2. Derive root key from entropy
-const rootKey = unwrap(derivePrivateKey({ entropy }));
-
-// 3. Derive account key (account 0)
-const { accountKey } = unwrap(
-  deriveAccount({
-    rootKey,
-    accountDerivation: 0,
-  })
-);
-
-// 4. Extract payment and stake keys (address 0)
-const { paymentKey, stakeKey } = unwrap(
-  extractKeys({
-    accountKey,
-    paymentDerivation: 0,
-    stakeDerivation: 0,
-  })
-);
-
-// 5. Generate addresses
-const addresses = unwrap(
-  deriveAddresses({
-    paymentKey,
-    stakeKey,
-    network: "mainnet",
-  })
-);
-
-console.log("Base address:", addresses.baseAddress.to_address().to_bech32());
-console.log(
-  "Enterprise address:",
-  addresses.enterpriseAddress.to_address().to_bech32()
-);
-console.log(
-  "Reward address:",
-  addresses.rewardAddress.to_address().to_bech32()
-);
-```
-
-## Error Handling
-
-All functions return `Result` types from the `trynot` library:
-
-```typescript
-import { isErr, unwrap } from "trynot";
-import { deriveAccount } from "@anvil-vault/csl";
-
-// Check for errors
-const result = deriveAccount({ rootKey, accountDerivation: 0 });
-if (isErr(result)) {
-  console.error("Failed to derive account:", result.message);
-  return;
-}
-
-// Use the value
-console.log("Account key:", result.accountKey.to_bech32());
-
-// Or unwrap (throws on error)
-const { accountKey } = unwrap(deriveAccount({ rootKey, accountDerivation: 0 }));
 ```
 
 ## CIP Standards
