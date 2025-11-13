@@ -25,7 +25,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
     - [IVault](#ivault)
     - [VaultConfig](#vaultconfig)
 - [REST API Endpoints](#rest-api-endpoints)
-- [Error Handling](#error-handling)
+- [HTTP Error Responses](#http-error-responses)
 - [Creating Custom Adapters](#creating-custom-adapters)
 - [Usage with Custom Vault](#usage-with-custom-vault)
 - [Security Considerations](#security-considerations)
@@ -46,26 +46,19 @@ The handler package provides:
 - **Type-Safe Request Handling**: Full TypeScript support with validated inputs
 - **RESTful API Structure**: Standard REST endpoints for wallet operations
 - **Built-in Validation**: Schema-based input validation with detailed error messages
-- **Flexible Derivation**: Support for unique, constant, pool, and custom derivation strategies
 - **Error Handling**: Consistent error responses with proper HTTP status codes
 
-All functions return `Result` types from the `trynot` library for consistent error handling.
+## Quick Start
 
+### With Express
+
+See the [Express Quick Start](../express/README.md#quick-start) for a complete example.
+
+### With Hono
+
+See the [Hono Quick Start](../hono/README.md#quick-start) for a complete example.
 
 ## API Reference
-
-- [Handler Builder](#handler-builder)
-  - [createVaultHandler](#createvaulthandlerconfig)
-  - [handleVaultRequest](#handlevaultrequestcontext-vault-adapter)
-- [Adapter System](#adapter-system)
-  - [HandlerAdapter](#handleradaptertparams-tcontext-tresponse)
-  - [createHandlerAdapter](#createhandleradapteradapter)
-- [Derivation Utilities](#derivation-utilities)
-  - [getDerivation](#getderivationinput-context)
-- [Types](#types)
-  - [Derivation](#derivationtcontext)
-  - [IVault](#ivault)
-  - [VaultConfig](#vaultconfig)
 
 ### Handler Builder
 
@@ -85,14 +78,7 @@ Creates a framework-specific request handler for vault operations.
 ```typescript
 import { createVaultHandler } from "@anvil-vault/handler";
 import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
 
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY,
-  network: "mainnet",
-});
-
-// Use with Express
 app.use(
   createVaultHandler({
     vault,
@@ -118,9 +104,6 @@ Low-level function for processing vault requests. Used internally by `createVaul
 **Example:**
 
 ```typescript
-import { handleVaultRequest } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-
 const context = await expressAdapter.getContext(req, res);
 const result = await handleVaultRequest(context, vault, expressAdapter);
 ```
@@ -174,19 +157,18 @@ Helper function for creating type-safe adapters.
 
 ```typescript
 import { createHandlerAdapter } from "@anvil-vault/handler";
-import type { Context } from "hono";
 
-export const honoAdapter = createHandlerAdapter({
-  getContext: (c: Context) => c,
-  getBody: async (c) => await c.req.json(),
-  getMethod: (c) => c.req.method,
-  getPath: (c) => c.req.path,
-  getQuery: (c) => Object.fromEntries(c.req.queries()),
-  sendResponse: (c, result) => {
+export const customAdapter = createHandlerAdapter({
+  getContext: (req, res) => ({ req, res }),
+  getBody: async (ctx) => ctx.req.body,
+  getMethod: (ctx) => ctx.req.method,
+  getPath: (ctx) => ctx.req.path,
+  getQuery: (ctx) => ctx.req.query,
+  sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      return c.json(errorToJson(result), result.statusCode);
+      return ctx.res.status(result.statusCode).json(errorToJson(result));
     }
-    return c.json(result.response);
+    return ctx.res.json(result.response);
   },
 });
 ```
@@ -211,43 +193,16 @@ Resolves a derivation strategy into a concrete derivation path.
 
 ```typescript
 import { getDerivation } from "@anvil-vault/handler";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
-// Constant derivation
-const constantPath = await getDerivation({
-  userId: "550e8400-e29b-41d4-a716-446655440000",
-  derivation: { type: "constant", value: 0 },
-});
-if (!isErr(constantPath)) {
-  console.log(constantPath); // 0
-}
-
-// Pool derivation
-const poolPath = await getDerivation({
-  userId: "550e8400-e29b-41d4-a716-446655440000",
-  derivation: { type: "pool", size: 10 },
-});
-if (!isErr(poolPath)) {
-  console.log(poolPath); // 0-9 (deterministic based on userId)
-}
-
-// Unique derivation
-const uniquePath = await getDerivation({
+const result = await getDerivation({
   userId: "550e8400-e29b-41d4-a716-446655440000",
   derivation: { type: "unique" },
 });
-if (!isErr(uniquePath)) {
-  console.log(uniquePath); // [85, 14, 132, 0, ...] (16 bytes from UUID)
-}
 
-// Unique with scrambler
-const scrambledPath = await getDerivation({
-  userId: "550e8400-e29b-41d4-a716-446655440000",
-  derivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(),
-  },
-});
+if (isOk(result)) {
+  console.log(result); // [85, 14, 132, 0, ...] (16 bytes from UUID)
+}
 ```
 
 ---
@@ -314,33 +269,16 @@ type Derivation<TContext = undefined> =
 ```typescript
 import type { Derivation } from "@anvil-vault/handler";
 
-// Unique derivation with scrambling
+// Unique with scrambling
 const paymentDerivation: Derivation = {
   type: "unique",
   scrambler: (path) => path.reverse(),
 };
 
-// Pool of 10 stake keys
+// Pool of 10 keys
 const stakeDerivation: Derivation = {
   type: "pool",
   size: 10,
-};
-
-// Constant account
-const accountDerivation: Derivation = {
-  type: "constant",
-  value: 0,
-};
-
-// Custom derivation
-const customDerivation: Derivation<{ isPremium: boolean }> = {
-  type: "custom",
-  provider: async (input, context) => {
-    if (context.isPremium) {
-      return { type: "constant", value: 0 };
-    }
-    return { type: "pool", size: 100 };
-  },
 };
 ```
 
@@ -542,6 +480,7 @@ All endpoints return consistent JSON error responses:
 ```
 
 **Status Codes:**
+
 - `400` - Invalid input (validation failed)
 - `404` - Invalid path or operation
 - `405` - Wrong HTTP method
@@ -553,25 +492,24 @@ For general error handling patterns, see [Error Handling](../framework/README.md
 
 ## Creating Custom Adapters
 
-You can create adapters for any web framework:
+Create adapters for any web framework by implementing the `HandlerAdapter` interface:
 
 ```typescript
 import { createHandlerAdapter } from "@anvil-vault/handler";
 import { errorToJson } from "@anvil-vault/utils";
 import { isErr } from "trynot";
 
-// Example: Fastify adapter
-export const fastifyAdapter = createHandlerAdapter({
-  getContext: (request, reply) => ({ request, reply }),
-  getBody: async (ctx) => ctx.request.body || {},
-  getMethod: (ctx) => ctx.request.method,
-  getPath: (ctx) => ctx.request.url,
-  getQuery: (ctx) => ctx.request.query || {},
+export const customAdapter = createHandlerAdapter({
+  getContext: (req, res) => ({ req, res }),
+  getBody: async (ctx) => ctx.req.body,
+  getMethod: (ctx) => ctx.req.method,
+  getPath: (ctx) => ctx.req.path,
+  getQuery: (ctx) => ctx.req.query,
   sendResponse: (ctx, result) => {
     if (isErr(result)) {
-      return ctx.reply.status(result.statusCode).send(errorToJson(result));
+      return ctx.res.status(result.statusCode).json(errorToJson(result));
     }
-    return ctx.reply.status(200).send(result.response);
+    return ctx.res.json(result.response);
   },
 });
 ```
@@ -580,12 +518,11 @@ export const fastifyAdapter = createHandlerAdapter({
 
 ## Usage with Custom Vault
 
-You can implement the `IVault` interface for custom vault logic:
+Implement the `IVault` interface for custom vault logic:
 
 ```typescript
 import type { IVault } from "@anvil-vault/handler";
 import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
 
 class CustomVault implements IVault {
   async getWallet(input: { userId: string }) {
@@ -599,74 +536,31 @@ class CustomVault implements IVault {
     };
   }
 
-  async signData(input: {
-    userId: string;
-    payload: string;
-    externalAad?: string;
-  }) {
+  async signData(input: { userId: string; payload: string; externalAad?: string }) {
     // Custom signing logic
-    return {
-      signature: "845846a201276761646472657373...",
-      key: "a401022001215820...",
-    };
+    return { signature: "...", key: "..." };
   }
 
   async signTransaction(input: { userId: string; transaction: string }) {
     // Custom transaction signing logic
-    return {
-      signedTransaction: "84a500d90102...",
-      witnessSet: "a10081825820...",
-    };
+    return { signedTransaction: "...", witnessSet: "..." };
   }
 }
 
-const vault = new CustomVault();
-const handler = createVaultHandler({ vault, adapter: expressAdapter });
+const handler = createVaultHandler({ vault: new CustomVault(), adapter });
 ```
 
 ---
 
 ## Security Considerations
 
-1. **Authentication**: The handler does not include authentication. Implement authentication middleware before the handler:
+1. **Root Key Security**: Store the root key securely (e.g., environment variables, secrets manager) and never expose it in logs or error messages.
 
-   ```typescript
-   app.use("/users", authMiddleware);
-   app.use(
-     createVaultHandler({
-       vault,
-       adapter: expressAdapter,
-     })
-   );
-   ```
+2. **Authentication**: The handler does not include authentication. Implement authentication middleware before the handler to verify user identity.
 
-2. **Authorization**: Verify that the authenticated user matches the `userId` in the path:
+3. **Authorization**: Verify that the authenticated user matches the `userId` in the path to prevent unauthorized access.
 
-   ```typescript
-   app.use("/users/:userId/*", (req, res, next) => {
-     if (req.user.id !== req.params.userId) {
-       return res.status(403).json({ error: "Forbidden" });
-     }
-     next();
-   });
-   ```
-
-3. **Rate Limiting**: Implement rate limiting to prevent abuse:
-
-   ```typescript
-   import rateLimit from "express-rate-limit";
-
-   const limiter = rateLimit({
-     windowMs: 15 * 60 * 1000, // 15 minutes
-     max: 100, // limit each IP to 100 requests per windowMs
-   });
-
-   app.use("/users", limiter);
-   ```
-
-4. **Input Validation**: All inputs are validated using schemas, but ensure your vault implementation also validates data.
-
-5. **HTTPS**: Always use HTTPS in production to protect sensitive data in transit.
+4. **Rate Limiting**: Implement rate limiting to prevent abuse of the API endpoints.
 
 ---
 
