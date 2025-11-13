@@ -20,6 +20,7 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
 - [Verification (dApp Side)](#verification-dapp-side)
 - [CIP Standards](#cip-standards)
 - [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
 
 ## Installation
 
@@ -31,7 +32,7 @@ npm install @anvil-vault/cms
 
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = signDataWallet({
   payload: Buffer.from("Hello, Cardano!", "utf8"),
@@ -39,7 +40,7 @@ const result = signDataWallet({
   privateKey: myPrivateKey,
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signature:", result.signature);
   console.log("Public key:", result.key);
 }
@@ -79,7 +80,7 @@ Signs arbitrary data with a private key using CIP-8/CIP-30 wallet standards.
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
 import { deriveAddresses, extractKeys } from "@anvil-vault/csl";
-import { isErr, unwrap } from "trynot";
+import { isOk, unwrap } from "trynot";
 
 // Get payment key and address
 const { paymentKey, stakeKey } = unwrap(
@@ -106,7 +107,7 @@ const result = signDataWallet({
   privateKey: paymentKey.to_raw_key(),
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signature:", result.signature);
   console.log("Public key:", result.key);
 }
@@ -124,7 +125,7 @@ External Additional Authenticated Data (AAD) allows you to bind the signature to
 
 ```typescript
 import { signDataWallet } from "@anvil-vault/cms";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = signDataWallet({
   payload: Buffer.from("Transaction data", "utf8"),
@@ -133,7 +134,7 @@ const result = signDataWallet({
   externalAad: Buffer.from("session-id-12345", "utf8"),
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signed with external AAD:", result.signature);
 }
 ```
@@ -325,6 +326,13 @@ Defines the `signData` API for wallet-dApp communication:
 - **`@anvil-vault/utils`**: Shared utilities (parseFromHex)
 - **`@anvil-vault/csl`**: CSL wrappers (dev dependency for types)
 - **`trynot`**: Result type for error handling
+
+## Related Packages
+
+- **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
+- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@anvil-vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
+- **[@anvil-vault/utils](../utils/README.md)**: Shared utilities
 
 ---
 

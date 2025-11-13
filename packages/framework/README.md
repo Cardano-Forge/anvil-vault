@@ -15,7 +15,6 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Quick Start](#quick-start)
-  - [Examples](#examples)
 - [API Overview](#api-overview)
 - [Packages](#packages)
   - [Core Packages](#core-packages)
@@ -106,18 +105,15 @@ The framework is composed of specialized packages:
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent, type-safe error handling:
 
 ```typescript
-import { isErr, unwrap } from "trynot";
+import { isOk, unwrap } from "trynot";
 
 const result = await vault.getWallet({ userId: "user123" });
 
-if (isErr(result)) {
-  console.error("Error:", result.message);
-  return;
+if (isOk(result)) {
+  console.log(result.addresses.base.bech32);
 }
 
-const wallet = result;
-console.log(wallet.addresses.base.bech32);
-
+// Or unwrap (throws on error)
 const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 ```
 

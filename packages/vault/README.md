@@ -17,6 +17,7 @@ Core vault implementation for Anvil Vault. This package provides the `Vault` cla
 - [Derivation Strategies](#derivation-strategies)
 - [Security Considerations](#security-considerations)
 - [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
 
 ## Installation
 
@@ -188,7 +189,7 @@ type GetWalletOutput = {
 
 ```typescript
 import { Vault } from "@anvil-vault/vault";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const vault = new Vault({
   rootKey: () => process.env.ROOT_KEY,
@@ -197,7 +198,7 @@ const vault = new Vault({
 
 const result = await vault.getWallet({ userId: "user123" });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Base address:", result.addresses.base.bech32);
   console.log("Enterprise address:", result.addresses.enterprise.bech32);
   console.log("Reward address:", result.addresses.reward.bech32);
@@ -230,7 +231,7 @@ type SignDataOutput = {
 
 ```typescript
 import { Vault } from "@anvil-vault/vault";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const vault = new Vault({
   rootKey: () => process.env.ROOT_KEY,
@@ -242,7 +243,7 @@ const result = await vault.signData({
   payload: Buffer.from("Verify my identity", "utf8"),
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signature:", result.signature);
   console.log("Public key:", result.key);
 }
@@ -277,7 +278,7 @@ type SignTransactionOutput = {
 
 ```typescript
 import { Vault } from "@anvil-vault/vault";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const vault = new Vault({
   rootKey: () => process.env.ROOT_KEY,
@@ -291,12 +292,9 @@ const result = await vault.signTransaction({
   transaction: txHex,
 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Signed transaction:", result.signedTransaction);
   console.log("Witness set:", result.witnessSet);
-
-  // Submit to blockchain
-  await submitTransaction(result.signedTransaction);
 }
 ```
 
@@ -483,6 +481,17 @@ paymentDerivation: {
 - **`@anvil-vault/utils`**: Shared utilities
 - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 - **`trynot`**: Result type for error handling
+
+## Related Packages
+
+- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@anvil-vault/express](../express/README.md)**: Express adapter
+- **[@anvil-vault/hono](../hono/README.md)**: Hono adapter
+- **[@anvil-vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
+- **[@anvil-vault/cms](../cms/README.md)**: Message signing utilities
+- **[@anvil-vault/bip39](../bip39/README.md)**: BIP-39 mnemonic utilities
+
+---
 
 ## Security Considerations
 

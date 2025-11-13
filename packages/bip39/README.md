@@ -8,7 +8,8 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [Functions](#functions)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
   - [generateMnemonic](#generatemnemonicinput)
   - [parseEntropy](#parseentropyinput)
   - [Wordlist Utilities](#wordlist-utilities)
@@ -18,6 +19,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
     - [wordListLength](#wordlistlength)
 - [Specification](#specification)
 - [Dependencies](#dependencies)
+- [Related Packages](#related-packages)
 
 ## Installation
 
@@ -37,9 +39,30 @@ The `@anvil-vault/bip39` package provides:
 
 All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
 
+## Quick Start
+
+```typescript
+import { generateMnemonic, parseEntropy } from "@anvil-vault/bip39";
+import { isOk } from "trynot";
+
+// Generate a 24-word mnemonic
+const result = generateMnemonic({ wordCount: 24 });
+
+if (isOk(result)) {
+  console.log("Mnemonic:", result.mnemonic);
+}
+
+// Parse mnemonic back to entropy
+const entropyResult = parseEntropy({ mnemonic: result.mnemonic });
+
+if (isOk(entropyResult)) {
+  console.log("Entropy:", entropyResult.entropy);
+}
+```
+
 ---
 
-## Functions
+## API Reference
 
 ### `generateMnemonic(input?)`
 
@@ -70,11 +93,11 @@ export type GenerateMnemonicOutput = {
 
 ```typescript
 import { generateMnemonic } from "@anvil-vault/bip39";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const result = generateMnemonic({ wordCount: 12 });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Mnemonic:", result.mnemonic);
 }
 ```
@@ -108,13 +131,13 @@ export type ParseEntropyOutput = {
 
 ```typescript
 import { parseEntropy } from "@anvil-vault/bip39";
-import { isErr } from "trynot";
+import { isOk } from "trynot";
 
 const mnemonic =
   "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 const result = parseEntropy({ mnemonic });
 
-if (!isErr(result)) {
+if (isOk(result)) {
   console.log("Entropy:", result.entropy);
 }
 ```
@@ -185,6 +208,12 @@ Implements the [BIP-39: Mnemonic code for generating deterministic keys](https:/
 ## Dependencies
 
 - **`trynot`**: Result type for error handling
+
+## Related Packages
+
+- **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
+- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@anvil-vault/utils](../utils/README.md)**: Shared utilities
 
 ---
 
