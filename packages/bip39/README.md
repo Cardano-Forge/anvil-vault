@@ -222,5 +222,5 @@ Implements the [BIP-39: Mnemonic code for generating deterministic keys](https:/
   |
   <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
   |
-  <a href="https://x.com/AnvilDevAgency">@ada_anvil</a>
+  <a href="https://x.com/AnvilDevAgency">Twitter</a>
 </p>

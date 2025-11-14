@@ -1,6 +1,6 @@
 # Anvil Vault
 
-> A secure, production-ready custodial wallet infrastructure for Cardano blockchain applications
+> A secure custodial wallet infrastructure for Cardano blockchain applications
 
 ## Table of Contents
 
@@ -131,5 +131,5 @@ npm run test:watch
   |
   <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
   |
-  <a href="https://x.com/AnvilDevAgency">@ada_anvil</a>
+  <a href="https://x.com/AnvilDevAgency">Twitter</a>
 </p>
