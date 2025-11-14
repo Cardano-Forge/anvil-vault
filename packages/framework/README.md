@@ -15,7 +15,7 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Quick Start](#quick-start)
-  - [Complete Example](#complete-example)
+  - [Examples](#examples)
 - [Packages](#packages)
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
