@@ -590,5 +590,5 @@ const testVault = new Vault({
   |
   <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
   |
-  <a href="https://x.com/AnvilDevAgency">Twitter</a>
+  <a href="https://x.com/AnvilDevAgency">AnvilDevAgency</a>
 </p>
