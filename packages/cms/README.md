@@ -13,7 +13,6 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
   - [External AAD](#external-aad)
   - [Address Types](#address-types)
   - [Error Cases](#error-cases)
-- [Type Definitions](#type-definitions)
 - [Technical Details](#technical-details)
   - [COSE Sign1 Structure](#cose-sign1-structure)
   - [Validation](#validation)
@@ -204,28 +203,6 @@ const mismatchResult = signDataWallet({
 if (isErr(mismatchResult)) {
   console.error(mismatchResult.message); // "Private key doesn't match the address"
 }
-```
-
-## Type Definitions
-
-### `SignDataWalletInput`
-
-```typescript
-type SignDataWalletInput = {
-  payload: string | Buffer;
-  address: ParsedAddress;
-  privateKey: PrivateKey;
-  externalAad?: string | Buffer;
-};
-```
-
-### `SignDataWalletOutput`
-
-```typescript
-type SignDataWalletOutput = {
-  signature: string; // COSE Sign1 hex
-  key: string; // COSE Key hex
-};
 ```
 
 ## Technical Details

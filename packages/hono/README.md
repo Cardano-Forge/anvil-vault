@@ -65,9 +65,6 @@ export default app;
 
 ## API Reference
 
-- [honoAdapter](#honoadapter)
-- [HonoAdapter](#honoadaptertenv)
-
 ### `honoAdapter`
 
 The main adapter instance that implements the `HandlerAdapter` interface.

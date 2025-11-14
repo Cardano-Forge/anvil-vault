@@ -9,7 +9,6 @@ Core vault implementation for Anvil Vault. This package provides the `Vault` cla
 - [Concepts](#concepts)
   - [What is a Vault?](#what-is-a-vault)
   - [When to Use](#when-to-use)
-  - [Architecture](#architecture)
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
   - [Vault Class](#vault-class)
@@ -54,22 +53,6 @@ The Vault is a high-level orchestration layer that:
 - Need full control over derivation logic
 - Building non-custodial wallets
 - Custom cryptographic operations
-
-### Architecture
-
-The Vault fits into the Anvil ecosystem:
-
-```txt
-Vault (this package)
-  ↓ uses
-CSL (@anvil-vault/csl) - Low-level wrappers
-  ↓ uses
-CMS (@anvil-vault/cms) - Message signing
-  ↓ exposes via
-Handler (@anvil-vault/handler) - REST API
-  ↓ adapts to
-Express/Hono - Web frameworks
-```
 
 ## Quick Start
 
