@@ -16,6 +16,7 @@
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [Examples](#examples)
+- [What you get](#what-you-get)
 - [Packages](#packages)
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
@@ -49,7 +50,7 @@ For complete working examples:
 - **[Express Example](../../examples/express/README.md)** - Full Express.js integration
 - **[Hono Example](../../examples/hono/README.md)** - Full Hono integration
 
-**What You Get:**
+## What You Get
 
 - **HD Wallets**: CIP-1852 compliant hierarchical deterministic wallets
 - **Message Signing**: CIP-8 and CIP-30 compliant data signing
