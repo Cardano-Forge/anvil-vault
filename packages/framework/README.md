@@ -40,90 +40,20 @@ npm install @anvil-vault/framework
 
 ### Quick Start
 
-```typescript
-import { Vault } from "@anvil-vault/framework";
-import { isOk } from "trynot";
+See the [Vault Quick Start Guide](../vault/README.md#quick-start) for a complete walkthrough.
 
-// Create a vault instance
-const vault = new Vault({
-  rootKey: () => process.env.ROOT_KEY!,
-  network: "preprod",
-  paymentDerivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(),
-  },
-});
+### Examples
 
-// Get wallet addresses
-const result = await vault.getWallet({ userId: "user-123" });
+For complete working examples with Express, Hono, and more, see the [examples directory](../../examples/README.md).
 
-if (isOk(result)) {
-  console.log("Base address:", result.addresses.base.bech32);
-  console.log("Enterprise address:", result.addresses.enterprise.bech32);
-  console.log("Reward address:", result.addresses.reward.bech32);
-}
-```
+**What You Get:**
 
-### Complete Example
-
-Full Express.js integration with REST API endpoints:
-
-```typescript
-import {
-  Vault,
-  createVaultHandler,
-  expressAdapter,
-} from "@anvil-vault/framework";
-import express from "express";
-
-// 1. Create vault with secure configuration
-const vault = new Vault({
-  rootKey: async () => {
-    // Fetch from secure storage (never hardcode!)
-    return process.env.ROOT_KEY!;
-  },
-  network: "preprod",
-  paymentDerivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(), // Prevent address correlation
-  },
-  stakeDerivation: {
-    type: "pool",
-    size: 100, // Share 100 stake keys across users
-  },
-});
-
-// 2. Create Express app
-const app = express();
-app.use(express.json()); // Required for POST requests
-
-// 3. Mount vault handler - automatically creates REST endpoints
-app.use(
-  createVaultHandler({
-    vault,
-    adapter: expressAdapter,
-  })
-);
-
-// 4. Start server
-app.listen(3000, () => {
-  console.log("Vault API running on http://localhost:3000");
-});
-
-// Available endpoints:
-// GET  /users/:userId/wallet          - Get addresses
-// POST /users/:userId/sign-data      - Sign data (CIP-8/CIP-30)
-// POST /users/:userId/sign-transaction - Sign transaction
-```
-
-**Key Features:**
-
-- **Hierarchical Deterministic Wallets**: CIP-1852 compliant derivation with flexible strategies
-- **Message Signing**: CIP-8 and CIP-30 compliant data signing using COSE
+- **HD Wallets**: CIP-1852 compliant hierarchical deterministic wallets
+- **Message Signing**: CIP-8 and CIP-30 compliant data signing
 - **Transaction Signing**: Sign transactions with automatic witness generation
-- **Framework Agnostic**: Built-in adapters for Express and Hono, extensible to any framework
-- **Type Safety**: Full TypeScript support with comprehensive type exports
-- **Error Handling**: Consistent `Result` types from `trynot` library
+- **Framework Adapters**: Built-in support for Express and Hono
+- **Type Safety**: Full TypeScript support
+- **Error Handling**: Result types from `trynot` library
 
 ## Packages
 
