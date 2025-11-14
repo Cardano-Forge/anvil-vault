@@ -37,6 +37,8 @@ The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault
 - **Response Handling**: Sends JSON responses with appropriate status codes
 - **Error Formatting**: Converts vault errors to JSON error responses
 
+All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
+
 ## Quick Start
 
 ```typescript

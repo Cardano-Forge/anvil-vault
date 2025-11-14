@@ -2,8 +2,6 @@
 
 Hono adapter for Anvil Vault handlers. This package provides seamless integration between Anvil Vault and Hono applications.
 
-All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -37,6 +35,8 @@ The Hono adapter implements the `HandlerAdapter` interface from `@anvil-vault/ha
 - **Response Handling**: Returns JSON responses with appropriate status codes
 - **Error Formatting**: Converts vault errors to JSON error responses
 - **Type Safety**: Full TypeScript support with Hono's type system
+
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
 ## Quick Start
 

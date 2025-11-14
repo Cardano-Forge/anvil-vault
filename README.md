@@ -2,6 +2,16 @@
 
 > A secure, production-ready custodial wallet infrastructure for Cardano blockchain applications
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Why Anvil Vault?](#why-anvil-vault)
+- [Features](#features)
+- [Monorepo Structure](#monorepo-structure)
+- [Examples](#examples)
+- [Development](#development)
+- [Security Considerations](#security-considerations)
+
 ## Overview
 
 Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano.
@@ -45,6 +55,8 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 - **`@anvil-vault/tsconfig`** - Shared TypeScript configuration
 - **`@anvil-vault/tsup`** - Build configuration utilities
 
+## Features
+
 ### Transaction & Data Signing
 
 - **Transaction Signing**: Sign Cardano transactions with automatic witness set generation
@@ -64,6 +76,11 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 - **Result Types**: Consistent error handling with `trynot` library
 - **Type Inference**: Excellent TypeScript type inference
 - **Examples**: Complete working examples for common use cases
+
+## Examples
+
+- **[Express Example](./examples/express/README.md)** - Complete Express.js integration example
+- **[Hono Example](./examples/hono/README.md)** - Complete Hono integration example
 
 ## Development
 
@@ -112,7 +129,7 @@ npm run test:watch
 <p align="center">
   <a href="https://ada-anvil.io">Ada Anvil</a>
   |
-  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>  
+  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
   |
   <a href="https://x.com/AnvilDevAgency">@ada_anvil</a>
 </p>

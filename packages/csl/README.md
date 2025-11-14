@@ -8,7 +8,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [Functions](#functions)
+- [API Reference](#api-reference)
   - [Key Derivation](#key-derivation)
     - [deriveAccount](#deriveaccountinput)
     - [derivePrivateKey](#deriveprivatekeyinput)
@@ -488,6 +488,13 @@ This package follows Cardano Improvement Proposals:
 - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Core Cardano serialization library
 - **`@anvil-vault/utils`**: Shared utilities (parseFromHex, error handling)
 - **`trynot`**: Result type for error handling
+
+## Related Packages
+
+- **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
+- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@anvil-vault/cms](../cms/README.md)**: Message signing utilities
+- **[@anvil-vault/utils](../utils/README.md)**: Shared utilities
 
 ---
 

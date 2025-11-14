@@ -2,8 +2,6 @@
 
 Framework-agnostic HTTP request handler builder for Anvil Vault. This package provides a flexible system for creating vault API endpoints that work with any web framework through adapters.
 
-All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -47,6 +45,8 @@ The handler package provides:
 - **RESTful API Structure**: Standard REST endpoints for wallet operations
 - **Built-in Validation**: Schema-based input validation with detailed error messages
 - **Error Handling**: Consistent error responses with proper HTTP status codes
+
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
 ## Quick Start
 

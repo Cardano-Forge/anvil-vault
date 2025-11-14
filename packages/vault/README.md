@@ -482,17 +482,6 @@ paymentDerivation: {
 - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 - **`trynot`**: Result type for error handling
 
-## Related Packages
-
-- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
-- **[@anvil-vault/express](../express/README.md)**: Express adapter
-- **[@anvil-vault/hono](../hono/README.md)**: Hono adapter
-- **[@anvil-vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
-- **[@anvil-vault/cms](../cms/README.md)**: Message signing utilities
-- **[@anvil-vault/bip39](../bip39/README.md)**: BIP-39 mnemonic utilities
-
----
-
 ## Security Considerations
 
 ### Root Key Storage
@@ -575,6 +564,24 @@ const testVault = new Vault({
   network: "preprod",
 });
 ```
+
+## Dependencies
+
+- **`@anvil-vault/cms`**: Message signing (CIP-8/CIP-30)
+- **`@anvil-vault/csl`**: CSL wrappers for key derivation and addresses
+- **`@anvil-vault/handler`**: Handler types and interfaces
+- **`@anvil-vault/utils`**: Shared utilities
+- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+- **`trynot`**: Result type for error handling
+
+## Related Packages
+
+- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@anvil-vault/express](../express/README.md)**: Express adapter
+- **[@anvil-vault/hono](../hono/README.md)**: Hono adapter
+- **[@anvil-vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
+- **[@anvil-vault/cms](../cms/README.md)**: Message signing utilities
+- **[@anvil-vault/bip39](../bip39/README.md)**: BIP-39 mnemonic utilities
 
 ---
 
