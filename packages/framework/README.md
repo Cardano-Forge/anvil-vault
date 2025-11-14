@@ -44,7 +44,10 @@ See the [Vault Quick Start Guide](../vault/README.md#quick-start) for a complete
 
 ### Examples
 
-For complete working examples with Express, Hono, and more, see the [examples directory](../../examples/README.md).
+For complete working examples:
+
+- **[Express Example](../../examples/express/README.md)** - Full Express.js integration
+- **[Hono Example](../../examples/hono/README.md)** - Full Hono integration
 
 **What You Get:**
 
