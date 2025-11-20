@@ -21,24 +21,25 @@
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
 - [Error Handling](#error-handling)
-- [Security Best Practices](#security-best-practices)
+- [Security Considerations](#security-considerations)
 - [Development](#development)
   - [Prerequisites](#prerequisites)
   - [Scripts](#scripts)
+- [Getting Help](#getting-help)
 - [Support](#support)
 
 ## About
 
-`@anvil-vault/framework` is the **main entry point** for Anvil Vault - a comprehensive custodial wallet solution for Cardano.
+`@anvil-vault/framework` is Anvil Vault - a comprehensive custodial wallet solution for Cardano.
 
 ## Why Anvil Vault?
 
-- **Framework Agnostic**: Built-in adapters for Express and Hono
 - **HD Wallets**: CIP-1852 compliant hierarchical deterministic wallets
 - **Message & Transaction Signing**: CIP-8 and CIP-30 compliant data signing
 - **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library
 - **Flexible Derivation**: Multiple strategies (unique, pool, constant, custom)
-  **Standardize Error Handling**: Result types from `trynot` library
+- **Framework Agnostic**: Built-in adapters for Express and Hono
+- **Standardize Error Handling**: Result types from `trynot` library
 
 ## Getting Started
 
@@ -132,13 +133,6 @@ const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 - The default payment derivation is NOT secure for production
 - Use pool derivation for stake keys to consolidate rewards
 
-### Getting Help
-
-- **Issues**: [GitHub Issues](https://github.com/Cardano-Forge/anvil-vault/issues)
-- **Discord**: [Join our Discord](https://discord.gg/yyTG6wUqCh)
-- **Documentation**: Individual package READMEs for detailed API docs
-- **Examples**: See [examples/](../../examples) for complete working examples
-
 ## Development
 
 ### Prerequisites
@@ -161,6 +155,13 @@ npm test
 # Run tests in watch mode
 npm run test:watch
 ```
+
+## Getting Help
+
+- **Issues**: [GitHub Issues](https://github.com/Cardano-Forge/anvil-vault/issues)
+- **Discord**: [Join our Discord](https://discord.gg/yyTG6wUqCh)
+- **Documentation**: Individual package READMEs for detailed API docs
+- **Examples**: See [examples/](../../examples) for complete working examples
 
 ## Support
 
