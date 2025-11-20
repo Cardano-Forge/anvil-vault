@@ -247,7 +247,7 @@ describe("expressAdapter", () => {
   });
 
   describe("integration", () => {
-    it("should work with all adapter methods in sequence", async () => {
+    it("should work with all adapter functions in sequence", async () => {
       const body = { payload: "test data" };
       const query = { debug: "true" };
       const req = createMockRequest({

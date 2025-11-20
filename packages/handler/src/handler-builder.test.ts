@@ -206,7 +206,7 @@ describe("handleVaultRequest", () => {
       expect(result.message).toBe("Method not allowed");
     });
 
-    it("should accept case insensitive methods", async () => {
+    it("should accept case insensitive functions", async () => {
       const vault = createMockVault();
       vi.mocked(vault.getWallet).mockResolvedValue({
         addresses: {

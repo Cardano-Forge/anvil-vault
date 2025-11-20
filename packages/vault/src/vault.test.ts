@@ -19,7 +19,7 @@ const createTrackingCustomDerivation = (freedKeys: Set<string>) => {
     const paymentKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
     const stakeKey = Bip32PrivateKey.from_bytes(Buffer.from(accountKeyHex, "hex"));
 
-    // Override free methods to track when they're called
+    // Override free functions to track when they're called
     const originalAccountFree = accountKey.free.bind(accountKey);
     accountKey.free = () => {
       freedKeys.add("accountKey");

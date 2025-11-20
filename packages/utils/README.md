@@ -196,7 +196,7 @@ Custom error class for validation failures with path tracking.
 new ValidationError(message: string, opts?: { path?: string[] })
 ```
 
-**Methods:**
+**Functions:**
 
 - `withPath(path: string | string[]): ValidationError` - Add path segments to the error
 

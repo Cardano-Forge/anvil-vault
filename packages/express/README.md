@@ -73,7 +73,7 @@ The main adapter instance that implements the `HandlerAdapter` interface.
 
 **Type:** `ExpressAdapter`
 
-**Methods:**
+**Functions:**
 
 - `getContext(req, res)` - Creates context from Express request and response
 - `getBody(context)` - Returns `req.body` (requires `express.json()` middleware)

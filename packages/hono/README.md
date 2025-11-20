@@ -71,7 +71,7 @@ The main adapter instance that implements the `HandlerAdapter` interface.
 
 **Type:** `HonoAdapter`
 
-**Methods:**
+**Functions:**
 
 - `getContext(c)` - Returns the Hono context object
 - `getBody(context)` - Returns parsed JSON body from `c.req.json()`

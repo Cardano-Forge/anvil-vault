@@ -132,7 +132,7 @@ type HandlerAdapter<TParams extends AnyParams, TContext, TResponse> = {
 };
 ```
 
-**Methods:**
+**Functions:**
 
 - `getContext(...args)` - Extract context from framework-specific parameters
 - `getBody(context)` - Get request body as object
