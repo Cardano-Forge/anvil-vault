@@ -22,9 +22,6 @@
   - [Framework Adapters](#framework-adapters)
 - [Error Handling](#error-handling)
 - [Security Considerations](#security-considerations)
-- [Development](#development)
-  - [Prerequisites](#prerequisites)
-  - [Scripts](#scripts)
 - [Getting Help](#getting-help)
 - [Support](#support)
 
@@ -132,29 +129,6 @@ const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 - Always use unique derivation with scrambling for payment keys
 - The default payment derivation is NOT secure for production
 - Use pool derivation for stake keys to consolidate rewards
-
-## Development
-
-### Prerequisites
-
-- Node.js >= 20.0.0
-- npm >= 10.0.0
-
-### Scripts
-
-```bash
-# Build all packages
-npm run build
-
-# Type check all packages
-npm run check
-
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-```
 
 ## Getting Help
 
