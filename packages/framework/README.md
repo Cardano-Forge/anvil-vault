@@ -12,11 +12,11 @@
 ## Table of Contents
 
 - [About](#about)
+- [Why Anvil Vault?](#why-anvil-vault)
 - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [Examples](#examples)
-- [What you get](#what-you-get)
 - [Packages](#packages)
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
@@ -29,7 +29,16 @@
 
 ## About
 
-`@anvil-vault/framework` is the **main entry point** for Anvil Vault - a comprehensive custodial wallet solution for Cardano. This package conveniently re-exports all core functionality, allowing you to import everything from a single package.
+`@anvil-vault/framework` is the **main entry point** for Anvil Vault - a comprehensive custodial wallet solution for Cardano.
+
+## Why Anvil Vault?
+
+- **Framework Agnostic**: Built-in adapters for Express and Hono
+- **HD Wallets**: CIP-1852 compliant hierarchical deterministic wallets
+- **Message & Transaction Signing**: CIP-8 and CIP-30 compliant data signing
+- **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library
+- **Flexible Derivation**: Multiple strategies (unique, pool, constant, custom)
+  **Standardize Error Handling**: Result types from `trynot` library
 
 ## Getting Started
 
@@ -49,15 +58,6 @@ For complete working examples:
 
 - **[Express Example](../../examples/express/README.md)** - Full Express.js integration
 - **[Hono Example](../../examples/hono/README.md)** - Full Hono integration
-
-## What You Get
-
-- **HD Wallets**: CIP-1852 compliant hierarchical deterministic wallets
-- **Message Signing**: CIP-8 and CIP-30 compliant data signing
-- **Transaction Signing**: Sign transactions with automatic witness generation
-- **Framework Adapters**: Built-in support for Express and Hono
-- **Type Safety**: Full TypeScript support
-- **Error Handling**: Result types from `trynot` library
 
 ## Packages
 
@@ -119,12 +119,18 @@ if (isOk(result)) {
 const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 ```
 
-## Security Best Practices
+## Security Considerations
 
-- Root keys must never be hardcoded. Use environment variables or a key management system.
-- Use unique derivation with scrambling for payment keys to prevent address correlation.
-- Specify the correct network (mainnet or testnets) and isolate environments.
-- Validate all inputs using schema-based validation.
+### Root Key Management
+
+- Never hardcode root keys in your application
+- Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault, etc.)
+
+### Derivation Strategies
+
+- Always use unique derivation with scrambling for payment keys
+- The default payment derivation is NOT secure for production
+- Use pool derivation for stake keys to consolidate rewards
 
 ### Getting Help
 

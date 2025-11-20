@@ -1,29 +1,13 @@
 # Anvil Vault
 
+> Monorepo is for internal use only - (Anvil Dev Agency)
 > A secure custodial wallet infrastructure for Cardano blockchain applications
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Why Anvil Vault?](#why-anvil-vault)
-- [Features](#features)
 - [Monorepo Structure](#monorepo-structure)
-- [Examples](#examples)
+- [Features](#features)
 - [Development](#development)
-- [Security Considerations](#security-considerations)
-
-## Overview
-
-Anvil Vault is a comprehensive TypeScript monorepo that provides everything you need to build secure custodial wallet solutions on Cardano.
-
-### Why Anvil Vault?
-
-- **Type-Safe CSL Wrapper**: Comprehensive TypeScript wrappers around Cardano Serialization Library with `trynot` error handling
-- **Framework Agnostic**: Built-in adapters for Express and Hono, easily extensible to any framework
-- **Flexible Derivation**: Multiple strategies (unique, pool, constant, custom) with automatic memory cleanup
-- **Standards Compliant**: CIP-8, CIP-30, and CIP-1852 compliant implementations
-- **Modular Architecture**: Use the complete framework or individual packages as needed
-- **Developer Experience**: Full TypeScript support with comprehensive documentation and working examples
 
 ## Monorepo Structure
 
@@ -69,18 +53,12 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 - **Express.js**: Full middleware support
 - **Hono**: Multi-runtime support
 - **Custom Adapters**: Easy to create adapters for any framework
-- **Type Safety**: Full TypeScript support with framework-specific types
 
 ### Developer Experience
 
 - **Result Types**: Consistent error handling with `trynot` library
 - **Type Inference**: Excellent TypeScript type inference
 - **Examples**: Complete working examples for common use cases
-
-## Examples
-
-- **[Express Example](./examples/express/README.md)** - Complete Express.js integration example
-- **[Hono Example](./examples/hono/README.md)** - Complete Hono integration example
 
 ## Development
 
@@ -108,21 +86,6 @@ npm run pre
 # Run tests in watch mode
 npm run test:watch
 ```
-
-## Security Considerations
-
-**Critical Security Guidelines:**
-
-1. **Root Key Management**
-
-   - Never hardcode root keys in your application
-   - Use environment variables or secure key management systems (AWS KMS, HashiCorp Vault, etc.)
-
-2. **Derivation Strategies**
-
-   - Always use unique derivation with scrambling for payment keys
-   - The default payment derivation is NOT secure for production
-   - Use pool derivation for stake keys to consolidate rewards
 
 ---
 
