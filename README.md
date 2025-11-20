@@ -1,7 +1,8 @@
 # Anvil Vault
 
-> Monorepo is for internal use only - (Anvil Dev Agency)
-> A secure custodial wallet infrastructure for Cardano blockchain applications
+> **ANVIL DEVELOPMENT ONLY**  
+> This monorepo is for developper at Anvil Dev Agency.  
+> **Framework package should be the one OSS.**
 
 ## Table of Contents
 
