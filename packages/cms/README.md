@@ -314,9 +314,9 @@ Defines the `signData` API for wallet-dApp communication:
 ---
 
 <p align="center">
-  <a href="https://ada-anvil.io">Ada Anvil</a>
+  <a href="https://ada-anvil.io">Ada Anvil Website</a>
   |
-  <a href="https://discord.gg/yyTG6wUqCh">Discord</a>
+  <a href="https://discord.gg/yyTG6wUqCh">Discord Invite</a>
   |
-  <a href="https://x.com/AnvilDevAgency">AnvilDevAgency</a>
+  <a href="https://x.com/AnvilDevAgency">X: @AnvilDevAgency</a>
 </p>
