@@ -26,14 +26,7 @@ npm install @anvil-vault/vault
 
 ## Overview
 
-The `@anvil-vault/vault` is the core orchestration layer for managing custodial Cardano wallets.
-It provides a high-level `Vault` class that:
-
-- **Derives unique wallets:** for multiple users from a single root key
-- **Manages key derivation:** with flexible strategies (unique, pool, constant, custom)
-- **Generates addresses:** (base, enterprise, and reward) for each user
-- **Signs data:** using CIP-8/CIP-30 standards
-- **Signs transactions:** with automatic witness generation
+The `@anvil-vault/vault` is the core orchestration layer for managing custodial Cardano wallets. It provides a high-level `Vault` class for multi-user wallet derivation, address generation, and signing operations.
 
 All functions return `Result` types from `trynot` for type-safe error handling. See [Error Handling](../framework/README.md#error-handling) for details.
 
