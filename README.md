@@ -2,12 +2,11 @@
 
 > **ANVIL DEVELOPMENT ONLY**  
 > This monorepo is for developper at Anvil Dev Agency.  
-> **Framework package should be the one OSS.**
+> **@anvil-vault/framework is the main entry for OSS.**
 
 ## Table of Contents
 
 - [Monorepo Structure](#monorepo-structure)
-- [Features](#features)
 - [Development](#development)
 
 ## Monorepo Structure
@@ -39,27 +38,6 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 
 - **`@anvil-vault/tsconfig`** - Shared TypeScript configuration
 - **`@anvil-vault/tsup`** - Build configuration utilities
-
-## Features
-
-### Transaction & Data Signing
-
-- **Transaction Signing**: Sign Cardano transactions with automatic witness set generation
-- **CIP-8/CIP-30 Compliance**: Standards-compliant data signing for dApp integration
-- **COSE Format**: CBOR Object Signing and Encryption for Ed25519 signatures
-- **Address Verification**: Ensures private key matches signing address
-
-### Framework Integration
-
-- **Express.js**: Full middleware support
-- **Hono**: Multi-runtime support
-- **Custom Adapters**: Easy to create adapters for any framework
-
-### Developer Experience
-
-- **Result Types**: Consistent error handling with `trynot` library
-- **Type Inference**: Excellent TypeScript type inference
-- **Examples**: Complete working examples for common use cases
 
 ## Development
 
