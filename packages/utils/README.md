@@ -107,13 +107,6 @@ isBech32Address("addr"); // false (too short)
 isBech32Address("invalid"); // false
 ```
 
-**Supported Prefixes:**
-
-- `addr` - Payment addresses (mainnet)
-- `addr_test` - Payment addresses (testnet)
-- `stake` - Stake addresses (mainnet)
-- `stake_test` - Stake addresses (testnet)
-
 ### Parsing Utilities
 
 #### `parseFromHex(hexOrInstance, HexConstructor?)`
