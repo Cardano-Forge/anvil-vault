@@ -8,7 +8,6 @@ Core package of Anvil Vault.
 - [Overview](#overview)
 - [Concepts](#concepts)
   - [What is a Vault?](#what-is-a-vault)
-  - [When to Use](#when-to-use)
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
   - [Vault Class](#vault-class)
@@ -39,22 +38,6 @@ The Vault is a high-level orchestration layer that:
 - **Manages multi-user wallets**: Derives unique addresses for each user from a single root key
 - **Provides flexible derivation**: Multiple strategies (unique, pool, constant, custom) for different use cases
 - **Simplifies operations**: High-level API for common wallet operations (get addresses, sign data, sign transactions)
-
-### When to Use
-
-**Use Vault when:**
-
-- Building custodial wallet services
-- Managing wallets for multiple users
-- Creating REST APIs for wallet operations
-- Need automatic key management
-
-**Use CSL directly when:**
-
-- Single wallet application
-- Need full control over derivation logic
-- Building non-custodial wallets
-- Custom cryptographic operations
 
 ## Quick Start
 
