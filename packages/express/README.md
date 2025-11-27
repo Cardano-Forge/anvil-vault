@@ -10,14 +10,12 @@ Express.js adapter for Anvil Vault handlers. This package provides seamless inte
 - [API Reference](#api-reference)
   - [expressAdapter](#expressadapter)
   - [ExpressAdapter](#expressadapter-1)
-- [Advanced Usage](#advanced-usage)
-  - [Custom Path Mapping](#custom-path-mapping)
-  - [Multiple Vault Instances](#multiple-vault-instances)
 - [API Endpoints](#api-endpoints)
 - [Requirements](#requirements)
   - [JSON Body Parser](#json-body-parser)
-- [Error Responses](#error-responses)
-- [TypeScript Support](#typescript-support)
+- [Advanced Usage](#advanced-usage)
+  - [Custom Path Mapping](#custom-path-mapping)
+  - [Multiple Vault Instances](#multiple-vault-instances)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
@@ -29,13 +27,7 @@ npm install @anvil-vault/express
 
 ## Overview
 
-The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault/handler`, allowing you to use Anvil Vault with Express.js applications. It handles:
-
-- **Request Context**: Extracts Express request and response objects
-- **Body Parsing**: Reads JSON request bodies
-- **Query Parameters**: Extracts query string parameters
-- **Response Handling**: Sends JSON responses with appropriate status codes
-- **Error Formatting**: Converts vault errors to JSON error responses
+The Express adapter implements the `HandlerAdapter` interface from `@anvil-vault/handler`, allowing you to use Anvil Vault with Express.js applications.
 
 All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
 
@@ -120,65 +112,6 @@ type ExpressAdapter = HandlerAdapter<
 
 ---
 
-## Advanced Usage
-
-### Custom Path Mapping
-
-Map `/users/me` to the actual user ID:
-
-```typescript
-const userId = "f3aa7d40-58c2-44df-ba49-d4026c822571"; // example
-
-app.use(
-  createVaultHandler({
-    vault,
-    adapter: {
-      ...expressAdapter,
-      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${userId}`),
-    },
-  })
-);
-```
-
-### Multiple Vault Instances
-
-```typescript
-import { createVaultHandler } from "@anvil-vault/handler";
-import { expressAdapter } from "@anvil-vault/express";
-import { Vault } from "@anvil-vault/vault";
-import express from "express";
-
-const mainnetVault = new Vault({
-  rootKey: () => process.env.MAINNET_ROOT_KEY,
-  network: "mainnet",
-});
-
-const testnetVault = new Vault({
-  rootKey: () => process.env.TESTNET_ROOT_KEY,
-  network: "preprod",
-});
-
-const app = express();
-app.use(express.json());
-
-const mainnetHandler = createVaultHandler({
-  vault: mainnetVault,
-  adapter: expressAdapter,
-});
-
-const testnetHandler = createVaultHandler({
-  vault: testnetVault,
-  adapter: expressAdapter,
-});
-
-app.all("/mainnet/users/:userId/*", mainnetHandler);
-app.all("/testnet/users/:userId/*", testnetHandler);
-
-app.listen(3000);
-```
-
----
-
 ## API Endpoints
 
 When using the Express adapter with `createVaultHandler`, the following endpoints are automatically available:
@@ -239,43 +172,63 @@ Without this middleware, POST requests will fail because `req.body` will be unde
 
 ---
 
-## Error Responses
+## Advanced Usage
 
-The adapter automatically formats errors as JSON responses with appropriate HTTP status codes:
+### Custom Path Mapping
 
-**Success Response (200):**
-
-```json
-{
-  "addresses": {
-    "base": { "bech32": "addr1...", "hex": "00..." },
-    "enterprise": { "bech32": "addr1...", "hex": "60..." },
-    "reward": { "bech32": "stake1...", "hex": "e0..." }
-  }
-}
-```
-
-**Error Response (400/404/500):**
-
-```json
-{
-  "statusCode": 400,
-  "error": "Bad request"
-}
-```
-
----
-
-## TypeScript Support
-
-Full TypeScript support with type definitions:
+Map `/users/me` to the actual user ID:
 
 ```typescript
-import type { ExpressAdapter } from "@anvil-vault/express";
-import { expressAdapter } from "@anvil-vault/express";
+const userId = "f3aa7d40-58c2-44df-ba49-d4026c822571"; // example
 
-// The adapter is fully typed
-const adapter: ExpressAdapter = expressAdapter;
+app.use(
+  createVaultHandler({
+    vault,
+    adapter: {
+      ...expressAdapter,
+      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${userId}`),
+    },
+  })
+);
+```
+
+### Multiple Vault Instances
+
+```typescript
+import { createVaultHandler } from "@anvil-vault/handler";
+import { expressAdapter } from "@anvil-vault/express";
+import { Vault } from "@anvil-vault/vault";
+import express from "express";
+
+const mainnetVault = new Vault({
+  rootKey: () => process.env.MAINNET_ROOT_KEY,
+  network: "mainnet",
+});
+
+const testnetVault = new Vault({
+  rootKey: () => process.env.TESTNET_ROOT_KEY,
+  network: "preprod",
+});
+
+const app = express();
+app.use(express.json());
+
+app.all(
+  "/mainnet",
+  createVaultHandler({
+    vault: mainnetVault,
+    adapter: expressAdapter,
+  })
+);
+app.all(
+  "/testnet",
+  createVaultHandler({
+    vault: testnetVault,
+    adapter: expressAdapter,
+  })
+);
+
+app.listen(3000);
 ```
 
 ---
