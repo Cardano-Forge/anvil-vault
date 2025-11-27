@@ -10,12 +10,10 @@ Hono adapter for Anvil Vault handlers. This package provides seamless integratio
 - [API Reference](#api-reference)
   - [honoAdapter](#honoadapter)
   - [HonoAdapter](#honoadaptertenv)
+- [API Endpoints](#api-endpoints)
 - [Advanced Usage](#advanced-usage)
   - [Custom Path Mapping](#custom-path-mapping)
   - [Multiple Vault Instances](#multiple-vault-instances)
-- [API Endpoints](#api-endpoints)
-- [Error Responses](#error-responses)
-- [TypeScript Support](#typescript-support)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
@@ -27,14 +25,7 @@ npm install @anvil-vault/hono
 
 ## Overview
 
-The Hono adapter implements the `HandlerAdapter` interface from `@anvil-vault/handler`, allowing you to use Anvil Vault with Hono applications. It handles:
-
-- **Request Context**: Extracts Hono context object
-- **Body Parsing**: Reads JSON request bodies
-- **Query Parameters**: Extracts query string parameters
-- **Response Handling**: Returns JSON responses with appropriate status codes
-- **Error Formatting**: Converts vault errors to JSON error responses
-- **Type Safety**: Full TypeScript support with Hono's type system
+The Hono adapter implements the `HandlerAdapter` interface from `@anvil-vault/handler`, allowing you to use Anvil Vault with Hono applications.
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
@@ -119,6 +110,42 @@ type HonoAdapter<TEnv extends Env = Env> = HandlerAdapter<
 
 ---
 
+## API Endpoints
+
+When using the Hono adapter with `createVaultHandler`, the following endpoints are automatically available:
+
+### `GET /users/:userId/wallet`
+
+Get wallet addresses for a user.
+
+```bash
+curl http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/wallet
+```
+
+### `POST /users/:userId/sign-data`
+
+Sign arbitrary data (CIP-8/CIP-30 compliant).
+
+```bash
+curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/sign-data \
+  -H "Content-Type: application/json" \
+  -d '{"payload":"48656c6c6f2c2043617264616e6f21"}'
+```
+
+### `POST /users/:userId/sign-transaction`
+
+Sign a Cardano transaction.
+
+```bash
+curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/sign-transaction \
+  -H "Content-Type: application/json" \
+  -d '{"transaction":"84a500d90102..."}'
+```
+
+See the [@anvil-vault/handler documentation](../handler/README.md#rest-api-endpoints) for detailed endpoint specifications.
+
+---
+
 ## Advanced Usage
 
 ### Custom Path Mapping
@@ -176,93 +203,6 @@ app.use(
 );
 
 export default app;
-```
-
----
-
-## API Endpoints
-
-When using the Hono adapter with `createVaultHandler`, the following endpoints are automatically available:
-
-### `GET /users/:userId/wallet`
-
-Get wallet addresses for a user.
-
-```bash
-curl http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/wallet
-```
-
-### `POST /users/:userId/sign-data`
-
-Sign arbitrary data (CIP-8/CIP-30 compliant).
-
-```bash
-curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/sign-data \
-  -H "Content-Type: application/json" \
-  -d '{"payload":"48656c6c6f2c2043617264616e6f21"}'
-```
-
-### `POST /users/:userId/sign-transaction`
-
-Sign a Cardano transaction.
-
-```bash
-curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/sign-transaction \
-  -H "Content-Type: application/json" \
-  -d '{"transaction":"84a500d90102..."}'
-```
-
-See the [@anvil-vault/handler documentation](../handler/README.md#rest-api-endpoints) for detailed endpoint specifications.
-
----
-
-## Error Responses
-
-The adapter automatically formats errors as JSON responses with appropriate HTTP status codes:
-
-**Success Response (200):**
-
-```json
-{
-  "addresses": {
-    "base": { "bech32": "addr1...", "hex": "00..." },
-    "enterprise": { "bech32": "addr1...", "hex": "60..." },
-    "reward": { "bech32": "stake1...", "hex": "e0..." }
-  }
-}
-```
-
-**Error Response (400/404/500):**
-
-```json
-{
-  "statusCode": 400,
-  "error": "Bad request"
-}
-```
-
----
-
-## TypeScript Support
-
-Full TypeScript support with type definitions:
-
-```typescript
-import type { HonoAdapter } from "@anvil-vault/hono";
-import { honoAdapter } from "@anvil-vault/hono";
-import type { Env } from "hono";
-
-// The adapter is fully typed
-const adapter: HonoAdapter = honoAdapter;
-
-// With custom environment
-type CustomEnv = {
-  Bindings: {
-    ROOT_KEY: string;
-  };
-};
-
-const customAdapter: HonoAdapter<CustomEnv> = honoAdapter;
 ```
 
 ---
