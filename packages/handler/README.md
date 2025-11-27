@@ -24,8 +24,6 @@ Framework-agnostic HTTP request handler builder for Anvil Vault. This package pr
     - [VaultConfig](#vaultconfig)
 - [REST API Endpoints](#rest-api-endpoints)
 - [HTTP Error Responses](#http-error-responses)
-- [Creating Custom Adapters](#creating-custom-adapters)
-- [Usage with Custom Vault](#usage-with-custom-vault)
 - [Security Considerations](#security-considerations)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
@@ -129,15 +127,6 @@ type HandlerAdapter<TParams extends AnyParams, TContext, TResponse> = {
   ) => MaybePromise<TResponse>;
 };
 ```
-
-**Functions:**
-
-- `getContext(...args)` - Extract context from framework-specific parameters
-- `getBody(context)` - Get request body as object
-- `getMethod(context)` - Get HTTP method (GET, POST, etc.)
-- `getPath(context)` - Get request path
-- `getQuery(context)` - Get query parameters as object
-- `sendResponse(context, result)` - Send response to client
 
 ---
 
@@ -443,7 +432,7 @@ Sign a Cardano transaction with the user's payment and stake keys.
 
 ```json
 {
-  "transaction": "84a500d90102818258200f3abbc8fc19c2e61bab6059bf8a466e6e754833a08a62a6c56fe0e78f19d9d5000181825839009493315cd92eb5d8c4304e67b7e16ae36d61d34502694657811a2c8e32c728d3861e164cab28cb8f006448139c8f1740ffb8e7aa9e5232dc1a10000000021a0002a3010e809fff8080f6"
+  "transaction": "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667e1e05698c2aee7168ab327eb6de0001818258390048dc188cd7a3fa245498144a5469c34ea11c54975587529269430016a2b990e0c40026e9e9381abdb18ba9f4bf80bd65f7c19263357f6497821b0000000403b4a354a4581c698a6ea0ca99f315034072af31eaac6ec11fe8558d3f48e9775aab9da14574445249501823581cb784ba558baab378e670b8285f8c079ef002b5a0eb26fd6a533a5611a14d4d79436f6f6c4173736574233101581cc82a4452eaebccb82aced501b3c94d3662cf6cd2915ad7148b459aeca14341584f1a000d66b7581cf0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9aa14d000de140646f64696c616e6e6501021a0002f43d031a05e2d418081a05e2b7f8a0f5f6"
 }
 ```
 
@@ -451,8 +440,8 @@ Sign a Cardano transaction with the user's payment and stake keys.
 
 ```json
 {
-  "signedTransaction": "84a500d90102818258200f3abbc8fc19c2e61bab6059bf8a466e6e754833a08a62a6c56fe0e78f19d9d5000181825839009493315cd92eb5d8c4304e67b7e16ae36d61d34502694657811a2c8e32c728d3861e164cab28cb8f006448139c8f1740ffb8e7aa9e5232dc1a10000000021a0002a3010e809fff80a10081825820...",
-  "witnessSet": "a10081825820..."
+  "signedTransaction": "84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667e1e05698c2aee7168ab327eb6de0001818258390048dc188cd7a3fa245498144a5469c34ea11c54975587529269430016a2b990e0c40026e9e9381abdb18ba9f4bf80bd65f7c19263357f6497821b0000000403b4a354a4581c698a6ea0ca99f315034072af31eaac6ec11fe8558d3f48e9775aab9da14574445249501823581cb784ba558baab378e670b8285f8c079ef002b5a0eb26fd6a533a5611a14d4d79436f6f6c4173736574233101581cc82a4452eaebccb82aced501b3c94d3662cf6cd2915ad7148b459aeca14341584f1a000d66b7581cf0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9aa14d000de140646f64696c616e6e6501021a0002f43d031a05e2d418081a05e2b7f8a0f5f6",
+  "witnessSet": "a100d9010281825820a841677b40416b65c59be000e4fa10c7a48f96da053bb1b75722e3a8249b7b355840b2e42cb89b8c56b9615c71461bb1e545a0084699be22aa22085a86ba28162dfe268d4407f82310d2cca6721b616a4af96aa6c6cff4a9124ef8acd2dbe80b2f00"
 }
 ```
 
@@ -461,7 +450,7 @@ Sign a Cardano transaction with the user's payment and stake keys.
 ```bash
 curl -X POST http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000/sign-transaction \
   -H "Content-Type: application/json" \
-  -d '{"transaction":"84a500d90102..."}'
+  -d '{"transaction":"84a500d90102818258203b1663796602c0d84b03c0f201c4ed3a76667e1e05698c2aee7168ab327eb6de0001818258390048dc188cd7a3fa245498144a5469c34ea11c54975587529269430016a2b990e0c40026e9e9381abdb18ba9f4bf80bd65f7c19263357f6497821b0000000403b4a354a4581c698a6ea0ca99f315034072af31eaac6ec11fe8558d3f48e9775aab9da14574445249501823581cb784ba558baab378e670b8285f8c079ef002b5a0eb26fd6a533a5611a14d4d79436f6f6c4173736574233101581cc82a4452eaebccb82aced501b3c94d3662cf6cd2915ad7148b459aeca14341584f1a000d66b7581cf0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9aa14d000de140646f64696c616e6e6501021a0002f43d031a05e2d418081a05e2b7f8a0f5f6"}'
 ```
 
 ---
@@ -485,68 +474,6 @@ All endpoints return consistent JSON error responses:
 - `500` - Vault operation failed
 
 For general error handling patterns, see [Error Handling](../framework/README.md#error-handling).
-
----
-
-## Creating Custom Adapters
-
-Create adapters for any web framework by implementing the `HandlerAdapter` interface:
-
-```typescript
-import { createHandlerAdapter } from "@anvil-vault/handler";
-import { errorToJson } from "@anvil-vault/utils";
-import { isErr } from "trynot";
-
-export const customAdapter = createHandlerAdapter({
-  getContext: (req, res) => ({ req, res }),
-  getBody: async (ctx) => ctx.req.body,
-  getMethod: (ctx) => ctx.req.method,
-  getPath: (ctx) => ctx.req.path,
-  getQuery: (ctx) => ctx.req.query,
-  sendResponse: (ctx, result) => {
-    if (isErr(result)) {
-      return ctx.res.status(result.statusCode).json(errorToJson(result));
-    }
-    return ctx.res.json(result.response);
-  },
-});
-```
-
----
-
-## Usage with Custom Vault
-
-Implement the `IVault` interface for custom vault logic:
-
-```typescript
-import type { IVault } from "@anvil-vault/handler";
-import { createVaultHandler } from "@anvil-vault/handler";
-
-class CustomVault implements IVault {
-  async getWallet(input: { userId: string }) {
-    // Custom wallet derivation logic
-    return {
-      addresses: {
-        base: { bech32: "addr1...", hex: "00..." },
-        enterprise: { bech32: "addr1...", hex: "60..." },
-        reward: { bech32: "stake1...", hex: "e0..." },
-      },
-    };
-  }
-
-  async signData(input: { userId: string; payload: string; externalAad?: string }) {
-    // Custom signing logic
-    return { signature: "...", key: "..." };
-  }
-
-  async signTransaction(input: { userId: string; transaction: string }) {
-    // Custom transaction signing logic
-    return { signedTransaction: "...", witnessSet: "..." };
-  }
-}
-
-const handler = createVaultHandler({ vault: new CustomVault(), adapter });
-```
 
 ---
 
