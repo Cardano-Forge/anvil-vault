@@ -170,7 +170,7 @@ import { isOk } from "trynot";
 
 const bytes = uuidToByteArray("550e8400-e29b-41d4-a716-446655440000");
 if (isOk(bytes)) {
-  console.log(bytes); // [0x55, 0x0e, 0x84, 0x00, ...]
+  console.log(bytes); // [85, 14, 132, 0, ...]
   console.log(bytes.length); // 16
 }
 ```
@@ -262,7 +262,7 @@ const result = userSchema.parse({
 });
 
 if (isOk(result)) {
-  console.log(result.name); // "Alice" (fully typed)
+  console.log(result.name); // "Alice"
 }
 ```
 
@@ -323,7 +323,7 @@ import { errorToJson, VaultError } from "@anvil-vault/utils";
 
 const error = new VaultError({ message: "Invalid input", statusCode: 400 });
 const json = errorToJson(error);
-// { statusCode: 400, error: "Invalid input" }
+console.log(json); // { statusCode: 400, error: "Invalid input" }
 ```
 
 #### `errorToString(error, opts?)`
@@ -348,7 +348,7 @@ const error = new Error("Failed to process", {
 });
 
 const message = errorToString(error);
-// "Failed to process: Database connection failed"
+console.log(message); // "Failed to process: Database connection failed"
 ```
 
 **Features:**
@@ -374,9 +374,10 @@ new VaultError({
 
 **Properties:**
 
-- `message: string` - Error message
-- `statusCode: number` - HTTP status code
 - `name: "VaultError"` - Error name
+- `statusCode: number` - HTTP status code
+- `message: string` - Error message
+- `cause?: unknown` - Error cause
 
 **Example:**
 
