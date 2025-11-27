@@ -43,7 +43,6 @@ The Vault is a high-level orchestration layer that:
 
 ```typescript
 import { Vault } from "@anvil-vault/vault";
-import { isOk } from "trynot";
 
 const vault = new Vault({
   rootKey: () => process.env.ROOT_KEY,
@@ -53,37 +52,6 @@ const vault = new Vault({
     scrambler: (path) => path.reverse(),
   },
 });
-
-// Get wallet addresses
-const userId = "user123";
-const walletResult = await vault.getWallet({ userId });
-
-if (isOk(walletResult)) {
-  console.log("Base address:", walletResult.addresses.base.bech32);
-}
-
-// Sign data
-const signResult = await vault.signData({
-  userId,
-  payload: "hello world",
-});
-
-if (isOk(signResult)) {
-  console.log("Signature:", signResult.signature);
-}
-
-// Sign transaction
-const txHex = "<valid-transaction-hex>";
-
-const signedResult = await vault.signTransaction({
-  userId,
-  transaction: txHex,
-});
-
-if (isOk(signedResult)) {
-  console.log("Signed transaction:", signedResult.signedTransaction);
-  console.log("Witness set:", signedResult.witnessSet);
-}
 ```
 
 ## API Reference

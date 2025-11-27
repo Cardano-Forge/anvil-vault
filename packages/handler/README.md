@@ -41,9 +41,7 @@ npm install @anvil-vault/handler
 The handler package provides:
 
 - **Framework-Agnostic Design**: Works with Express, Hono, or any custom framework
-- **Type-Safe Request Handling**: Full TypeScript support with validated inputs
 - **RESTful API Structure**: Standard REST endpoints for wallet operations
-- **Built-in Validation**: Schema-based input validation with detailed error messages
 - **Error Handling**: Consistent error responses with proper HTTP status codes
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
@@ -554,13 +552,11 @@ const handler = createVaultHandler({ vault: new CustomVault(), adapter });
 
 ## Security Considerations
 
-1. **Root Key Security**: Store the root key securely (e.g., environment variables, secrets manager) and never expose it in logs or error messages.
+1. **Authentication**: The handler does not include authentication. Implement authentication middleware before the handler to verify user identity.
 
-2. **Authentication**: The handler does not include authentication. Implement authentication middleware before the handler to verify user identity.
+2. **Authorization**: Verify that the authenticated user matches the `userId` in the path to prevent unauthorized access.
 
-3. **Authorization**: Verify that the authenticated user matches the `userId` in the path to prevent unauthorized access.
-
-4. **Rate Limiting**: Implement rate limiting to prevent abuse of the API endpoints.
+3. **Rate Limiting**: Implement rate limiting to prevent abuse of the API endpoints.
 
 ---
 

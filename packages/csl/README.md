@@ -146,7 +146,7 @@ import { extractKeys } from "@anvil-vault/csl";
 import { isOk } from "trynot";
 
 const result = extractKeys({
-  accountKey: process.env.ROOT_KEY,  
+  accountKey, // Previously derived account key
   paymentDerivation: 0, // First payment key
   stakeDerivation: 0, // First stake key
 });
