@@ -11,13 +11,9 @@ Cardano Message Signing (CMS) utilities for Anvil Vault. This package provides C
   - [signDataWallet](#signdatawalletinput)
 - [Advanced Usage](#advanced-usage)
   - [External AAD](#external-aad)
-  - [Address Types](#address-types)
-  - [Error Cases](#error-cases)
 - [Technical Details](#technical-details)
   - [COSE Sign1 Structure](#cose-sign1-structure)
   - [Validation](#validation)
-- [Verification (dApp Side)](#verification-dapp-side)
-- [CIP Standards](#cip-standards)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
@@ -35,8 +31,8 @@ import { isOk } from "trynot";
 
 const result = signDataWallet({
   payload: Buffer.from("Hello, Cardano!", "utf8"),
-  address: myAddress,
-  privateKey: myPrivateKey,
+  privateKey: paymentPrivateKey,
+  address,
 });
 
 if (isOk(result)) {
@@ -84,7 +80,7 @@ import { isOk, unwrap } from "trynot";
 // Get payment key and address
 const { paymentKey, stakeKey } = unwrap(
   extractKeys({
-    accountKey,
+    accountKey, // Hex format account key
     paymentDerivation: 0,
     stakeDerivation: 0,
   })
@@ -99,9 +95,8 @@ const addresses = unwrap(
 );
 
 // Sign a message
-const message = "Hello, Cardano!";
 const result = signDataWallet({
-  payload: Buffer.from(message, "utf8"),
+  payload: Buffer.from("Hello, Cardano!", "utf8"),
   address: addresses.baseAddress,
   privateKey: paymentKey.to_raw_key(),
 });
@@ -138,74 +133,12 @@ if (isOk(result)) {
 }
 ```
 
-### Address Types
-
-You can sign with different Cardano address types. The private key must match the address's payment or stake credential:
-
-```typescript
-import { signDataWallet } from "@anvil-vault/cms";
-import { unwrap } from "trynot";
-
-// Base Address (payment + stake)
-const baseResult = signDataWallet({
-  payload: Buffer.from("message", "utf8"),
-  address: addresses.baseAddress,
-  privateKey: paymentKey.to_raw_key(), // Use payment key
-});
-
-// Enterprise Address (payment only)
-const enterpriseResult = signDataWallet({
-  payload: Buffer.from("message", "utf8"),
-  address: addresses.enterpriseAddress,
-  privateKey: paymentKey.to_raw_key(), // Use payment key
-});
-
-// Reward Address (stake only)
-const rewardResult = signDataWallet({
-  payload: Buffer.from("message", "utf8"),
-  address: addresses.rewardAddress,
-  privateKey: stakeKey.to_raw_key(), // Use stake key
-});
-```
-
-### Error Cases
-
-Common validation errors you may encounter:
-
-**Script Address Error:**
-
-```typescript
-import { signDataWallet } from "@anvil-vault/cms";
-import { isErr } from "trynot";
-
-// Error: Cannot sign with script addresses
-const scriptResult = signDataWallet({
-  payload: Buffer.from("data", "utf8"),
-  address: scriptAddress, // Has script hash instead of key hash
-  privateKey: paymentKey.to_raw_key(),
-});
-
-if (isErr(scriptResult)) {
-  console.error(scriptResult.message); // "Can't sign data with script address"
-}
-```
-
-**Key Mismatch Error:**
-
-```typescript
-// Error: Private key doesn't match address
-const mismatchResult = signDataWallet({
-  payload: Buffer.from("data", "utf8"),
-  address: addresses.baseAddress, // Uses payment key
-  privateKey: stakeKey.to_raw_key(), // Wrong key!
-});
-
-if (isErr(mismatchResult)) {
-  console.error(mismatchResult.message); // "Private key doesn't match the address"
-}
-```
-
 ## Technical Details
+
+**Reference:**
+
+- [CIP-8: Message Signing](https://cips.cardano.org/cip/CIP-0008)
+- [CIP-30: Cardano dApp-Wallet Web Bridge](https://cips.cardano.org/cip/CIP-0030)
 
 ### COSE Sign1 Structure
 
@@ -229,72 +162,6 @@ The function performs these validations:
 1. **Script Address Check**: Cannot sign with script addresses (only key hash addresses)
 2. **Key Match Verification**: Private key must match the payment credential of the address
 3. **Address Credential**: Address must have a valid payment key hash
-
-## Verification (dApp Side)
-
-> **Note:** The verification code below is **not part of Anvil Vault**. It demonstrates what a dApp or third party would do to verify signatures created by your vault. This is shown for educational purposes to illustrate the complete CIP-8/CIP-30 flow.
-
-```typescript
-import {
-  COSESign1,
-  COSEKey,
-  Label,
-} from "@emurgo/cardano-message-signing-nodejs-gc";
-import { Ed25519Signature } from "@emurgo/cardano-serialization-lib-nodejs-gc";
-
-// Parse the signature (typically done by a dApp)
-const coseSign1 = COSESign1.from_bytes(Buffer.from(signature, "hex"));
-const coseKey = COSEKey.from_bytes(Buffer.from(key, "hex"));
-
-// Verify the signature
-const sigStructure = coseSign1.signed_data(undefined, undefined).to_bytes();
-const sig = Ed25519Signature.from_bytes(coseSign1.signature());
-const publicKey = paymentKey.to_public().to_raw_key();
-const isValid = publicKey.verify(sigStructure, sig);
-
-console.log("Signature valid:", isValid); // true
-
-// Verify the payload
-const payload = coseSign1.payload();
-if (payload) {
-  const recoveredMessage = Buffer.from(payload).toString("utf8");
-  console.log("Message:", recoveredMessage); // "Verify my identity"
-}
-
-// Verify the address
-const protectedHeaders = coseSign1.headers().protected().deserialized_headers();
-const addressHeader = protectedHeaders.header(Label.new_text("address"));
-if (addressHeader) {
-  const addressBytes = addressHeader.as_bytes();
-  const recoveredAddress = Buffer.from(addressBytes).toString("hex");
-  console.log("Address:", recoveredAddress);
-}
-```
-
-## CIP Standards
-
-This package implements:
-
-### CIP-8: Message Signing
-
-Defines the standard for signing arbitrary messages in Cardano wallets:
-
-- Uses COSE Sign1 structure
-- Includes signing address in protected headers
-- Supports external Additional Authenticated Data (AAD)
-
-### CIP-30: dApp-Wallet Web Bridge
-
-Defines the `signData` API for wallet-dApp communication:
-
-- Returns signature and public key in COSE format
-- Enables dApps to verify user identity
-- Compatible with browser wallet extensions
-
-**Reference:**
-
-- [CIP-8: Message Signing](https://cips.cardano.org/cip/CIP-0008)
-- [CIP-30: Cardano dApp-Wallet Web Bridge](https://cips.cardano.org/cip/CIP-0030)
 
 ## Dependencies
 
