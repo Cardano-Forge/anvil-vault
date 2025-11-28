@@ -8,7 +8,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 - [Installation](#installation)
 - [Overview](#overview)
-- [API Reference](#api-reference)
+- [Functions](#functions)
   - [Key Derivation](#key-derivation)
     - [deriveAccount](#deriveaccountinput)
     - [derivePrivateKey](#deriveprivatekeyinput)
@@ -70,12 +70,6 @@ Derives an account key from a root key following CIP-1852.
 - `rootKey: Bip32PrivateKey` - The parsed root key
 - `accountKey: Bip32PrivateKey` - The derived account key
 
-**Derivation Path:** `m/1852'/1815'/account'`
-
-- `1852'` - Purpose (CIP-1852)
-- `1815'` - Coin type (Cardano)
-- `account'` - Account index (hardened)
-
 **Example:**
 
 ```typescript
@@ -89,7 +83,7 @@ const result = deriveAccount({
 });
 
 if (isOk(result)) {
-  console.log("Account key derived:", result.accountKey.to_bech32());
+  console.log("Account key derived:", result.accountKey.to_hex());
 }
 ```
 
@@ -114,7 +108,7 @@ const entropy = process.env.ENTROPY;
 const result = derivePrivateKey({ entropy });
 
 if (isOk(result)) {
-  console.log("Root key:", result.to_bech32());
+  console.log("Root key:", result.to_hex());
 }
 ```
 
@@ -134,11 +128,6 @@ Extracts payment and stake keys from an account key following CIP-1852.
 - `paymentKey: Bip32PrivateKey` - Derived payment key (external chain)
 - `stakeKey: Bip32PrivateKey` - Derived stake key (staking chain)
 
-**Derivation Paths:**
-
-- Payment: `account/0/payment` (external chain)
-- Stake: `account/2/stake` (staking chain)
-
 **Example:**
 
 ```typescript
@@ -146,14 +135,14 @@ import { extractKeys } from "@anvil-vault/csl";
 import { isOk } from "trynot";
 
 const result = extractKeys({
-  accountKey, // Previously derived account key
+  accountKey, // Hex format account key
   paymentDerivation: 0, // First payment key
   stakeDerivation: 0, // First stake key
 });
 
 if (isOk(result)) {
-  console.log("Payment key:", result.paymentKey.to_public().to_bech32());
-  console.log("Stake key:", result.stakeKey.to_public().to_bech32());
+  console.log("Payment key:", result.paymentKey.to_public().to_hex());
+  console.log("Stake key:", result.stakeKey.to_public().to_hex());
 }
 ```
 
@@ -215,12 +204,6 @@ if (isOk(result)) {
 }
 ```
 
-**Address Types:**
-
-- **Base Address**: Contains both payment and staking credentials. Used for receiving funds and staking.
-- **Enterprise Address**: Contains only payment credential. Cannot participate in staking.
-- **Reward Address**: Contains only staking credential. Used for receiving staking rewards.
-
 #### `parseAddress(input)`
 
 Parses a Cardano address from various formats (bech32, hex, or CSL object).
@@ -275,10 +258,8 @@ Signs a Cardano transaction with one or more private keys.
 import { signTransaction } from "@anvil-vault/csl";
 import { isOk } from "trynot";
 
-const txHex = "<valid-transaction-hex>";
-
 const result = signTransaction({
-  transaction: txHex,
+  transaction: transactionHex,
   privateKeys: [paymentPrivateKeyHex, stakePrivateKeyHex],
 });
 
@@ -294,7 +275,7 @@ Adds a required signer key hash to a transaction.
 
 **Parameters:**
 
-- `input.transaction: Transaction | FixedTransaction | string` - Transaction to modify
+- `input.transaction: Transaction | FixedTransaction | string` - Transaction to edit
 - `input.keyHash: Ed25519KeyHash | string` - Key hash to add as required signer
 
 **Returns:** `Result<Transaction | FixedTransaction>`
@@ -307,11 +288,9 @@ Adds a required signer key hash to a transaction.
 import { addRequiredSigner } from "@anvil-vault/csl";
 import { isOk } from "trynot";
 
-const keyHash = paymentKey.to_public().to_raw_key().hash().to_hex();
-
 const result = addRequiredSigner({
-  transaction: txHex,
-  keyHash,
+  transaction: transactionHex,
+  keyHash: keyHashHex,
 });
 
 if (isOk(result)) {
@@ -379,11 +358,7 @@ const result = verifySignature({
 });
 
 if (isOk(result)) {
-  if (result.isValid) {
-    console.log("Signature is valid");
-  } else {
-    console.log("Signature is invalid");
-  }
+  console.log("Signature is valid:", result.isValid);
 }
 ```
 
@@ -409,10 +384,6 @@ const result = generateEd25519KeyPair();
 if (isOk(result)) {
   console.log("Private key:", result.privateKey.to_hex());
   console.log("Public key:", result.publicKey.to_hex());
-
-  // Use for signing
-  const signature = result.privateKey.sign(Buffer.from("data"));
-  const isValid = result.publicKey.verify(Buffer.from("data"), signature);
 }
 ```
 
@@ -457,11 +428,15 @@ type NetworkId = number; // 0 for testnet, 1 for mainnet
 
 ### Transaction Types
 
+**CSL types: `Transaction | FixedTransaction`**
+
 ```typescript
 type TransactionInput = Transaction | FixedTransaction | string;
 ```
 
 ### Address Types
+
+**CSL types: `BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress`**
 
 ```typescript
 type ParsedAddress =
