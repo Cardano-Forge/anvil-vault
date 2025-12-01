@@ -16,7 +16,7 @@
     "ts",
     "typesafe"
   ],
-  "author": "Cardano-Forge",
+  "author": "Ada-Anvil",
   "type": "module",
   "exports": {
     ".": {

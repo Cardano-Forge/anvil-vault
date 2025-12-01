@@ -2,7 +2,7 @@
   "name": "@anvil-vault/vault",
   "version": "0.0.0",
   "keywords": [],
-  "author": "Cardano-Forge",
+  "author": "Ada-Anvil",
   "type": "module",
   "exports": {
     ".": {

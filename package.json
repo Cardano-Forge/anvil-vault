@@ -1,7 +1,35 @@
 {
-  "name": "anvil-vault",
+  "name": "@ada-anvil/vault",
+  "description": "TypeScript tools for generating and managing cardano wallet.",
   "version": "0.0.0",
-  "private": true,
+  "author": "Ada Anvil",
+  "bugs": {
+    "url": "https://github.com/cardano-forge/anvil-vault/issues"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "homepage": "https://github.com/cardano-forge/anvil-vault",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cardano-forge/anvil-vault.git"
+  },
+  "keywords": [
+    "typescript",
+    "vault",
+    "key-management",
+    "signature",
+    "wallet",
+    "crypto",
+    "blockchain",
+    "cardano",
+    "csl",
+    "bip39",
+    "cip1852",
+    "cms",
+    "ed25519"
+  ],
   "workspaces": [
     "packages/*",
     "examples/*"
