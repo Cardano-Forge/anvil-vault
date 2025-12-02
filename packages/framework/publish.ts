@@ -61,7 +61,13 @@ async function copyPackageJson() {
 
   const pkg = {
     name: PUBLISHED_PKG_NAME,
+    description: internalPkg.description,
     version: internalPkg.version,
+    bugs: internalPkg.bugs,
+    license: internalPkg.license,
+    publishConfig: internalPkg.publishConfig,
+    homepage: internalPkg.homepage,
+    repository: internalPkg.repository,
     keywords: internalPkg.keywords,
     author: internalPkg.author,
     type: "module",
