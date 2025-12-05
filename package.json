@@ -1,7 +1,7 @@
 {
   "name": "anvil-vault",
   "version": "0.0.0",
-  "private": true,
+  "author": "Ada Anvil",
   "workspaces": [
     "packages/*",
     "examples/*"
