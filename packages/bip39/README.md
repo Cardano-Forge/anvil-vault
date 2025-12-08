@@ -10,24 +10,19 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 - [Functions](#functions)
   - [generateMnemonic](#generatemnemonicinput)
   - [parseEntropy](#parseentropyinput)
-  - [Wordlist Utilities](#wordlist-utilities)
-    - [getWordList](#getwordlistlanguage)
-    - [builtinWordLists](#builtinwordlists)
-    - [defaultWordList](#defaultwordlist)
-    - [wordListLength](#wordlistlength)
+  - [getWordList](#getwordlistlanguage)
 - [Specification](#specification)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
 ## Overview
 
-The `@anvil-vault/bip39` package provides:
+The `@ada-anvil/vault/bip39` package provides:
 
 - **Mnemonic Generation**: Create BIP-39 mnemonics from entropy or word count
 - **Entropy Parsing**: Convert mnemonics back to entropy
 - **Multi-language Support**: English, Spanish, French, Italian, Portuguese, Czech, Japanese, Korean, Chinese (Simplified & Traditional)
 - **Validation**: Automatic checksum validation
-- **Flexible Input**: Support for hex strings and Buffers
 
 All functions return `Result` types from `trynot`. See [Error Handling](../framework/README.md#error-handling) for details.
 
@@ -48,7 +43,7 @@ type GenerateMnemonicInput = {
 };
 ```
 
-**Output:** `Result<GenerateMnemonicOutput>`
+**Returns:** `Result<GenerateMnemonicOutput>`
 
 ```typescript
 type GenerateMnemonicOutput = {
@@ -70,26 +65,25 @@ if (isOk(result)) {
 }
 ```
 
-#### `parseEntropy(input)`
+---
+
+### `parseEntropy(input)`
 
 Converts a mnemonic phrase back into entropy while validating the wordlist and checksum.
 
-**Parameters:**
-
-- `input.mnemonic: string` - The mnemonic phrase to parse.
-- `input.wordList?: BuiltinWordList | WordList` - Optional wordlist to validate against. Defaults to English.
+**Input:**
 
 ```typescript
 type ParseEntropyInput = {
-  mnemonic: string;
-  wordList?: BuiltinWordList | WordList;
+  mnemonic: string; // The mnemonic phrase to parse.
+  wordList?: BuiltinWordList | WordList; // Optional wordlist to validate against. Defaults to English.
 };
 ```
 
 **Returns:** `Result<ParseEntropyOutput>`
 
 ```typescript
-export type ParseEntropyOutput = {
+type ParseEntropyOutput = {
   entropy: string; // The derived entropy (hex string).
   wordList: WordList; // The resolved wordlist.
 };
@@ -112,15 +106,13 @@ if (isOk(result)) {
 
 ---
 
-## Wordlist Utilities
-
 ### `getWordList(language)`
 
 Retrieves a built-in or custom wordlist. If an invalid list or unsupported language is provided, returns an error.
 
 **Parameters:**
 
-- `language: BuiltinWordList | WordList` - Wordlist name (e.g. `"english"`) or custom list array.
+`language: BuiltinWordList | WordList` - Wordlist name (e.g. `"english"`) or custom list array.
 
 **Returns:** `Result<WordList>`
 
@@ -134,12 +126,16 @@ const wordList = unwrap(getWordList("english"));
 console.log(wordList.length); // 2048
 ```
 
-### `builtinWordLists`
+---
 
-Array of supported built-in BIP-39 language codes:
+## Specification
+
+Implements the [BIP-39: Mnemonic code for generating deterministic keys](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) standard.
+
+Supported built-in BIP-39 language codes:
 
 ```typescript
-[
+const builtinWordLists = [
   "english",
   "japanese",
   "korean",
@@ -151,44 +147,38 @@ Array of supported built-in BIP-39 language codes:
   "czech",
   "portuguese",
 ];
+
+const defaultWordList = "english";
+
+const wordListLength = 2048;
 ```
 
-### `defaultWordList`
-
-Default wordlist used for generation and parsing (`"english"`).
-
-### `wordListLength`
-
-Number of words expected in a standard BIP-39 wordlist (2048).
-
----
-
-## Specification
-
-Implements the [BIP-39: Mnemonic code for generating deterministic keys](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) standard.
-
-**References:**
-
-- [BIP-39 Wordlists](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
+**References:** [BIP-39 Wordlists](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
 
 ---
 
 ## Dependencies
 
-- **`trynot`**: Result type for error handling
+**`bip39`**: Peer dependency for BIP-39 mnemonic operations and wordlist management
+
+---
 
 ## Related Packages
 
-- **[@anvil-vault/vault](../vault/README.md)**: Main vault implementation
-- **[@anvil-vault/handler](../handler/README.md)**: Framework-agnostic handler builder
-- **[@anvil-vault/utils](../utils/README.md)**: Shared utilities
+- **[@ada-anvil/vault/vault](../vault/README.md)**: Main vault implementation
+- **[@ada-anvil/vault/handler](../handler/README.md)**: Framework-agnostic handler builder
+- **[@ada-anvil/vault/utils](../utils/README.md)**: Shared utilities
 
 ---
 
 <p align="center">
   <a href="https://ada-anvil.io">Ada Anvil Website</a>
   |
-  <a href="https://discord.gg/yyTG6wUqCh">Discord Invite</a>
+  <a href="https://discord.gg/yyTG6wUqCh">
+    <img src="../../logo/discord.svg" alt="Discord Icon" height="18px" style="vertical-align: text-top;" /> Discord
+  </a>
   |
-  <a href="https://x.com/AnvilDevAgency">X: @AnvilDevAgency</a>
+  <a href="https://x.com/AnvilDevAgency">
+    <img src="../../logo/x.svg" alt="X Icon" height="18px" style="vertical-align: text-top;" /> @AnvilDevAgency
+  </a>
 </p>
