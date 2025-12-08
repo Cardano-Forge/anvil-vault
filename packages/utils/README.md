@@ -1,6 +1,6 @@
 # @ada-anvil/vault/utils
 
-This package provides error handling, validation, parsing, and type utilities for the Anvil Vault ecosystem.
+This package provides error handling, validation, parsing, and type utilities.
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
@@ -19,14 +19,13 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
   - [errorToString](#errortostringerror-opts)
   - [VaultError](#vaulterror)
   - [MaybePromise](#maybepromiset)
-- [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
 ## Functions
 
 ### `isBech32Address(address)`
 
-Checks if a string is a Cardano bech32-encoded address.
+Checks if a string looks like a Cardano bech32-encoded address.
 
 **Parameters:** `address: string` - address to validate
 
@@ -82,7 +81,7 @@ import { Transaction } from "@emurgo/cardano-serialization-lib-nodejs";
 import { isOk } from "trynot";
 
 // Parse to Buffer
-const buffer = parseFromHex("48656c6c6f");
+const buffer = parseFromHex("48656c6c6f");  // Same as `Buffer.from("48656c6c6f", "hex")`
 if (isOk(buffer)) {
   console.log(buffer.toString()); // "Hello"
 }
