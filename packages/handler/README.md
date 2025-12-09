@@ -2,9 +2,10 @@
 
 Framework-agnostic HTTP request handler builder for Anvil Vault. This package provides a flexible system for creating vault API endpoints that work with any web framework through adapters.
 
+All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
+
 ## Table of Contents
 
-- [Overview](#overview)
 - [Quick Start](#quick-start)
   - [With Express](#with-express)
   - [With Hono](#with-hono)
@@ -20,18 +21,7 @@ Framework-agnostic HTTP request handler builder for Anvil Vault. This package pr
     - [VaultConfig](#vaultconfig)
 - [REST API Endpoints](#rest-api-endpoints)
 - [HTTP Error Responses](#http-error-responses)
-- [Security Considerations](#security-considerations)
 - [Related Packages](#related-packages)
-
-## Overview
-
-The handler package provides:
-
-- **Framework-Agnostic Design**: Works with Express, Hono, or any custom framework
-- **RESTful API Structure**: Standard REST endpoints for wallet operations
-- **Error Handling**: Consistent error responses with proper HTTP status codes
-
-All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
 ---
 
@@ -39,11 +29,11 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 ### With Express
 
-See the [Express Quick Start](../express/README.md#quick-start) for a complete example.
+See the [Express Quick Start](../express/README.md#usage) for a complete example.
 
 ### With Hono
 
-See the [Hono Quick Start](../hono/README.md#quick-start) for a complete example.
+See the [Hono Quick Start](../hono/README.md#usage) for a complete example.
 
 ---
 
@@ -52,6 +42,9 @@ See the [Hono Quick Start](../hono/README.md#quick-start) for a complete example
 ### `createVaultHandler(config)`
 
 Creates a framework-specific request handler for vault operations.
+
+> [!WARNING]
+> The handler does not provide any form of authentication
 
 **Input:**
 
@@ -486,16 +479,6 @@ All endpoints return consistent JSON error responses:
 - `500` - Vault operation failed
 
 For general error handling patterns, see [Error Handling](../framework/README.md#error-handling).
-
----
-
-## Security Considerations
-
-1. **Authentication**: The handler does not include authentication. Implement authentication middleware before the handler to verify user identity.
-
-2. **Authorization**: Verify that the authenticated user matches the `userId` in the path to prevent unauthorized access.
-
-3. **Rate Limiting**: Implement rate limiting to prevent abuse of the API endpoints.
 
 ---
 
