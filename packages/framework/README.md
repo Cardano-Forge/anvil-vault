@@ -21,14 +21,13 @@
 - [Packages](#packages)
   - [Core Packages](#core-packages)
   - [Framework Adapters](#framework-adapters)
-- [Error Handling](#error-handling)
 - [Security Considerations](#security-considerations)
+- [Error Handling](#error-handling)
 - [Getting Help](#getting-help)
-- [Support](#support)
 
 ## About
 
-`@ada-anvil/vault` is Anvil Vault - a comprehensive custodial wallet solution for Cardano.
+`@ada-anvil/vault` is a comprehensive custodial wallet solution for Cardano.
 
 ## Why Anvil Vault?
 
@@ -101,7 +100,47 @@ Anvil Vault is composed of specialized packages:
 
 #### [@ada-anvil/vault/hono](../hono/README.md)
 
-- Adapter to use handlers with Hono across multiple runtimes
+- Adapter to use handlers with Hono
+
+---
+
+## Security Considerations
+
+### Root Key Management
+
+> [!WARNING] >**Your root key is the master secret that controls all wallets.**
+> If compromised, an attacker can access all user funds.
+
+- **Never hardcode root keys** in your source code or configuration files
+- Store root keys in dedicated key management systems:
+  - AWS KMS (Key Management Service)
+  - Google Cloud KMS
+  - Azure Key Vault
+- Use different keys per environment
+
+### Derivation Strategies (User Address Generation)
+
+**How you generate user addresses directly impacts security and privacy.**
+
+#### Payment Keys (Spending Addresses)
+
+- **Never use `constant` derivation in production** - this generates the same address for all users, creating a security and privacy
+  vulnerability
+- **Always use `unique` derivation with scrambling** - this ensures each user gets cryptographically isolated addresses
+- The `pool` strategy is only for stake keys (see below)
+
+#### Stake Keys (Reward Addresses)
+
+- **Use `pool` derivation for stake keys** - this allows you to consolidate all users' staking rewards to a single address for easier
+  management
+- Pool derivation is safe for stake keys because they don't control spendable funds
+
+#### Why This Matters
+
+- **Poor derivation = address reuse** across users, exposing transaction history and balances
+- **Unique derivation = isolation** - each user's wallet is cryptographically separated
+
+---
 
 ## Error Handling
 
@@ -120,40 +159,7 @@ if (isOk(result)) {
 const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 ```
 
-## Security Considerations
-
-### Root Key Management
-
-**Your root key is the master secret that controls all wallets.** If compromised, an attacker can access all user funds.
-
-- **Never hardcode root keys** in your source code or configuration files
-- Store root keys in dedicated key management systems:
-  - AWS KMS (Key Management Service)
-  - Google Cloud KMS
-  - Azure Key Vault
-- Use different keys per environment (preprod (dev)/ mainnet (prod))
-
-### Derivation Strategies (User Address Generation)
-
-**How you generate user addresses directly impacts security and privacy.**
-
-#### Payment Keys (Spending Addresses)
-
-- **Always use `unique` derivation with scrambling** - this ensures each user gets cryptographically isolated addresses
-- **Never use `constant` derivation in production** - this generates the same address for all users, creating a security and privacy
-  vulnerability
-- The `pool` strategy is only for stake keys (see below)
-
-#### Stake Keys (Reward Addresses)
-
-- **Use `pool` derivation for stake keys** - this allows you to consolidate all users' staking rewards to a single address for easier
-  management
-- Pool derivation is safe for stake keys because they don't control spendable funds
-
-#### Why This Matters
-
-- **Poor derivation = address reuse** across users, exposing transaction history and balances
-- **Unique derivation = isolation** - each user's wallet is cryptographically separated
+---
 
 ## Getting Help
 
@@ -161,10 +167,6 @@ const unwrapped = unwrap(await vault.getWallet({ userId: "user123" }));
 - **Discord**: [Join our Discord](https://discord.gg/yyTG6wUqCh)
 - **Documentation**: Individual package READMEs for detailed API docs
 - **Examples**: See [examples/](../../examples) for complete working examples
-
-## Support
-
-For issues, questions, or contributions, please visit the [Anvil Vault repository](https://github.com/Cardano-Forge/anvil-vault).
 
 ---
 
