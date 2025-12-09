@@ -25,16 +25,10 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 ### `deriveAccount(input)`
 
-Derives an account key from a root key following .
+Derives an account key from a root key.
 
-- The provided derivation path is appended to the base derivation path defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification)
-
-  - Derivation path: `m/1852'/1815'/account'/chain/index`
-  - Purpose: 1852' (hardened)
-  - Coin type: 1815' (Cardano, hardened)
-  - Account: 0' to 2^31-1 (hardened)
-  - Chain: 0 (external/payment), 1 (internal/change), 2 (staking)
-  - Index: 0' to 2^31-1 (hardened)
+> [! WARNING]
+> The provided derivation path is appended to the base derivation path defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification) like : `m/1852'/1815'/...accountDerivation'`
 
 **Input:**
 
