@@ -6,7 +6,6 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Functions](#functions)
   - [deriveAccount](#deriveaccountinput)
   - [derivePrivateKey](#deriveprivatekeyinput)
@@ -20,36 +19,29 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
   - [verifySignature](#verifysignatureinput)
   - [generateEd25519KeyPair](#generateed25519keypair)
   - [getNetworkId](#getnetworkidnetwork)
-- [Type Definitions](#type-definitions)
-- [CIP Standards](#cip-standards)
 - [Dependencies](#dependencies)
-
-## Overview
-
-The CSL package provides:
-
-- **Key Derivation**: BIP32 hierarchical deterministic key derivation
-- **Address Generation**: Create base, enterprise, and reward addresses
-- **Transaction Signing**: Sign transactions with private keys
-- **Data Signing**: Sign arbitrary data with Ed25519 keys
-- **Signature Verification**: Verify Ed25519 signatures
-- **Address Parsing**: Parse addresses from various formats
-- **Network Utilities**: Network ID and configuration helpers
-
-All functions return `Result` types from the `trynot` library for consistent error handling.
 
 ## Functions
 
 ### `deriveAccount(input)`
 
-Derives an account key from a root key following CIP-1852.
+Derives an account key from a root key following .
+
+- The provided derivation path is appended to the base derivation path defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification)
+
+  - Derivation path: `m/1852'/1815'/account'/chain/index`
+  - Purpose: 1852' (hardened)
+  - Coin type: 1815' (Cardano, hardened)
+  - Account: 0' to 2^31-1 (hardened)
+  - Chain: 0 (external/payment), 1 (internal/change), 2 (staking)
+  - Index: 0' to 2^31-1 (hardened)
 
 **Input:**
 
 ```typescript
 type DeriveAccountInput = {
   rootKey: Bip32PrivateKey | string; // Root private key
-  accountDerivation: number | number[]; //Account index or derivation path
+  accountDerivation: number | number[]; // Account index or derivation path
 };
 ```
 
@@ -255,7 +247,7 @@ const result = parseAddress({
   address: "addr_test1qz...",
 });
 
-if (isOk(result) && result instanceof BaseAddress) {
+if (result instanceof BaseAddress) {
   console.log(
     "Payment credential:",
     result.payment_cred().to_keyhash()?.to_hex()
@@ -473,51 +465,6 @@ getNetworkId("preview"); // 0
 getNetworkId(0); // 0 (pass-through)
 getNetworkId(1); // 1 (pass-through)
 ```
-
----
-
-## Type Definitions
-
-### Network Types
-
-```typescript
-type Network = "mainnet" | "preprod" | "preview";
-type NetworkId = number; // 0 for testnet, 1 for mainnet
-```
-
-### Transaction Types
-
-**CSL types: `Transaction | FixedTransaction`**
-
-```typescript
-type TransactionInput = Transaction | FixedTransaction | string;
-```
-
-### Address Types
-
-**CSL types: `BaseAddress | EnterpriseAddress | PointerAddress | RewardAddress`**
-
-```typescript
-type ParsedAddress =
-  | BaseAddress
-  | EnterpriseAddress
-  | PointerAddress
-  | RewardAddress;
-```
-
----
-
-## CIP Standards
-
-This package follows Cardano Improvement Proposals:
-
-- **CIP-1852**: HD Wallets for Cardano
-  - Derivation path: `m/1852'/1815'/account'/chain/index`
-  - Purpose: 1852' (hardened)
-  - Coin type: 1815' (Cardano, hardened)
-  - Account: 0' to 2^31-1 (hardened)
-  - Chain: 0 (external/payment), 1 (internal/change), 2 (staking)
-  - Index: 0 to 2^31-1 (non-hardened)
 
 ---
 
