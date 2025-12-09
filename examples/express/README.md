@@ -12,7 +12,6 @@ Complete working example of integrating Anvil Vault with Express.js.
 - [API Endpoints](#api-endpoints)
 - [Code Walkthrough](#code-walkthrough)
 - [Dependencies](#dependencies)
-- [Learn More](#learn-more)
 - [Security Notes](#security-notes)
 
 ## What This Example Does
@@ -189,13 +188,8 @@ Cleanly shuts down the server on Ctrl+C.
 
 ## Dependencies
 
-- **`@ada-anvil/vault`** - Anvil Vault implementation
 - **`express`** - Web framework
 - **`trynot`** - Result type for error handling
-
-## Learn More
-
-- **[@anvil-vault/framework](../../packages/framework/README.md)** - Framework overview
 
 ## Security Notes
 
