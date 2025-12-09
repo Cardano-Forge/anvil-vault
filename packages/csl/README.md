@@ -27,8 +27,8 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 Derives an account key from a root key.
 
-> [!WARNING]
-> The provided derivation path is appended to the base derivation path defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification) like : `m/1852'/1815'/...accountDerivation'`
+> [!IMPORTANT]
+> The user-provided derivation path gets appended to the base purpose and coin type derivations defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification) like : `m/1852'/1815'/...accountDerivation'`
 
 **Input:**
 
@@ -101,6 +101,9 @@ if (isOk(result)) {
 ### `extractKeys(input)`
 
 Extracts payment and stake keys from an account key following CIP-1852.
+
+> [!IMPORTANT]
+> The user-provided derivation path gets appended to the base role derivation defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification) (0 for payment key, 2 for stake key)
 
 **Input:**
 
