@@ -12,7 +12,6 @@ Complete working example of integrating Anvil Vault with Hono.
 - [API Endpoints](#api-endpoints)
 - [Code Walkthrough](#code-walkthrough)
 - [Dependencies](#dependencies)
-- [Learn More](#learn-more)
 - [Security Notes](#security-notes)
 
 ## What This Example Does
@@ -41,7 +40,8 @@ The example uses hardcoded values for demonstration purposes:
 ```typescript
 const env = {
   ME: "f3aa7d40-58c2-44df-ba49-d4026c822571",
-  ROOT_KEY: "40d0f8821976d097ad6c22e75f3ee2e725750a33f9e0c8ba4978245e9b74ae57604f2a17296ef2dcd9febf5e14adc4efe627bf5666db302da2ee1e94009f8c9bf529816cb417e611404426a46aca8697f7e815032a07aa156ed0fbbe5aa75cdc",
+  ROOT_KEY:
+    "40d0f8821976d097ad6c22e75f3ee2e725750a33f9e0c8ba4978245e9b74ae57604f2a17296ef2dcd9febf5e14adc4efe627bf5666db302da2ee1e94009f8c9bf529816cb417e611404426a46aca8697f7e815032a07aa156ed0fbbe5aa75cdc",
   NETWORK: "preprod",
 };
 ```
@@ -166,7 +166,7 @@ app.use(
       ...honoAdapter,
       getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
     },
-  }),
+  })
 );
 ```
 
@@ -205,24 +205,12 @@ Handles both SIGINT (Ctrl+C) and SIGTERM (container shutdown) signals.
 
 ## Dependencies
 
-- **`@anvil-vault/hono`** - Hono adapter for Anvil Vault
-- **`@anvil-vault/handler`** - Framework-agnostic handler builder
-- **`@anvil-vault/vault`** - Core vault implementation
-- **`@hono/node-server`** - Node.js server adapter for Hono
 - **`hono`** - Lightweight web framework
 - **`trynot`** - Result type for error handling
 
-## Learn More
-
-- **[@anvil-vault/hono](../../packages/hono/README.md)** - Hono adapter documentation
-- **[@anvil-vault/handler](../../packages/handler/README.md)** - Handler builder documentation
-- **[@anvil-vault/vault](../../packages/vault/README.md)** - Vault implementation documentation
-- **[@anvil-vault/framework](../../packages/framework/README.md)** - Framework overview
-- **[Hono Documentation](https://hono.dev/)** - Official Hono docs
-
 ## Security Notes
 
-⚠️ **This example uses hardcoded credentials for demonstration only.**
+> [!WARNING] **This example uses hardcoded credentials for demonstration only.**
 
 For production:
 
@@ -236,7 +224,11 @@ For production:
 <p align="center">
   <a href="https://ada-anvil.io">Ada Anvil Website</a>
   |
-  <a href="https://discord.gg/yyTG6wUqCh">Discord Invite</a>
+  <a href="https://discord.gg/yyTG6wUqCh">
+    <img src="../../logo/discord.svg" alt="Discord Icon" height="18px" style="vertical-align: text-top;" /> Discord
+  </a>
   |
-  <a href="https://x.com/AnvilDevAgency">X: @AnvilDevAgency</a>
+  <a href="https://x.com/AnvilDevAgency">
+    <img src="../../logo/x.svg" alt="X Icon" height="18px" style="vertical-align: text-top;" /> @AnvilDevAgency
+  </a>
 </p>
