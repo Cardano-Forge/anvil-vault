@@ -27,7 +27,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
 
 Derives an account key from a root key.
 
-> [! WARNING]
+> [!WARNING]
 > The provided derivation path is appended to the base derivation path defined by [CIP-1852](https://cips.cardano.org/cip/CIP-1852#specification) like : `m/1852'/1815'/...accountDerivation'`
 
 **Input:**
