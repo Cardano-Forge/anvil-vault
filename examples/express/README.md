@@ -160,6 +160,8 @@ const vault = new Vault({
 ### 2. Handler Setup
 
 ```typescript
+app.use(express.json()); // Required !
+
 app.use(
   createVaultHandler({
     vault,
