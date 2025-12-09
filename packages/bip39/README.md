@@ -1,6 +1,6 @@
 # @ada-anvil/vault/bip39
 
-This package provides deterministic mnemonic phrase generation and entropy parsing compliant with the [BIP-39 standard](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki).
+This package wraps the [bip39](https://www.npmjs.com/package/bip39) library to provide a more ergonomic way to generate and parse [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) mnemonic phrases.
 
 All functions return `Result` types from the [`trynot`](https://www.npmjs.com/package/trynot) library for consistent error handling.
 
@@ -11,7 +11,6 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
   - [generateMnemonic](#generatemnemonicinput)
   - [parseEntropy](#parseentropyinput)
   - [getWordList](#getwordlistlanguage)
-- [Specification](#specification)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
@@ -39,7 +38,7 @@ Generates a new mnemonic phrase based on the specified or default wordlist.
 ```typescript
 type GenerateMnemonicInput = {
   wordCount?: 12 | 24; // Number of words in the mnemonic. Defaults to 24.
-  wordList?: BuiltinWordList | WordList; //Language or custom list of words. Defaults to English.
+  wordList?: BuiltinWordList | WordList; // Language or custom list of words. Defaults to English.
 };
 ```
 
@@ -126,12 +125,6 @@ const wordList = unwrap(getWordList("english"));
 console.log(wordList.length); // 2048
 ```
 
----
-
-## Specification
-
-Implements the [BIP-39: Mnemonic code for generating deterministic keys](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) standard.
-
 Supported built-in BIP-39 language codes:
 
 ```typescript
@@ -147,13 +140,7 @@ const builtinWordLists = [
   "czech",
   "portuguese",
 ];
-
-const defaultWordList = "english";
-
-const wordListLength = 2048;
 ```
-
-**References:** [BIP-39 Wordlists](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
 
 ---
 
