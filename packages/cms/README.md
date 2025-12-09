@@ -32,7 +32,7 @@ type SignDataWalletInput {
   payload: string | Buffer; // Data to sign (hex string or Buffer)
   address: ParsedAddress; // Cardano address
   privateKey: PrivateKey; // Ed25519 private key for signing
-  externalAad?: string | Buffer; //Optional external Additional Authenticated Data
+  externalAad?: string | Buffer; // Optional external Additional Authenticated Data
 }
 ```
 
@@ -120,9 +120,7 @@ if (isOk(result)) {
 ## Dependencies
 
 - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
-- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano types
-- **`@anvil-vault/utils`**: Shared utilities
-- **`@anvil-vault/csl`**: CSL wrappers
+- **`trynot`**: Result type for error handling
 
 ---
 
