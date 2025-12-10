@@ -10,7 +10,7 @@ A minimal example showing how to run the Anvil Vault Express adapter locally.
 
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
+- [API Endpoint](#api-endpoint)
 - [Dependencies](#dependencies)
 
 ## Prerequisites
