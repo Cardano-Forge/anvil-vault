@@ -1,74 +1,33 @@
 # @ada-anvil/vault with Hono
 
-Complete working example of integrating Anvil Vault with Hono.
+A minimal example showing how to run the Anvil Vault Hono adapter locally.
+
+> [!INFO] This example is intended for local development and to demonstrate adapter usage. It may use mocked data or simplified auth for clarity.
+
+> [!WARNING] For production use, review configuration, environment variables, and security settings. Ensure middleware, CORS, and auth are configured appropriately for your deployment.
 
 ## Table of Contents
 
-- [What This Example Does](#what-this-example-does)
 - [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Example](#running-the-example)
-- [API Endpoints](#api-endpoints)
-- [Code Walkthrough](#code-walkthrough)
+- [Usage](#usage)
+- [API Endpoint](#api-endpoint)
 - [Dependencies](#dependencies)
-- [Security Notes](#security-notes)
-
-## What This Example Does
-
-This example demonstrates how easy it is to integrate Anvil Vault with Hono:
-
-- **Simple setup** - Just a few lines to create a fully functional vault API
-- **Three REST endpoints** - Get wallet addresses, sign data, and sign transactions
-- **Custom path mapping** - Shows how to adapt paths for your use case (e.g., `/users/me`)
 
 ## Prerequisites
 
 - Node.js >= 20.0.0
 - npm >= 10.0.0
 
-## Installation
+## usage
 
 ```bash
 npm install
-```
-
-## Configuration
-
-The example uses hardcoded values for demonstration purposes:
-
-```typescript
-const env = {
-  ME: "f3aa7d40-58c2-44df-ba49-d4026c822571",
-  ROOT_KEY:
-    "40d0f8821976d097ad6c22e75f3ee2e725750a33f9e0c8ba4978245e9b74ae57604f2a17296ef2dcd9febf5e14adc4efe627bf5666db302da2ee1e94009f8c9bf529816cb417e611404426a46aca8697f7e815032a07aa156ed0fbbe5aa75cdc",
-  NETWORK: "preprod",
-};
-```
-
-**For production:** Replace these with environment variables:
-
-```typescript
-const env = {
-  ME: process.env.USER_ID,
-  ROOT_KEY: process.env.ROOT_KEY,
-  NETWORK: process.env.NETWORK || "mainnet",
-};
-```
-
-## Running the Example
-
-```bash
 npm run dev
 ```
 
-The server will start on the default port (typically **3000**):
+The server will start on port **3000**:
 
-```bash
-listening on port 3000
-```
-
-## API Endpoints
+## API Endpoint
 
 All endpoints follow the pattern `users/:userId/*`. The examples below use `/users/me` which maps to the test user ID.
 
@@ -99,125 +58,10 @@ curl http://localhost:3000/users/me/wallet
 }
 ```
 
-### Sign Data
-
-```bash
-curl -X POST http://localhost:3000/users/me/sign-data \
-  -H "Content-Type: application/json" \
-  -d '{
-    "payload": "48656c6c6f2c20436172644616e6f21"
-  }'
-```
-
-**Response:**
-
-```json
-{
-  "signature": "845846a2012...",
-  "key": "a401012..."
-}
-```
-
-### Sign Transaction
-
-```bash
-curl -X POST http://localhost:3000/users/me/sign-transaction \
-  -H "Content-Type: application/json" \
-  -d '{
-    "transaction": "84a500d90102..."
-  }'
-```
-
-**Response:**
-
-```json
-{
-  "signedTransaction": "84a500d90102...",
-  "witnessSet": "a10081825820..."
-}
-```
-
-## Code Walkthrough
-
-### 1. Vault Configuration
-
-```typescript
-const vault = new Vault({
-  rootKey: () => env.ROOT_KEY,
-  network: env.NETWORK,
-  paymentDerivation: {
-    type: "unique",
-    scrambler: (path) => path.reverse(),
-  },
-});
-```
-
-- **rootKey**: Function returning the root private key
-- **network**: Cardano network (preprod for testing)
-- **paymentDerivation**: Unique derivation with path scrambling for security
-
-### 2. Handler Setup
-
-```typescript
-app.use(
-  createVaultHandler({
-    vault,
-    adapter: {
-      ...honoAdapter,
-      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
-    },
-  })
-);
-```
-
-The `createVaultHandler` creates middleware that handles all vault operations. The `honoAdapter` adapts Hono context to the vault handler interface. The custom `getPath` function maps the convenience endpoint `/users/me` to the actual user ID path.
-
-### 3. Server Setup
-
-```typescript
-const server = serve(app, (info) => {
-  console.log(`listening on port ${info.port}`);
-});
-```
-
-Uses `@hono/node-server` to run Hono on Node.js.
-
-### 4. Graceful Shutdown
-
-```typescript
-process.on("SIGINT", () => {
-  server.close();
-  process.exit(0);
-});
-
-process.on("SIGTERM", () => {
-  server.close((err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    process.exit(0);
-  });
-});
-```
-
-Handles both SIGINT (Ctrl+C) and SIGTERM (container shutdown) signals.
-
 ## Dependencies
 
-- **`hono`** - Lightweight web framework
+- **`Hono`** - Web framework
 - **`trynot`** - Result type for error handling
-
-## Security Notes
-
-> [!WARNING] **This example uses hardcoded credentials for demonstration only.**
-
-For production:
-
-1. **Never hardcode root keys** - Use environment variables or key management systems
-2. **Use unique user IDs** - UUIDs, not sequential integers
-3. **Add authentication** - Verify user identity before operations
-4. **Rate limiting** - Prevent abuse of signing endpoints
 
 ---
 
