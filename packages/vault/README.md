@@ -6,33 +6,23 @@ All functions return `Result` types from `trynot` for type-safe error handling. 
 
 ## Table of Contents
 
-- [What is a Vault?](#what-is-a-vault)
 - [Usage](#usage)
 - [Vault Class](#vault-class)
-- [deriveWallet](#derivewalletinput)
 - [Derivation Strategies](#derivation-strategies)
 - [Dependencies](#dependencies)
 - [Related Packages](#related-packages)
 
-## What is a Vault?
-
-The Vault is a high-level orchestration layer that:
-
-- **Manages multi-user wallets**: Derives unique addresses for each user from a single root key
-- **Provides flexible derivation**: Multiple strategies (unique, pool, constant, custom) for different use cases
-- **Simplifies operations**: High-level API for common wallet operations (get addresses, sign data, sign transactions)
+## Usage
 
 > [!WARNING]
 > Never hardcode the root key. Use secure key management for production.
-
-## Usage
 
 ```typescript
 import { Vault } from "@ada-anvil/vault/vault";
 
 const vault = new Vault({
   rootKey: () => process.env.ROOT_KEY,
-  network: 0, // 0 = testnet, 1 = mainnet
+  network: "preprod", // "preprod", "mainnet", "preview"
   paymentDerivation: {
     type: "unique",
     scrambler: (path) => path.reverse(),
@@ -293,55 +283,6 @@ console.log(mainnetVault.config.network); // "mainnet"
 
 ---
 
-### `deriveWallet(input)`
-
-Lower-level function for wallet derivation without creating a Vault instance:
-
-**Input:**
-
-```typescript
-type DeriveWalletInput = {
-  userId: string;
-  rootKey: string;
-  accountDerivation?: Derivation;
-  paymentDerivation?: Derivation;
-  stakeDerivation?: Derivation;
-};
-```
-
-**Returns:** `Promise<Result<DeriveWalletOutput>>`
-
-```typescript
-type DeriveWalletOutput = {
-  accountKey: Bip32PrivateKey;
-  paymentKey: Bip32PrivateKey;
-  stakeKey: Bip32PrivateKey;
-};
-```
-
-**Example:**
-
-```typescript
-import { deriveWallet } from "@anvil-vault/vault";
-import { unwrap } from "trynot";
-
-const wallet = unwrap(
-  await deriveWallet({
-    userId: "user123",
-    rootKey: process.env.ROOT_KEY,
-    accountDerivation: { type: "constant", value: 0 },
-    paymentDerivation: { type: "unique", scrambler: (i) => i.reverse() },
-    stakeDerivation: { type: "pool", size: 10 },
-  })
-);
-
-console.log("Account key:", wallet.accountKey.to_bech32());
-console.log("Payment key:", wallet.paymentKey.to_bech32());
-console.log("Stake key:", wallet.stakeKey.to_bech32());
-```
-
----
-
 ## Derivation Strategies
 
 Choose the right derivation strategy for your use case:
@@ -378,21 +319,9 @@ const userId = "550e8400-e29b-41d4-a716-446655440000";
 // const userId = "1", "2", "3"...
 ```
 
-### Memory Management
-
-The Vault automatically frees cryptographic keys after use. Avoid storing derived keys:
-
-```typescript
-// Good: Keys are automatically cleaned up
-const wallet = await vault.getWallet({ userId });
-
-// Bad: Don't store raw keys
-// const keys = await deriveWallet(...);
-// globalState.keys = keys; // Memory leak!
-```
-
 ## Dependencies
 
+- **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
 - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 - **`trynot`**: Result type for error handling
 
