@@ -1,10 +1,9 @@
 import type { ExtractKeysOutput, Network, NetworkId } from "@anvil-vault/csl";
-import type { MaybePromise } from "@anvil-vault/utils";
 import type { Bip32PrivateKey } from "@emurgo/cardano-serialization-lib-nodejs-gc";
 import type { Result } from "trynot";
 
 export type RequiredVaultConfig = {
-  rootKey: () => MaybePromise<Bip32PrivateKey | string>;
+  rootKey: () => Promise<Bip32PrivateKey | string>;
   network: Network | NetworkId;
 };
 
@@ -19,7 +18,7 @@ export type Derivation<TContext = undefined> =
         derivationPath: number[],
         input: { userId: string },
         context: TContext,
-      ) => MaybePromise<Result<number[]>>;
+      ) => Promise<Result<number[]>>;
     }
   | {
       type: "pool";
@@ -34,7 +33,7 @@ export type Derivation<TContext = undefined> =
       provider: (
         input: { userId: string },
         context: TContext,
-      ) => MaybePromise<Result<number | number[] | Derivation<TContext>>>;
+      ) => Promise<Result<number | number[] | Derivation<TContext>>>;
     };
 
 export type VaultConfig = RequiredVaultConfig & {
@@ -44,17 +43,17 @@ export type VaultConfig = RequiredVaultConfig & {
   customWalletDerivation?: (
     input: { userId: string },
     config: RequiredVaultConfig,
-  ) => MaybePromise<Result<DeriveWalletOutput>>;
+  ) => Promise<Result<DeriveWalletOutput>>;
   additionalWalletDerivation?: (
     keys: DeriveWalletOutput,
     input: { userId: string },
     config: RequiredVaultConfig,
-  ) => MaybePromise<Result<DeriveWalletOutput>>;
+  ) => Promise<Result<DeriveWalletOutput>>;
   ignoreDefaultPaymentDerivationWarning?: boolean;
 };
 
 export type IVault = {
-  getWallet: (input: { userId: string }) => MaybePromise<
+  getWallet: (input: { userId: string }) => Promise<
     Result<{
       addresses: {
         base: { bech32: string; hex: string };
@@ -63,13 +62,13 @@ export type IVault = {
       };
     }>
   >;
-  signData: (input: { userId: string; payload: string; externalAad?: string }) => MaybePromise<
+  signData: (input: { userId: string; payload: string; externalAad?: string }) => Promise<
     Result<{
       signature: string;
       key: string;
     }>
   >;
-  signTransaction: (input: { userId: string; transaction: string }) => MaybePromise<
+  signTransaction: (input: { userId: string; transaction: string }) => Promise<
     Result<{
       signedTransaction: string;
       witnessSet: string;

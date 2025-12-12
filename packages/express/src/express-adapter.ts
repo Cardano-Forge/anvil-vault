@@ -10,12 +10,12 @@ export type ExpressAdapter = HandlerAdapter<
 >;
 
 export const expressAdapter: ExpressAdapter = {
-  getContext: (req: Request, res: Response) => ({ req, res }),
-  getBody: (ctx) => ctx.req.body || {},
-  getMethod: (ctx) => ctx.req.method,
-  getPath: (ctx) => ctx.req.path,
-  getQuery: (ctx) => ctx.req.query as Record<string, unknown>,
-  sendResponse: (ctx, result) => {
+  getContext: async (req: Request, res: Response) => ({ req, res }),
+  getBody: async (ctx) => ctx.req.body || {},
+  getMethod: async (ctx) => ctx.req.method,
+  getPath: async (ctx) => ctx.req.path,
+  getQuery: async (ctx) => ctx.req.query as Record<string, unknown>,
+  sendResponse: async (ctx, result) => {
     if (isErr(result)) {
       ctx.res.status(result.statusCode).json(errorToJson(result));
     } else {

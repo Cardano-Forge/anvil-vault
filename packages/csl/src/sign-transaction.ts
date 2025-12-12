@@ -13,7 +13,7 @@ export type SignTransactionInput = {
   privateKeys: Array<PrivateKey | string>;
 };
 
-export type SignTransactionOutput = {
+type SignTransactionOutput = {
   signedTransaction: FixedTransaction;
   witnessSet: TransactionWitnessSet;
 };

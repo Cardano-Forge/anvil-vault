@@ -1,6 +1,6 @@
 import { getFailureReason } from "trynot";
 
-export type ErrorToStringOpts = {
+type ErrorToStringOpts = {
   cause?: boolean;
 };
 

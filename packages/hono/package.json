@@ -26,6 +26,7 @@
     "@anvil-vault/handler": "*",
     "@anvil-vault/tsconfig": "*",
     "@anvil-vault/tsup": "*",
+    "@anvil-vault/utils": "*",
     "hono": "^4.10.3",
     "tsup": "^8.5.0",
     "typescript": "^5.6.2",

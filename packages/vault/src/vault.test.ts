@@ -47,7 +47,7 @@ const createTrackingCustomDerivation = (freedKeys: Set<string>) => {
 };
 
 const createBaseVaultConfig = (): VaultConfig => ({
-  rootKey: () => validRootKeyHex,
+  rootKey: async () => validRootKeyHex,
   network: 0,
 });
 
@@ -68,7 +68,7 @@ describe("Vault", () => {
 
   describe("set method", () => {
     it("should modify the vault config and return same instance", () => {
-      const newRootKey = () => validRootKeyHex2;
+      const newRootKey = async () => validRootKeyHex2;
       const newVault = vault.with("rootKey", newRootKey);
 
       expect(newVault).not.toBe(vault);
@@ -99,7 +99,7 @@ describe("Vault", () => {
 
     it("should return VaultError on invalid root key", async () => {
       const invalidVault = new Vault({
-        rootKey: () => "invalid-hex",
+        rootKey: async () => "invalid-hex",
         network: 0,
       });
 
@@ -133,7 +133,7 @@ describe("Vault", () => {
 
     it("should return VaultError on invalid root key", async () => {
       const invalidVault = new Vault({
-        rootKey: () => "invalid-hex",
+        rootKey: async () => "invalid-hex",
         network: 0,
       });
 
@@ -184,7 +184,7 @@ describe("Vault", () => {
 
     it("should return VaultError on invalid root key", async () => {
       const invalidVault = new Vault({
-        rootKey: () => "invalid-hex",
+        rootKey: async () => "invalid-hex",
         network: 0,
       });
 

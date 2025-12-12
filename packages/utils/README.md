@@ -18,7 +18,7 @@ All functions return `Result` types from the [`trynot`](https://www.npmjs.com/pa
   - [errorToJson](#errortojsonerror-opts)
   - [errorToString](#errortostringerror-opts)
   - [VaultError](#vaulterror)
-  - [MaybePromise](#maybepromiset)
+  - [Promise](#Promiset)
 - [Related Packages](#related-packages)
 
 ## Functions
@@ -348,38 +348,6 @@ throw new VaultError({
 ```
 
 ---
-
-### `MaybePromise<T>`
-
-Utility type for values that may or may not be promises.
-
-**Type:**
-
-```typescript
-type MaybePromise<T> = T | Promise<T>;
-```
-
-**Example:**
-
-```typescript
-import type { MaybePromise } from "@ada-anvil/vault";
-
-// Useful for flexible APIs
-interface Config {
-  getRootKey: () => MaybePromise<string>;
-}
-
-const syncConfig: Config = {
-  getRootKey: () => "key123",
-};
-
-const asyncConfig: Config = {
-  getRootKey: async () => {
-    const key = await fetchFromDatabase();
-    return key;
-  },
-};
-```
 
 ---
 

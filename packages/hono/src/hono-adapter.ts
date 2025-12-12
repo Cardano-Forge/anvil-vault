@@ -11,12 +11,12 @@ export type HonoAdapter<TEnv extends Env = Env> = HandlerAdapter<
 >;
 
 export const honoAdapter: HonoAdapter = {
-  getContext: (c) => c,
-  getBody: (ctx) => ctx.req.json() || {},
-  getMethod: (ctx) => ctx.req.method,
-  getPath: (ctx) => ctx.req.path,
-  getQuery: (ctx) => ctx.req.query(),
-  sendResponse: (ctx, result) => {
+  getContext: async (c) => c,
+  getBody: async (ctx) => ctx.req.json() || {},
+  getMethod: async (ctx) => ctx.req.method,
+  getPath: async (ctx) => ctx.req.path,
+  getQuery: async (ctx) => ctx.req.query(),
+  sendResponse: async (ctx, result) => {
     if (isErr(result)) {
       return ctx.json(errorToJson(result), result.statusCode as ContentfulStatusCode);
     }

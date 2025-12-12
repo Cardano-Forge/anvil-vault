@@ -117,15 +117,15 @@ Interface for creating framework-specific adapters.
 
 ```typescript
 type HandlerAdapter<TParams extends AnyParams, TContext, TResponse> = {
-  getContext: (...args: TParams) => MaybePromise<TContext>;
-  getBody: (context: TContext) => MaybePromise<Record<string, unknown>>;
-  getMethod: (context: TContext) => MaybePromise<string>;
-  getPath: (context: TContext) => MaybePromise<string>;
-  getQuery: (context: TContext) => MaybePromise<Record<string, unknown>>;
+  getContext: (...args: TParams) => Promise<TContext>;
+  getBody: (context: TContext) => Promise<Record<string, unknown>>;
+  getMethod: (context: TContext) => Promise<string>;
+  getPath: (context: TContext) => Promise<string>;
+  getQuery: (context: TContext) => Promise<Record<string, unknown>>;
   sendResponse: (
     context: TContext,
     result: Result<{ response: unknown }, VaultError>
-  ) => MaybePromise<TResponse>;
+  ) => Promise<TResponse>;
 };
 ```
 
@@ -215,7 +215,7 @@ type Derivation<TContext = undefined> =
         derivationPath: number[],
         input: { userId: string },
         context: TContext
-      ) => MaybePromise<Result<number[]>>;
+      ) => Promise<Result<number[]>>;
     }
   | {
       type: "pool";
@@ -230,7 +230,7 @@ type Derivation<TContext = undefined> =
       provider: (
         input: { userId: string },
         context: TContext
-      ) => MaybePromise<Result<number | number[] | Derivation<TContext>>>;
+      ) => Promise<Result<number | number[] | Derivation<TContext>>>;
     };
 ```
 
@@ -284,7 +284,7 @@ Interface that vault implementations must satisfy.
 
 ```typescript
 type IVault = {
-  getWallet: (input: { userId: string }) => MaybePromise<
+  getWallet: (input: { userId: string }) => Promise<
     Result<{
       addresses: {
         base: { bech32: string; hex: string };
@@ -297,7 +297,7 @@ type IVault = {
     userId: string;
     payload: string;
     externalAad?: string;
-  }) => MaybePromise<
+  }) => Promise<
     Result<{
       signature: string;
       key: string;
@@ -306,7 +306,7 @@ type IVault = {
   signTransaction: (input: {
     userId: string;
     transaction: string;
-  }) => MaybePromise<
+  }) => Promise<
     Result<{
       signedTransaction: string;
       witnessSet: string;
@@ -331,17 +331,17 @@ type VaultConfig = RequiredVaultConfig & {
   customWalletDerivation?: (
     input: { userId: string },
     config: RequiredVaultConfig
-  ) => MaybePromise<Result<DeriveWalletOutput>>;
+  ) => Promise<Result<DeriveWalletOutput>>;
   additionalWalletDerivation?: (
     keys: DeriveWalletOutput,
     input: { userId: string },
     config: RequiredVaultConfig
-  ) => MaybePromise<Result<DeriveWalletOutput>>;
+  ) => Promise<Result<DeriveWalletOutput>>;
   ignoreDefaultPaymentDerivationWarning?: boolean;
 };
 
 type RequiredVaultConfig = {
-  rootKey: () => MaybePromise<Bip32PrivateKey | string>;
+  rootKey: () => Promise<Bip32PrivateKey | string>;
   network: Network | NetworkId;
 };
 ```
