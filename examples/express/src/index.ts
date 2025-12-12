@@ -17,16 +17,16 @@ app.use(express.json());
 app.use(
   createVaultHandler({
     vault: new Vault({
-      rootKey: () => env.ROOT_KEY,
+      rootKey: async () => env.ROOT_KEY,
       network: env.NETWORK,
       paymentDerivation: {
         type: "unique",
-        scrambler: (path) => path.reverse(),
+        scrambler: async (path) => path.reverse(),
       },
     }),
     adapter: {
       ...expressAdapter,
-      getPath: (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
+      getPath: async (ctx) => ctx.req.path.replace("/users/me", `/users/${env.ME}`),
     },
   }),
 );

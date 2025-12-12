@@ -38,7 +38,7 @@ const vault = new Vault({
 
 ```typescript
 type VaultConfig = {
-  rootKey: () => MaybePromise<Bip32PrivateKey | string>; // Function returning the root private key (hex)
+  rootKey: () => Promise<Bip32PrivateKey | string>; // Function returning the root private key (hex)
   network: Network | NetworkId; // "mainnet" | "preprod" | "preview" | 0 | 1
   accountDerivation?: Derivation<RequiredVaultConfig>; // Account derivation strategy (default: constant 0)
   paymentDerivation?: Derivation<RequiredVaultConfig>; // Payment key derivation strategy (default: unique reversed)

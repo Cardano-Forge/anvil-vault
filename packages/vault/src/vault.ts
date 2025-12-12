@@ -19,7 +19,7 @@ export const DEFAULT_VAULT_DERIVATIONS = {
   },
   payment: {
     type: "unique",
-    scrambler: (i) => i.reverse(),
+    scrambler: async (i) => i.reverse(),
   },
   stake: {
     type: "pool",
