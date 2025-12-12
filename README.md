@@ -11,11 +11,11 @@ Anvil Vault is organized as a monorepo with specialized packages for different c
 
 ### Main Package
 
-- **[`@ada-anvil/vault/framework`](./packages/framework/README.md)** - Complete entry point for Anvil Vault
+- **[`@ada-anvil/vault/framework`](./packages/framework/README.md)** - Entry point for the public library
 
 ### Core Packages
 
-- **[`@ada-anvil/vault/vault`](./packages/vault/README.md)** - Main vault implementation with hierarchical deterministic wallet derivation
+- **[`@ada-anvil/vault/vault`](./packages/vault/README.md)** - Vault implementation with wallet derivation
 - **[`@ada-anvil/vault/csl`](./packages/csl/README.md)** - Type-safe wrappers around Cardano Serialization Library
 - **[`@ada-anvil/vault/cms`](./packages/cms/README.md)** - Cardano Message Signing (CIP-8/CIP-30) implementation using COSE standards
 - **[`@ada-anvil/vault/handler`](./packages/handler/README.md)** - Framework-agnostic HTTP request handler builder with REST API endpoints
