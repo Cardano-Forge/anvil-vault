@@ -68,7 +68,7 @@ Anvil Vault is composed of specialized packages:
 - Core vault orchestration for key derivation, address generation, and signing operations
 - CIP-1852 compliant derivation with flexible strategies
 
-> [!WARNING] > **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation <br/>- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+> [!WARNING] > **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 
 #### [@ada-anvil/vault/csl](../csl/README.md)
 
