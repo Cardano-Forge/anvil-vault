@@ -69,7 +69,7 @@ Anvil Vault is composed of specialized packages:
 - CIP-1852 compliant derivation with flexible strategies
 
 > [!WARNING]
-> **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation <br/>- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+> **Peer Dependencies** <br/>- **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation <br/>- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 
 #### [@ada-anvil/vault/csl](../csl/README.md)
 
@@ -77,7 +77,7 @@ Anvil Vault is composed of specialized packages:
 - Derivation, address generation, signing, verification, parsing, and network utilities
 
 > [!WARNING]
-> **Peer Dependencies** - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+> **Peer Dependencies** <br/>- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 
 #### [@ada-anvil/vault/cms](../cms/README.md)
 
@@ -85,14 +85,14 @@ Anvil Vault is composed of specialized packages:
 - Sign and verify wallet messages
 
 > [!WARNING]
-> **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
+> **Peer Dependencies** <br/>- **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
 
 #### [@ada-anvil/vault/bip39](../bip39/README.md)
 
 - BIP-39 mnemonic generation and entropy parsing
 
 > [!WARNING]
-> **Peer Dependencies** - **`bip39`**: BIP-39 mnemonic operations and wordlist management
+> **Peer Dependencies** <br/>- **`bip39`**: BIP-39 mnemonic operations and wordlist management
 
 #### [@ada-anvil/vault/handler](../handler/README.md)
 
