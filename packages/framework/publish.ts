@@ -26,7 +26,7 @@ const opts = {
   dts: { resolve: true },
   clean: true,
   outDir: OUT_DIR,
-  splitting: false,
+  splitting: true,
   treeshake: true,
   noExternal: [/@anvil-vault\/.*/, "trynot"],
   external: Object.keys(externalDeps),
