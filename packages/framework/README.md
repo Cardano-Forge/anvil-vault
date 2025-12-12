@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Anvil Vault</h1>
   <p>
-    <strong>Unified, type-safe custodial wallet framework for Cardano</strong>
+    <strong>Custodial wallet framework for Cardano</strong>
   </p>
 <p>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
@@ -35,8 +35,6 @@
   standard
 - **Message & Transaction Signing**: Sign blockchain transactions and messages with full CIP-8 and CIP-30 compliance
 - **Type-Safe Blockchain Integration**: Comprehensive TypeScript wrappers around Cardano Serialization Library (CSL)
-- **Flexible Key Derivation**: Multiple strategies for generating user addresses (unique per user, pooled stake keys, constant, or
-  custom patterns)
 - **Framework Agnostic**: Drop-in adapters for Express.js and Hono
 - **Modern Error Handling**: Type-safe Result patterns using `trynot`
 
@@ -70,19 +68,27 @@ Anvil Vault is composed of specialized packages:
 - Core vault orchestration for key derivation, address generation, and signing operations
 - CIP-1852 compliant derivation with flexible strategies
 
+> [!WARNING] > **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+
 #### [@ada-anvil/vault/csl](../csl/README.md)
 
 - Type-safe wrappers around Cardano Serialization Library
 - Derivation, address generation, signing, verification, parsing, and network utilities
+
+> [!WARNING] > **Peer Dependencies** - **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
 
 #### [@ada-anvil/vault/cms](../cms/README.md)
 
 - Cardano Message Signing (CIP-8/CIP-30) using COSE
 - Sign and verify wallet messages
 
+> [!WARNING] > **Peer Dependencies** - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
+
 #### [@ada-anvil/vault/bip39](../bip39/README.md)
 
 - BIP-39 mnemonic generation and entropy parsing
+
+> [!WARNING] > **Peer Dependencies** - **`bip39`**: BIP-39 mnemonic operations and wordlist management
 
 #### [@ada-anvil/vault/handler](../handler/README.md)
 
