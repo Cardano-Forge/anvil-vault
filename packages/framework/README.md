@@ -118,7 +118,8 @@ Anvil Vault is composed of specialized packages:
 
 ### Root Key Management
 
-> [!WARNING] >**Your root key is the master secret that controls all wallets.**
+> [!WARNING]
+> **Your root key is the master secret that controls all wallets.**
 > If compromised, an attacker can access all user funds.
 
 - **Never hardcode root keys** in your source code or configuration files
