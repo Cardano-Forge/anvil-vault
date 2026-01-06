@@ -123,10 +123,7 @@ Anvil Vault is composed of specialized packages:
 > If compromised, an attacker can access all user funds.
 
 - **Never hardcode root keys** in your source code or configuration files
-- Store root keys in dedicated key management systems:
-  - AWS KMS (Key Management Service)
-  - Google Cloud KMS
-  - Azure Key Vault
+- Store root keys in dedicated key management systems
 - Use different keys per environment
 
 ### Derivation Strategies (User Address Generation)
@@ -138,18 +135,13 @@ Anvil Vault is composed of specialized packages:
 - **Never use `constant` derivation in production** - this generates the same address for all users, creating a security and privacy
   vulnerability
 - **Always use `unique` derivation with scrambling** - this ensures each user gets cryptographically isolated addresses
-- The `pool` strategy is only for stake keys (see below)
+- The `pool` strategy was designed for stake keys (see below)
 
 #### Stake Keys (Reward Addresses)
 
-- **Use `pool` derivation for stake keys** - this allows you to consolidate all users' staking rewards to a single address for easier
-  management
+- **Use `pool` derivation for stake keys** - this allows you to consolidate all users' staking rewards to a set of addresses for easier
+  management. Each user is deterministically assigned one of the available addresses
 - Pool derivation is safe for stake keys because they don't control spendable funds
-
-#### Why This Matters
-
-- **Poor derivation = address reuse** across users, exposing transaction history and balances
-- **Unique derivation = isolation** - each user's wallet is cryptographically separated
 
 ---
 
