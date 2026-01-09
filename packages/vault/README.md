@@ -322,7 +322,7 @@ const userId = "550e8400-e29b-41d4-a716-446655440000";
 ## Dependencies
 
 - **`@emurgo/cardano-message-signing-nodejs-gc`**: COSE signing implementation
-- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Cardano cryptography
+- **`@emurgo/cardano-serialization-lib-nodejs-gc`**: Core Cardano serialization library
 - **`trynot`**: Result type for error handling
 
 ## Related Packages

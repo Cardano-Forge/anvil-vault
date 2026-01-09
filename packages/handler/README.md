@@ -484,7 +484,7 @@ For general error handling patterns, see [Error Handling](../framework/README.md
 
 ## Related Packages
 
-- **[@ada-anvil/vault/vault](../vault/README.md)**: Main vault implementation
+- **[@ada-anvil/vault/vault](../vault/README.md)**: Vault implementation
 - **[@ada-anvil/vault/express](../express/README.md)**: Express.js adapter
 - **[@ada-anvil/vault/hono](../hono/README.md)**: Hono adapter
 - **[@ada-anvil/vault/utils](../utils/README.md)**: Shared utilities

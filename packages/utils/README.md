@@ -385,7 +385,7 @@ const asyncConfig: Config = {
 
 ## Related Packages
 
-- **[@ada-anvil/vault/vault](../vault/README.md)**: Main vault implementation
+- **[@ada-anvil/vault/vault](../vault/README.md)**: Vault implementation
 - **[@ada-anvil/vault/handler](../handler/README.md)**: Framework-agnostic handler builder
 - **[@ada-anvil/vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
 - **[@ada-anvil/vault/bip39](../bip39/README.md)**: BIP-39 mnemonic utilities

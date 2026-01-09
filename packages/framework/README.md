@@ -48,7 +48,7 @@ npm install @ada-anvil/vault
 
 ### Quick Start
 
-See the [Vault Quick Start Guide](../vault/README.md#quick-start) for a complete walkthrough.
+See the [Vault Quick Start Guide](../vault/README.md#usage) for a complete walkthrough.
 
 ### Examples
 
