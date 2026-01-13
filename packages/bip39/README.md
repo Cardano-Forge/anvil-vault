@@ -152,7 +152,7 @@ const builtinWordLists = [
 
 ## Related Packages
 
-- **[@ada-anvil/vault/vault](../vault/README.md)**: Main vault implementation
+- **[@ada-anvil/vault/vault](../vault/README.md)**: Vault implementation
 - **[@ada-anvil/vault/handler](../handler/README.md)**: Framework-agnostic handler builder
 - **[@ada-anvil/vault/utils](../utils/README.md)**: Shared utilities
 

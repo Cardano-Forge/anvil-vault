@@ -126,7 +126,7 @@ if (isOk(result)) {
 
 ## Related Packages
 
-- **[@ada-anvil/vault/vault](../vault/README.md)**: Main vault implementation
+- **[@ada-anvil/vault/vault](../vault/README.md)**: Vault implementation
 - **[@ada-anvil/vault/handler](../handler/README.md)**: Framework-agnostic handler builder
 - **[@ada-anvil/vault/csl](../csl/README.md)**: Cardano Serialization Library utilities
 - **[@ada-anvi/lvault/utils](../utils/README.md)**: Shared utilities
