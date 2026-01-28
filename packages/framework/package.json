@@ -4,16 +4,16 @@
   "version": "0.0.4",
   "author": "Ada-Anvil",
   "bugs": {
-    "url": "https://github.com/cardano-forge/anvil-vault/issues"
+    "url": "https://github.com/Cardano-Forge/anvil-vault/issues"
   },
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org"
   },
-  "homepage": "https://github.com/cardano-forge/anvil-vault",
+  "homepage": "https://github.com/Cardano-Forge/anvil-vault",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cardano-forge/anvil-vault.git"
+    "url": "git+https://github.com/Cardano-Forge/anvil-vault.git"
   },
   "keywords": [
     "typescript",
