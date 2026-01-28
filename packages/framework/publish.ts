@@ -106,6 +106,8 @@ async function main() {
   await build(opts);
 
   await copyPackageJson();
+  
+  await copyFile("README.md", path.join(OUT_DIR, "README.md"));
 
   for (const dtsFile of await findDtsFiles(OUT_DIR)) {
     await updateInternalImports(dtsFile);

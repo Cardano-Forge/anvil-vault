@@ -1,7 +1,7 @@
 {
   "name": "@anvil-vault/framework",
   "description": "TypeScript tools for generating and managing cardano wallet.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Ada-Anvil",
   "bugs": {
     "url": "https://github.com/Cardano-Forge/anvil-vault/issues"
