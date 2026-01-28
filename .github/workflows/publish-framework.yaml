@@ -49,6 +49,7 @@ jobs:
     permissions:
       packages: write
       contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -57,7 +58,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run publish -- --filter @anvil-vault/framework
       # Append -{{ ref_name }} to version number if on not on production branch
       - name: Add pre-release flag
@@ -70,12 +71,12 @@ jobs:
       - name: Publish to registry pre-release
         if: github.ref_name != 'main'
         working-directory: ${{ env.PKG_OUT }}
-        run: npm publish --tag ${{ github.ref_name }}
+        run: npm publish --tag ${{ github.ref_name }} --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to registry
         if: github.ref_name == 'main'
         working-directory: ${{ env.PKG_OUT }}
-        run: npm publish
+        run: npm publish --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
