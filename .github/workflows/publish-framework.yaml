@@ -71,12 +71,12 @@ jobs:
       - name: Publish to registry pre-release
         if: github.ref_name != 'main'
         working-directory: ${{ env.PKG_OUT }}
-        run: npm publish --tag ${{ github.ref_name }} --provenance --access public
+        run: npm publish --tag ${{ github.ref_name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to registry
         if: github.ref_name == 'main'
         working-directory: ${{ env.PKG_OUT }}
-        run: npm publish --provenance --access public
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
